@@ -1,19 +1,20 @@
 import { NextResponse } from 'next/server';
-import { Resend } from 'resend';
+import nodemailer from 'nodemailer';
 
 export const dynamic = 'force-dynamic';
 
 export async function POST(request: Request) {
   try {
-    const apiKey = process.env.RESEND_API_KEY;
-    if (!apiKey) {
+    const user = process.env.GMAIL_USER;
+    const pass = process.env.GMAIL_APP_PASSWORD;
+
+    if (!user || !pass) {
       return NextResponse.json(
         { error: 'Email service not configured' },
         { status: 500 },
       );
     }
 
-    const resend = new Resend(apiKey);
     const { name, email, service, message } = await request.json();
 
     if (!name || !email || !message) {
@@ -23,18 +24,25 @@ export async function POST(request: Request) {
       );
     }
 
-    await resend.emails.send({
-      from: 'Pablo Aerial <onboarding@resend.dev>',
-      to: 'pabloyamamoto19@gmail.com',
+    const transporter = nodemailer.createTransport({
+      service: 'gmail',
+      auth: { user, pass },
+    });
+
+    await transporter.sendMail({
+      from: `Pablo Aerial <${user}>`,
+      to: user,
       replyTo: email,
       subject: `Nuevo mensaje de ${name} — ${service || 'Sin servicio especificado'}`,
       html: `
-        <h2>Nuevo mensaje desde tu portafolio</h2>
-        <p><strong>Nombre:</strong> ${name}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Servicio:</strong> ${service || 'No especificado'}</p>
-        <hr />
-        <p>${message.replace(/\n/g, '<br />')}</p>
+        <div style="font-family: sans-serif; max-width: 600px;">
+          <h2 style="color: #0A0A0F;">Nuevo mensaje desde tu portafolio</h2>
+          <p><strong>Nombre:</strong> ${name}</p>
+          <p><strong>Email:</strong> ${email}</p>
+          <p><strong>Servicio:</strong> ${service || 'No especificado'}</p>
+          <hr style="border: none; border-top: 1px solid #eee; margin: 16px 0;" />
+          <p style="white-space: pre-line;">${message}</p>
+        </div>
       `,
     });
 

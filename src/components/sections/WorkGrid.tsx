@@ -1,20 +1,18 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import Image, { type StaticImageData } from 'next/image';
+import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { PROJECTS } from '@/lib/constants';
 import { EASE, DURATION } from '@/lib/constants';
-
-import imgImayina from '@/img/imayina.jpg';
-import imgDJI0633 from '@/img/DJI_0633.jpg';
+import { media, getMediaUrl } from '@/lib/media';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const IMAGE_MAP: Record<string, StaticImageData> = {
-  'imayina.jpg': imgImayina,
-  'DJI_0633.jpg': imgDJI0633,
+const IMAGE_MAP: Record<string, string> = {
+  'imayina.jpg': media.images.imayina,
+  'DJI_0633.jpg': media.images.dji0633,
 };
 
 /**
@@ -161,7 +159,7 @@ function GridItem({ project, index }: GridItemProps) {
         <div className="absolute inset-0 will-change-transform transition-transform duration-700 ease-out group-hover:scale-105">
           <video
             className="absolute inset-0 h-full w-full object-cover"
-            src={project.video}
+            src={'video' in project ? getMediaUrl(project.video) : undefined}
             autoPlay
             muted
             loop
@@ -180,7 +178,6 @@ function GridItem({ project, index }: GridItemProps) {
               loading={index === 0 ? undefined : 'lazy'}
               priority={index === 0}
               quality={75}
-              placeholder="blur"
               className="object-cover"
               sizes="(max-width: 768px) 100vw, 42vw"
             />

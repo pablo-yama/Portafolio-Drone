@@ -5,7 +5,7 @@ import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ABOUT } from '@/lib/constants';
-import aboutPhoto from '@/img/Pablo.jpg';
+import { media } from '@/lib/media';
 import { FloatingPaths } from '@/components/ui/background-paths';
 
 gsap.registerPlugin(ScrollTrigger);
@@ -53,12 +53,11 @@ export function AboutSection() {
             style={{ clipPath: 'inset(0% 0 0 0)' }}
           >
             <Image
-              src={aboutPhoto}
+              src={media.images.pablo}
               alt="Pablo — Piloto de Drones"
               fill
               loading="lazy"
               quality={80}
-              placeholder="blur"
               className="object-cover object-top"
               sizes="(max-width: 1024px) 100vw, 50vw"
             />

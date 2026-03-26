@@ -1,21 +1,18 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import Image, { type StaticImageData } from 'next/image';
+import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { SERVICES } from '@/lib/constants';
-
-import imgFoto from '@/img/arcos.jpg';
-import imgPadel from '@/img/padel-1.jpg';
-import imgInspeccion from '@/img/paneles.jpg';
+import { media } from '@/lib/media';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const SERVICE_IMAGES: StaticImageData[] = [
-  imgFoto,
-  imgPadel,
-  imgInspeccion,
+const SERVICE_IMAGES: string[] = [
+  media.images.arcos,
+  media.images.padel,
+  media.images.paneles,
 ];
 
 export function ServicesSection() {
@@ -81,7 +78,7 @@ export function ServicesSection() {
                         playsInline
                         preload="none"
                       >
-                        <source src="/videos/reforma.mov" />
+                        <source src={media.videos.reforma} />
                       </video>
                     ) : (
                       <Image
@@ -90,7 +87,6 @@ export function ServicesSection() {
                         fill
                         loading="lazy"
                         quality={70}
-                        placeholder="blur"
                         className="object-cover"
                         sizes="(max-width: 1024px) 100vw, 50vw"
                       />

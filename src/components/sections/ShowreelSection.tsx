@@ -4,12 +4,14 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
+import { media } from '@/lib/media';
+
 gsap.registerPlugin(ScrollTrigger);
 
 const CLIPS = [
-  { src: '/videos/bosques.mov', label: 'Bosques' },
-  { src: '/videos/reforma.mov', label: 'Reforma' },
-  { src: '/videos/cu.mov',      label: 'C.U.' },
+  { src: media.videos.bosques, label: 'Bosques' },
+  { src: media.videos.reforma, label: 'Reforma' },
+  { src: media.videos.cu,      label: 'C.U.' },
 ];
 
 function ReelCard({ clip }: { clip: typeof CLIPS[number] }) {

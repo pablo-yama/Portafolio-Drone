@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import heroImage from '@/img/reforma-noche.jpg';
+import { media } from '@/lib/media';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -81,12 +81,11 @@ export function HeroSection() {
       {/* Background image */}
       <div ref={imageRef} className="absolute inset-0 scale-110 will-change-transform">
         <Image
-          src={heroImage}
+          src={media.images.heroReforma}
           alt="Vista aérea nocturna de Reforma, Ciudad de México"
           fill
           priority
           quality={80}
-          placeholder="blur"
           className="object-cover"
           sizes="100vw"
         />
