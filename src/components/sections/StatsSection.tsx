@@ -22,13 +22,16 @@ export function StatsSection() {
   const statRefs = useRef<(HTMLDivElement | null)[]>([]);
   const [canRender3D, setCanRender3D] = useState(false);
 
+  const [isMobile, setIsMobile] = useState(false);
+
   /* ── Detect 3D capability ── */
   useEffect(() => {
     const canvas = document.createElement('canvas');
-    const gl =
-      canvas.getContext('webgl2') || canvas.getContext('webgl');
-    const isMobile = /Mobi|Android/i.test(navigator.userAgent);
-    setCanRender3D(gl !== null && !isMobile);
+    const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
+    const cores = navigator.hardwareConcurrency || 2;
+    const mobile = /Mobi|Android/i.test(navigator.userAgent);
+    setIsMobile(mobile);
+    setCanRender3D(gl !== null && cores >= 4);
   }, []);
 
   /* ── GSAP scroll-driven timeline ── */
@@ -154,7 +157,7 @@ export function StatsSection() {
       {/* ── 3D Drone Scene (desktop) ── */}
       {canRender3D && (
         <div className="absolute inset-0 z-0">
-          <DroneScene progressRef={progressRef} />
+          <DroneScene progressRef={progressRef} mobile={isMobile} />
         </div>
       )}
 

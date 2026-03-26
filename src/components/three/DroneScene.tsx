@@ -392,14 +392,13 @@ function DroneModel({
 /* ───────────────────────────────────────────────
    Floating Particles
    ─────────────────────────────────────────────── */
-function Particles() {
+function Particles({ count = 200 }: { count?: number }) {
   const ref = useRef<THREE.Points>(null);
-  const COUNT = 200;
 
   const [geometry] = useState(() => {
     const g = new THREE.BufferGeometry();
-    const pos = new Float32Array(COUNT * 3);
-    for (let i = 0; i < COUNT; i++) {
+    const pos = new Float32Array(count * 3);
+    for (let i = 0; i < count; i++) {
       pos[i * 3] = (Math.random() - 0.5) * 20;
       pos[i * 3 + 1] = (Math.random() - 0.5) * 15;
       pos[i * 3 + 2] = (Math.random() - 0.5) * 12;
@@ -434,26 +433,29 @@ function Particles() {
    ─────────────────────────────────────────────── */
 interface DroneSceneProps {
   progressRef: React.MutableRefObject<number>;
+  mobile?: boolean;
 }
 
-export function DroneScene({ progressRef }: DroneSceneProps) {
+export function DroneScene({ progressRef, mobile = false }: DroneSceneProps) {
   return (
     <Canvas
       camera={{ position: [0, 1.2, 4.5], fov: 45 }}
-      gl={{ antialias: true, alpha: true }}
-      dpr={[1, 2]}
+      gl={{ antialias: !mobile, alpha: true }}
+      dpr={mobile ? [1, 1.5] : [1, 2]}
       style={{ background: 'transparent' }}
     >
       <DroneModel progressRef={progressRef} />
-      <Particles />
-      <EffectComposer>
-        <Bloom
-          luminanceThreshold={0.1}
-          luminanceSmoothing={0.9}
-          intensity={1.2}
-          mipmapBlur
-        />
-      </EffectComposer>
+      <Particles count={mobile ? 60 : 200} />
+      {!mobile && (
+        <EffectComposer>
+          <Bloom
+            luminanceThreshold={0.1}
+            luminanceSmoothing={0.9}
+            intensity={1.2}
+            mipmapBlur
+          />
+        </EffectComposer>
+      )}
     </Canvas>
   );
 }
