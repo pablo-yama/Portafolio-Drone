@@ -1,26 +1,256 @@
 @import "tailwindcss";
 
+/* ============================================
+   DESIGN TOKENS
+   ============================================ */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Background */
+  --color-bg: #0A0A0F;
+  --color-bg-elevated: #12121A;
+
+  /* Text */
+  --color-text: #F5F5F7;
+  --color-text-muted: #8A8A9A;
+
+  /* Accent — Cyan eléctrico */
+  --color-accent: #00D4FF;
+  --color-accent-hover: #00b8e6;
+
+  /* Gradients */
+  --gradient-hero: linear-gradient(135deg, #0A0A0F 0%, #0F1923 50%, #0A0A0F 100%);
+  --gradient-accent: linear-gradient(90deg, #00D4FF, #00E5C8);
+
+  /* Glassmorphism */
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --glass-blur: blur(20px);
+
+  /* Typography Scale */
+  --text-hero: clamp(3.5rem, 8vw + 1rem, 10rem);
+  --text-h1: clamp(2.5rem, 5vw + 1rem, 6rem);
+  --text-h2: clamp(1.8rem, 3vw + 0.5rem, 3.5rem);
+  --text-h3: clamp(1.2rem, 2vw + 0.5rem, 2rem);
+  --text-body: clamp(1rem, 1vw + 0.5rem, 1.25rem);
+  --text-small: clamp(0.75rem, 0.8vw + 0.3rem, 0.9rem);
+
+  /* Spacing scale */
+  --section-padding: clamp(8rem, 16vw, 16rem);
+  --space-xs:  clamp(0.75rem, 1.5vw, 1rem);
+  --space-sm:  clamp(1.25rem, 2.5vw, 2rem);
+  --space-md:  clamp(2rem,    4vw,   3.5rem);
+  --space-lg:  clamp(3rem,    6vw,   5rem);
+  --space-xl:  clamp(4.5rem,  9vw,   8rem);
+  --container-max: 1440px;
+  --container-padding: clamp(1.5rem, 5vw, 5rem);
+
+  /* Animation */
+  --duration-fast: 0.4s;
+  --duration-normal: 0.8s;
+  --duration-slow: 1.2s;
+  --duration-cinematic: 1.8s;
+
+  /* Z-index layers */
+  --z-cursor: 9999;
+  --z-preloader: 9000;
+  --z-nav: 1000;
+  --z-modal: 800;
 }
 
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+  --color-background: var(--color-bg);
+  --color-foreground: var(--color-text);
+  --color-muted: var(--color-text-muted);
+  --color-accent: var(--color-accent);
+  --color-elevated: var(--color-bg-elevated);
+  --font-sans: var(--font-satoshi);
+  --font-display: var(--font-clash);
+  --font-mono: var(--font-jetbrains);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+/* ============================================
+   BASE RESET & STYLES
+   ============================================ */
+*,
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  background: var(--gradient-hero);
+  background-attachment: fixed;
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  scroll-behavior: auto; /* Lenis handles smooth scroll */
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background: transparent;
+  color: var(--color-text);
+  font-family: var(--font-satoshi), system-ui, sans-serif;
+  overflow-x: hidden;
+  line-height: 1.75;
+  letter-spacing: 0.01em;
+}
+
+p {
+  line-height: 1.85;
+}
+
+/* Lenis smooth scroll */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis.lenis-smooth {
+  scroll-behavior: auto !important;
+}
+
+.lenis.lenis-smooth [data-lenis-prevent] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-stopped {
+  overflow: hidden;
+}
+
+/* ============================================
+   SELECTION
+   ============================================ */
+::selection {
+  background-color: rgba(0, 212, 255, 0.3);
+  color: var(--color-text);
+}
+
+/* ============================================
+   SCROLLBAR
+   ============================================ */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-bg);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* ============================================
+   UTILITY CLASSES
+   ============================================ */
+.container-custom {
+  width: 100%;
+  max-width: var(--container-max);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--container-padding);
+  padding-right: var(--container-padding);
+}
+
+.text-gradient {
+  background: var(--gradient-accent);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.glass {
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--glass-border);
+}
+
+/* GPU-accelerated scroll line animation — transform only, no layout repaints */
+@keyframes scroll-line {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100%); }
+}
+
+.scroll-line {
+  animation: scroll-line 1.4s ease-in-out infinite;
+}
+
+/* ============================================
+   GLOBAL SECTION SPACING
+   ============================================ */
+
+/* Eyebrow labels — the small uppercase text above headings */
+.section-label {
+  display: block;
+  margin-bottom: var(--space-sm);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.35em;
+  color: var(--color-accent);
+}
+
+/* Section heading bottom gap */
+.section-heading {
+  margin-bottom: var(--space-md);
+}
+
+/* Body text in sections */
+.section-body {
+  line-height: 1.9;
+  color: var(--color-text-muted);
+}
+
+/* Pill / chip buttons */
+.pill-btn {
+  border-radius: 9999px;
+  border: 1px solid var(--glass-border);
+  padding: 0.65rem 1.5rem;
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  transition: all 0.3s;
+}
+
+.pill-btn:hover {
+  border-color: rgba(255,255,255,0.4);
+}
+
+.pill-btn.active {
+  border-color: var(--color-accent);
+  background: rgba(0,212,255,0.08);
+  color: var(--color-accent);
+}
+
+/* Hide native cursor — custom cursor replaces it */
+html, body, * {
+  cursor: none !important;
+}
+
+/* Restore on touch devices (no custom cursor there) */
+@media (pointer: coarse) {
+  html, body, * {
+    cursor: auto !important;
+  }
+  .custom-cursor {
+    display: none !important;
+  }
+}
+
+/* ============================================
+   REDUCED MOTION
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }
