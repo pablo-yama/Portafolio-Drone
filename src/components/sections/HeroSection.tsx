@@ -20,7 +20,7 @@ export function HeroSection() {
     if (!sectionRef.current || !headingRef.current) return;
 
     const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ delay: 2.8 });
+      const tl = gsap.timeline({ delay: 0.3 });
 
       if (imageRef.current) {
         tl.from(imageRef.current, { scale: 1.3, duration: 2, ease: 'power3.out' }, 0);
@@ -126,21 +126,21 @@ export function HeroSection() {
 
         <div ref={ctaRef} className="mt-14 flex flex-wrap items-center justify-center gap-5">
           <a
-            href="#showreel"
+            href="#work"
             className="group flex items-center gap-3 rounded-full bg-[var(--color-accent)] px-10 py-5 text-sm font-semibold uppercase tracking-wider text-[var(--color-bg)] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(0,212,255,0.3)]"
-            data-cursor-text="Play"
+            data-cursor-text="Ver"
           >
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="currentColor" className="transition-transform duration-300 group-hover:scale-110">
-              <path d="M4 2l10 6-10 6V2z" />
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" className="transition-transform duration-300 group-hover:translate-y-1">
+              <path d="M8 2v12M3 9l5 5 5-5" />
             </svg>
-            Ver Mi Showreel
+            Ver Mi Trabajo
           </a>
           <a
-            href="#work"
+            href="#contact"
             className="rounded-full border border-white/30 px-10 py-5 text-sm uppercase tracking-wider backdrop-blur-sm transition-all duration-300 hover:border-white/60 hover:bg-white/10"
-            data-cursor-text="Explorar"
+            data-cursor-text="Contactar"
           >
-            Ver Mi Trabajo
+            Hablemos
           </a>
         </div>
       </div>

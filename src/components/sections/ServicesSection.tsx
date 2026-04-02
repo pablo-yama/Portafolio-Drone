@@ -1,43 +1,59 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
-import Image from 'next/image';
+import { useEffect, useRef, useState } from 'react';
+import Link from 'next/link';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { SERVICES } from '@/lib/constants';
-import { media } from '@/lib/media';
+import { SERVICE_PACKAGES, EASE } from '@/lib/constants';
 
 gsap.registerPlugin(ScrollTrigger);
 
-const SERVICE_IMAGES: string[] = [
-  media.images.arcos,
-  media.images.padel,
-  media.images.paneles,
-];
+function CheckIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0 mt-0.5">
+      <path d="M3 8.5l3.5 3.5L13 5" stroke="var(--color-accent)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  );
+}
+
+function ArrowIcon() {
+  return (
+    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor">
+      <path d="M3 8h10M9 4l4 4-4 4" strokeWidth="1.5" />
+    </svg>
+  );
+}
 
 export function ServicesSection() {
+  const [activeService, setActiveService] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
+  const cardsRef = useRef<HTMLDivElement>(null);
 
+  // Entrance animations
   useEffect(() => {
-    if (!sectionRef.current || !trackRef.current) return;
+    if (!sectionRef.current) return;
 
     const ctx = gsap.context(() => {
-      const panels = gsap.utils.toArray<HTMLElement>('.service-panel');
-      if (panels.length === 0) return;
-
-      // Pin the entire section (heading + panels) so heading stays visible
-      gsap.to(panels, {
-        xPercent: -100 * (panels.length - 1),
-        ease: 'none',
+      gsap.from('.services-section-heading', {
+        y: 50,
+        opacity: 0,
+        duration: 1,
+        ease: EASE.smooth,
         scrollTrigger: {
           trigger: sectionRef.current,
-          pin: true,
-          scrub: 1,
-          snap: 1 / (panels.length - 1),
-          // Scroll distance = one viewport width per extra panel
-          end: () => '+=' + window.innerWidth * (panels.length - 1),
-          pinSpacing: true,
+          start: 'top 75%',
+        },
+      });
+
+      gsap.from('.service-tab-home', {
+        y: 20,
+        opacity: 0,
+        duration: 0.5,
+        stagger: 0.08,
+        ease: EASE.smooth,
+        scrollTrigger: {
+          trigger: '.services-tabs-row',
+          start: 'top 85%',
         },
       });
     }, sectionRef);
@@ -45,74 +61,162 @@ export function ServicesSection() {
     return () => ctx.revert();
   }, []);
 
+  // Animate cards on tab change
+  useEffect(() => {
+    if (!cardsRef.current) return;
+
+    const cards = cardsRef.current.querySelectorAll('.pricing-card-home');
+    gsap.set(cards, { y: 40, opacity: 0 });
+    gsap.to(cards, {
+      y: 0,
+      opacity: 1,
+      duration: 0.7,
+      stagger: 0.1,
+      ease: EASE.smooth,
+      delay: 0.05,
+    });
+  }, [activeService]);
+
+  const service = SERVICE_PACKAGES[activeService];
+
   return (
-    <section ref={sectionRef} id="services" className="relative flex flex-col overflow-hidden" style={{ height: '100vh' }}>
+    <section
+      ref={sectionRef}
+      id="services"
+      className="relative min-h-screen w-full flex flex-col justify-center py-[var(--section-padding)]"
+    >
+      {/* Background glow */}
+      <div
+        className="pointer-events-none absolute inset-0"
+        style={{
+          background: 'radial-gradient(ellipse at 50% 20%, rgba(0,212,255,0.04) 0%, transparent 60%)',
+        }}
+      />
 
-      {/* Sticky heading — stays at top while panels scroll */}
-      <div className="container-custom pt-[var(--section-padding)] pb-10 shrink-0">
-        <p className="mb-4 text-xs uppercase tracking-[0.3em] text-[var(--color-accent)]">Servicios</p>
-        <h2 className="text-[var(--text-h1)] font-bold uppercase leading-none" style={{ fontFamily: 'var(--font-clash)' }}>
-          Lo que puedo<br />hacer por ti
-        </h2>
-      </div>
+      <div className="container-custom relative z-10">
 
-      {/* Horizontal track — fills remaining vertical space */}
-      <div className="relative flex-1 overflow-hidden">
-        <div
-          ref={trackRef}
-          className="flex h-full"
-          style={{ width: `${SERVICES.length * 100}vw` }}
-        >
-          {SERVICES.map((service, i) => (
-            <div key={service.slug} className="service-panel relative flex h-full w-screen shrink-0 items-center">
-              <div className="container-custom flex h-full items-center">
-                <div className="grid h-full w-full grid-cols-1 gap-10 py-8 lg:grid-cols-2 lg:py-0">
+        {/* ── Heading block ── */}
+        <div className="services-section-heading mb-16 lg:mb-24">
+          <p className="section-label mb-6">Servicios</p>
+          <h2
+            className="text-[var(--text-h1)] font-bold uppercase leading-none"
+            style={{ fontFamily: 'var(--font-clash)' }}
+          >
+            Soluciones aéreas<br />
+            <span className="text-gradient">para tu proyecto</span>
+          </h2>
+          <p className="mt-8 max-w-lg text-[var(--color-text-muted)]" style={{ lineHeight: 1.9 }}>
+            Cada proyecto es único. Elige el servicio y paquete que mejor
+            se adapte a tus necesidades.
+          </p>
+        </div>
 
-                  <div className="relative overflow-hidden rounded-lg">
-                    {service.hasVideo ? (
-                      <video
-                        className="absolute inset-0 h-full w-full object-cover"
-                        autoPlay
-                        muted
-                        loop
-                        playsInline
-                        preload="none"
-                      >
-                        <source src={media.videos.reforma} />
-                      </video>
-                    ) : (
-                      <Image
-                        src={SERVICE_IMAGES[i]}
-                        alt={service.title}
-                        fill
-                        loading="lazy"
-                        quality={70}
-                        className="object-cover"
-                        sizes="(max-width: 1024px) 100vw, 50vw"
-                      />
-                    )}
-                  </div>
+        {/* ── Service tabs ── */}
+        <div className="services-tabs-row mb-24 flex flex-wrap gap-4">
+          {SERVICE_PACKAGES.map((svc, i) => (
+            <button
+              key={svc.slug}
+              onClick={() => setActiveService(i)}
+              className={`service-tab-home pill-btn ${i === activeService ? 'active' : ''}`}
+              data-cursor-text="Ver"
+            >
+              {svc.title}
+            </button>
+          ))}
+        </div>
 
-                  <div className="flex flex-col justify-center gap-6">
-                    <span className="font-mono text-xs text-[var(--color-accent)]">{String(i + 1).padStart(2, '0')}</span>
-                    <h3 className="text-[var(--text-h2)] font-bold uppercase leading-tight" style={{ fontFamily: 'var(--font-clash)' }}>
-                      {service.title}
-                    </h3>
-                    <p className="max-w-md text-[var(--text-body)] leading-relaxed text-[var(--color-text-muted)]">
-                      {service.description}
-                    </p>
-                    <a
-                      href="#contact"
-                      className="w-fit rounded-full border border-[var(--glass-border)] px-7 py-3.5 text-sm uppercase tracking-wider transition-all duration-300 hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
-                    >
-                      Platiquemos
-                    </a>
-                  </div>
+        {/* ── Pricing cards ── */}
+        <div ref={cardsRef} className="grid gap-8 md:grid-cols-3">
+          {service.tiers.map((tier) => (
+            <div
+              key={`${service.slug}-${tier.name}`}
+              className="pricing-card-home relative flex flex-col rounded-2xl border transition-all duration-500"
+              style={{
+                borderColor: tier.popular ? 'rgba(0,212,255,0.2)' : 'var(--glass-border)',
+                backgroundColor: tier.popular ? 'rgba(0,212,255,0.04)' : 'var(--glass-bg)',
+                padding: 'clamp(2rem, 4vw, 3rem)',
+              }}
+              data-cursor-text="Elegir"
+            >
+              {tier.popular && (
+                <span
+                  className="absolute -top-3.5 left-8 rounded-full px-5 py-1.5 text-[10px] font-bold uppercase tracking-wider"
+                  style={{ backgroundColor: 'var(--color-accent)', color: 'var(--color-bg)' }}
+                >
+                  Más popular
+                </span>
+              )}
 
-                </div>
+              {/* Tier name */}
+              <h4
+                className="text-xl font-bold uppercase tracking-wider"
+                style={{ fontFamily: 'var(--font-clash)' }}
+              >
+                {tier.name}
+              </h4>
+
+              {/* Description — 16px below name */}
+              <p className="mt-4 text-sm leading-relaxed text-[var(--color-text-muted)]">
+                {tier.description}
+              </p>
+
+              {/* Price — 48px below description */}
+              <div className="mt-12 flex items-baseline gap-2">
+                <span className="text-xs text-[var(--color-text-muted)]">Desde</span>
+                <span
+                  className="text-4xl font-bold lg:text-5xl"
+                  style={{ fontFamily: 'var(--font-clash)' }}
+                >
+                  ${tier.price.toLocaleString('es-MX')}
+                </span>
+                <span className="text-sm text-[var(--color-text-muted)]">{tier.currency}</span>
               </div>
+
+              {/* Divider */}
+              <div className="mt-12 mb-10">
+                <div className="h-px w-full" style={{ backgroundColor: 'var(--glass-border)' }} />
+              </div>
+
+              {/* Deliverables */}
+              <ul className="flex-1 space-y-6">
+                {tier.deliverables.map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-sm leading-relaxed text-[var(--color-text-muted)]">
+                    <CheckIcon />
+                    {item}
+                  </li>
+                ))}
+              </ul>
+
+              {/* CTA */}
+              <Link
+                href={`/contact?service=${service.slug}&tier=${tier.name.toLowerCase()}`}
+                className="mt-16 mb-4 flex w-full items-center justify-center gap-2 rounded-full py-4 text-sm font-semibold uppercase tracking-wider transition-all duration-300"
+                style={
+                  tier.popular
+                    ? { backgroundColor: 'var(--color-accent)', color: 'var(--color-bg)' }
+                    : { border: '1px solid var(--glass-border)' }
+                }
+                data-cursor-text="Cotizar"
+              >
+                Solicitar Cotización
+                <ArrowIcon />
+              </Link>
             </div>
           ))}
+        </div>
+
+        {/* ── Custom quote CTA ── */}
+        <div className="mt-20 text-center">
+          <p className="text-[var(--color-text-muted)]">
+            ¿Necesitas algo diferente? Cada proyecto es único.
+          </p>
+          <Link
+            href="/contact"
+            className="mt-4 inline-flex items-center gap-2 text-sm uppercase tracking-wider text-[var(--color-accent)] transition-opacity hover:opacity-70"
+          >
+            Solicita una cotización personalizada
+            <ArrowIcon />
+          </Link>
         </div>
       </div>
     </section>

@@ -27,7 +27,7 @@ export const NAV_LINKS = [
   { label: 'Sobre Mí', href: '#about' },
   { label: 'Portafolio', href: '#work' },
   { label: 'Servicios', href: '#services' },
-  { label: 'Showreel', href: '#showreel' },
+
   { label: 'Contacto', href: '#contact' },
 ] as const;
 
@@ -37,7 +37,7 @@ export const SOCIAL_LINKS = [
 ] as const;
 
 export const STATS = [
-  { value: 2000, suffix: '+', label: 'Horas de Vuelo' },
+  { value: 200, suffix: '+', label: 'Vuelos' },
   { value: 10, suffix: '+', label: 'Clientes Felices' },
   { value: 10, suffix: '', label: 'Años Volando' },
   { value: 20, suffix: '+', label: 'Proyectos Realizados' },
@@ -106,6 +106,221 @@ export const PROJECTS = [
     video: 'videos/bosques.mov',
     image: 'DJI_0633.jpg',
     position: 'wide' as const,
+  },
+] as const;
+
+export const SERVICE_PACKAGES = [
+  {
+    slug: 'fotografia-video',
+    title: 'Fotografía & Video Aéreo',
+    subtitle: 'Perspectivas que impactan',
+    description:
+      'Capturo imágenes y video cinematográfico en 4K desde el aire para marcas, inmobiliarias y proyectos que necesitan una perspectiva única.',
+    features: [
+      'Fotografía aérea en alta resolución',
+      'Video cinematográfico 4K',
+      'Color grading profesional',
+      'Entrega en formatos optimizados',
+    ],
+    tiers: [
+      {
+        name: 'Básico',
+        price: 4500,
+        currency: 'MXN',
+        description: '1 ubicación, sesión de 1 hora',
+        deliverables: [
+          '10-15 fotos editadas en alta resolución',
+          'Entrega digital en 5 días hábiles',
+          'Edición y retoque básico de color',
+        ],
+        popular: false,
+      },
+      {
+        name: 'Estándar',
+        price: 12000,
+        currency: 'MXN',
+        description: '2 ubicaciones, sesión de medio día',
+        deliverables: [
+          '25-30 fotos editadas + retoque avanzado',
+          'Video aéreo editado de 2-3 min en 4K',
+          'Color grading cinematográfico',
+          'Música con licencia incluida',
+          'Entrega en 5 días hábiles',
+        ],
+        popular: true,
+      },
+      {
+        name: 'Premium',
+        price: 25000,
+        currency: 'MXN',
+        description: 'Día completo, múltiples ubicaciones',
+        deliverables: [
+          '50+ fotos editadas con retoque premium',
+          'Video cinematográfico de 5+ min en 4K',
+          'Color grading + motion graphics',
+          'Versiones para redes sociales',
+          'Entrega express en 3 días hábiles',
+          'Archivos RAW incluidos',
+        ],
+        popular: false,
+      },
+    ],
+  },
+  {
+    slug: 'eventos',
+    title: 'Cobertura de Eventos',
+    subtitle: 'Momentos desde las alturas',
+    description:
+      'Deportes, conciertos, bodas y eventos corporativos capturados desde el aire. Tomas épicas que solo se ven desde arriba.',
+    features: [
+      'Cobertura en tiempo real',
+      'Fotografía y video aéreo simultáneo',
+      'Coordinación con equipo de producción',
+      'Entrega rápida post-evento',
+    ],
+    tiers: [
+      {
+        name: 'Básico',
+        price: 6000,
+        currency: 'MXN',
+        description: 'Cobertura de 2 horas',
+        deliverables: [
+          '15-20 fotos aéreas editadas',
+          'Clip highlight de 1 min',
+          'Entrega digital en 5 días',
+        ],
+        popular: false,
+      },
+      {
+        name: 'Estándar',
+        price: 15000,
+        currency: 'MXN',
+        description: 'Medio día de cobertura (4-5 hrs)',
+        deliverables: [
+          '40+ fotos aéreas editadas',
+          'Video resumen de 3-4 min en 4K',
+          'Color grading cinematográfico',
+          'Clips verticales para redes sociales',
+          'Entrega en 5 días hábiles',
+        ],
+        popular: true,
+      },
+      {
+        name: 'Premium',
+        price: 35000,
+        currency: 'MXN',
+        description: 'Día completo de cobertura (8+ hrs)',
+        deliverables: [
+          '80+ fotos editadas con retoque premium',
+          'Video completo de 5-8 min en 4K',
+          'Highlight reel de 60s para redes',
+          'Transmisión en vivo disponible',
+          'Entrega express en 3 días',
+          'Archivos RAW incluidos',
+        ],
+        popular: false,
+      },
+    ],
+  },
+  {
+    slug: 'inspeccion',
+    title: 'Inspección de Infraestructura',
+    subtitle: 'Precisión sin riesgo',
+    description:
+      'Inspección segura y eficiente de paneles solares, torres, edificios y estructuras de difícil acceso. Sin riesgo, con la máxima precisión.',
+    features: [
+      'Inspección visual en alta resolución',
+      'Detección de anomalías',
+      'Reporte técnico detallado',
+      'Mapeo y documentación',
+    ],
+    tiers: [
+      {
+        name: 'Básico',
+        price: 8000,
+        currency: 'MXN',
+        description: 'Inspección visual estándar',
+        deliverables: [
+          'Fotos de alta resolución de la estructura',
+          'Video de inspección completo',
+          'Reporte básico con hallazgos',
+          'Entrega en 5 días hábiles',
+        ],
+        popular: false,
+      },
+      {
+        name: 'Estándar',
+        price: 18000,
+        currency: 'MXN',
+        description: 'Inspección detallada + reporte técnico',
+        deliverables: [
+          'Fotografía detallada de alta resolución',
+          'Video documentación completo en 4K',
+          'Reporte técnico con análisis de hallazgos',
+          'Ortomosaico de la estructura',
+          'Entrega en 5 días hábiles',
+        ],
+        popular: true,
+      },
+      {
+        name: 'Premium',
+        price: 40000,
+        currency: 'MXN',
+        description: 'Inspección avanzada con termografía',
+        deliverables: [
+          'Inspección visual + termográfica',
+          'Modelo 3D de la estructura',
+          'Reporte técnico ejecutivo detallado',
+          'Ortomosaico con mediciones',
+          'Seguimiento y comparativa temporal',
+          'Entrega express en 3 días',
+        ],
+        popular: false,
+      },
+    ],
+  },
+] as const;
+
+export const FAQ_ITEMS = [
+  {
+    question: '¿Cuentas con certificación y permisos para volar?',
+    answer:
+      'Sí, cuento con registro ante la DGAC (Dirección General de Aeronáutica Civil) y opero bajo todas las regulaciones vigentes en México. Gestiono los permisos necesarios para cada vuelo según la zona y el tipo de operación.',
+  },
+  {
+    question: '¿Tienes seguro de responsabilidad civil?',
+    answer:
+      'Sí, todos mis vuelos están cubiertos por un seguro de responsabilidad civil. Esto es un requisito para operaciones comerciales y garantiza protección total para tu proyecto.',
+  },
+  {
+    question: '¿Qué pasa si hay mal clima el día del vuelo?',
+    answer:
+      'La seguridad es prioridad. Si las condiciones climáticas no son óptimas (viento fuerte, lluvia, visibilidad reducida), reprogramamos sin costo adicional. Monitoreo el clima constantemente y te aviso con anticipación.',
+  },
+  {
+    question: '¿Cuál es el tiempo de entrega del material?',
+    answer:
+      'El tiempo estándar es de 5 días hábiles para edición y entrega. Los paquetes Premium incluyen entrega express en 3 días. Si necesitas material urgente el mismo día, podemos coordinarlo con un costo adicional.',
+  },
+  {
+    question: '¿En qué formatos entregas el material?',
+    answer:
+      'Fotos en JPEG de alta resolución y RAW (en paquetes Premium). Video en MP4 4K (H.265/H.264), con versiones optimizadas para redes sociales. Puedo adaptar formatos según tus necesidades específicas.',
+  },
+  {
+    question: '¿Cuál es tu zona de cobertura?',
+    answer:
+      'Mi base es la Ciudad de México y zona metropolitana. Viajo a cualquier parte de la República Mexicana con un ajuste por viáticos. También he trabajado en proyectos internacionales.',
+  },
+  {
+    question: '¿Puedes volar de noche?',
+    answer:
+      'Sí, cuento con la capacitación y equipo necesario para vuelos nocturnos. Estos requieren permisos especiales y coordinación adicional, lo cual gestiono como parte del servicio.',
+  },
+  {
+    question: '¿Cuánto dura una sesión de vuelo típica?',
+    answer:
+      'Una sesión básica es de 1-2 horas en locación. Llevo múltiples baterías para garantizar el tiempo de vuelo necesario. Sesiones de medio día o día completo disponibles según el paquete elegido.',
   },
 ] as const;
 

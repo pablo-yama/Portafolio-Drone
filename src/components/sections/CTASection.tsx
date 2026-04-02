@@ -47,7 +47,7 @@ export function CTASection() {
     <section
       ref={sectionRef}
       id="contact"
-      className="relative flex min-h-[50vh] items-center justify-center overflow-hidden py-[var(--section-padding)]"
+      className="relative flex min-h-screen w-full items-center justify-center overflow-hidden py-[var(--section-padding)]"
     >
       <div
         className="absolute inset-0"

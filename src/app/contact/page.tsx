@@ -1,11 +1,13 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { Suspense, useRef, useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { Navigation } from '@/components/layout/Navigation';
 import { Footer } from '@/components/layout/Footer';
 import { SmoothScroll } from '@/components/layout/SmoothScroll';
 import { Cursor } from '@/components/layout/Cursor';
+import { SERVICE_PACKAGES } from '@/lib/constants';
 
 const SERVICES = [
   'Fotografía Aérea',
@@ -17,12 +19,74 @@ const SERVICES = [
   'Otro',
 ];
 
+/* Map service slugs to form service names */
+const SLUG_TO_SERVICE: Record<string, string> = {
+  'fotografia-video': 'Fotografía Aérea',
+  'eventos': 'Cobertura de Eventos',
+  'inspeccion': 'Inspección de Infraestructura',
+};
+
+interface SelectedPackage {
+  serviceTitle: string;
+  tierName: string;
+  tierPrice: number;
+  tierDescription: string;
+}
+
+function resolvePackageFromParams(serviceSlug: string | null, tierParam: string | null): SelectedPackage | null {
+  if (!serviceSlug || !tierParam) return null;
+
+  const pkg = SERVICE_PACKAGES.find(s => s.slug === serviceSlug);
+  if (!pkg) return null;
+
+  const tier = pkg.tiers.find(t => t.name.toLowerCase() === tierParam.toLowerCase());
+  if (!tier) return null;
+
+  return {
+    serviceTitle: pkg.title,
+    tierName: tier.name,
+    tierPrice: tier.price,
+    tierDescription: tier.description,
+  };
+}
+
 export default function ContactPage() {
+  return (
+    <Suspense>
+      <ContactContent />
+    </Suspense>
+  );
+}
+
+function ContactContent() {
+  const searchParams = useSearchParams();
   const [selectedService, setSelectedService] = useState('');
   const [submitted, setSubmitted] = useState(false);
   const [sending, setSending] = useState(false);
   const [error, setError] = useState('');
   const [form, setForm] = useState({ name: '', email: '', message: '' });
+  const [selectedPackage, setSelectedPackage] = useState<SelectedPackage | null>(null);
+
+  /* Read URL params on mount */
+  useEffect(() => {
+    const serviceSlug = searchParams.get('service');
+    const tierParam = searchParams.get('tier');
+
+    const pkg = resolvePackageFromParams(serviceSlug, tierParam);
+    if (pkg) {
+      setSelectedPackage(pkg);
+      setSelectedService(SLUG_TO_SERVICE[serviceSlug!] || '');
+      setForm(f => ({
+        ...f,
+        message: `Hola, me interesa el paquete ${pkg.tierName} de ${pkg.serviceTitle} (desde $${pkg.tierPrice.toLocaleString('es-MX')} MXN).`,
+      }));
+    }
+  }, [searchParams]);
+
+  const clearPackage = () => {
+    setSelectedPackage(null);
+    setForm(f => ({ ...f, message: '' }));
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,7 +97,13 @@ export default function ContactPage() {
       const res = await fetch('/api/contact', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ ...form, service: selectedService }),
+        body: JSON.stringify({
+          ...form,
+          service: selectedService,
+          package: selectedPackage
+            ? `${selectedPackage.serviceTitle} — ${selectedPackage.tierName} ($${selectedPackage.tierPrice.toLocaleString('es-MX')} MXN)`
+            : undefined,
+        }),
       });
 
       if (!res.ok) throw new Error();
@@ -134,7 +204,7 @@ export default function ContactPage() {
                     </h3>
                     <p className="text-[var(--color-text-muted)]">Gracias por escribirme. Te respondo en menos de 24 horas.</p>
                     <button
-                      onClick={() => { setSubmitted(false); setForm({ name: '', email: '', message: '' }); setSelectedService(''); }}
+                      onClick={() => { setSubmitted(false); setForm({ name: '', email: '', message: '' }); setSelectedService(''); setSelectedPackage(null); }}
                       className="mt-2 text-sm uppercase tracking-wider text-[var(--color-accent)] underline-offset-4 hover:underline"
                     >
                       Enviar otro mensaje
@@ -142,6 +212,49 @@ export default function ContactPage() {
                   </div>
                 ) : (
                   <form onSubmit={handleSubmit} className="flex flex-col gap-8">
+
+                    {/* Selected package banner */}
+                    {selectedPackage && (
+                      <div
+                        className="relative rounded-xl border p-6"
+                        style={{
+                          borderColor: 'rgba(0,212,255,0.25)',
+                          backgroundColor: 'rgba(0,212,255,0.04)',
+                        }}
+                      >
+                        <div className="flex items-start justify-between gap-4">
+                          <div>
+                            <div className="flex items-center gap-2 mb-2">
+                              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="shrink-0">
+                                <path d="M3 8.5l3.5 3.5L13 5" stroke="var(--color-accent)" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                              </svg>
+                              <span className="text-xs font-semibold uppercase tracking-wider text-[var(--color-accent)]">
+                                Paquete seleccionado
+                              </span>
+                            </div>
+                            <p className="text-base font-bold" style={{ fontFamily: 'var(--font-clash)' }}>
+                              {selectedPackage.serviceTitle}
+                              <span className="mx-2 text-[var(--color-text-muted)]">—</span>
+                              {selectedPackage.tierName}
+                            </p>
+                            <p className="mt-1 text-sm text-[var(--color-text-muted)]">
+                              {selectedPackage.tierDescription} · Desde ${selectedPackage.tierPrice.toLocaleString('es-MX')} MXN
+                            </p>
+                          </div>
+                          <button
+                            type="button"
+                            onClick={clearPackage}
+                            className="shrink-0 flex h-8 w-8 items-center justify-center rounded-full border border-[var(--glass-border)] text-[var(--color-text-muted)] transition-colors hover:border-[var(--color-text)] hover:text-[var(--color-text)]"
+                            aria-label="Quitar selección"
+                          >
+                            <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
+                              <line x1="2" y1="2" x2="10" y2="10" />
+                              <line x1="10" y1="2" x2="2" y2="10" />
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                    )}
 
                     {/* Name + Email */}
                     <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">

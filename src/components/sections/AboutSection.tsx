@@ -40,7 +40,7 @@ export function AboutSection() {
   }, []);
 
   return (
-    <section ref={sectionRef} id="about" className="relative py-[var(--section-padding)] overflow-hidden">
+    <section ref={sectionRef} id="about" className="relative min-h-screen w-full flex flex-col justify-center py-[var(--section-padding)] overflow-hidden">
       <FloatingPaths position={1} />
       <FloatingPaths position={-1} />
       <div className="container-custom">

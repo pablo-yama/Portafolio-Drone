@@ -8,6 +8,7 @@ import gsap from 'gsap';
 
 export function Navigation() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const [showStickyCta, setShowStickyCta] = useState(false);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const navRef = useRef<HTMLElement>(null);
   const mobileMenuRef = useRef<HTMLDivElement>(null);
@@ -15,6 +16,7 @@ export function Navigation() {
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 50);
+      setShowStickyCta(window.scrollY > window.innerHeight);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
@@ -27,7 +29,7 @@ export function Navigation() {
       opacity: 0,
       duration: 1,
       ease: 'power3.out',
-      delay: 2.5,
+      delay: 0.2,
     });
   }, []);
 
@@ -135,6 +137,40 @@ export function Navigation() {
           </button>
         </div>
       </nav>
+
+      {/* Sticky CTA Bar — appears after scrolling past hero */}
+      <div
+        className={cn(
+          'fixed bottom-0 left-0 right-0 z-[998] flex items-center justify-between px-[var(--container-padding)] py-3 glass',
+          showStickyCta && !isMobileMenuOpen
+            ? 'translate-y-0 opacity-100'
+            : 'translate-y-full opacity-0'
+        )}
+        style={{ transition: 'transform 0.5s cubic-bezier(0.4,0,0.2,1), opacity 0.5s cubic-bezier(0.4,0,0.2,1)' }}
+      >
+        <p className="hidden text-sm text-[var(--color-text-muted)] sm:block">
+          <span className="font-medium text-[var(--color-text)]">¿Listo para volar?</span>{' '}
+          Cotiza tu proyecto hoy
+        </p>
+        <div className="flex w-full items-center justify-center gap-4 sm:w-auto">
+          <Link
+            href="/contact"
+            className="inline-flex items-center gap-2 rounded-full bg-[var(--color-accent)] px-6 py-2.5 text-xs font-semibold uppercase tracking-wider text-[var(--color-bg)] transition-all duration-300 hover:shadow-[0_0_25px_rgba(0,212,255,0.3)]"
+            data-cursor-text="Contactar"
+          >
+            Cotizar Ahora
+            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor">
+              <path d="M3 8h10M9 4l4 4-4 4" strokeWidth="1.5" />
+            </svg>
+          </Link>
+          <Link
+            href="/services"
+            className="hidden rounded-full border border-[var(--glass-border)] px-5 py-2.5 text-xs uppercase tracking-wider transition-all duration-300 hover:border-[var(--color-text)] sm:inline-flex"
+          >
+            Ver Servicios
+          </Link>
+        </div>
+      </div>
 
       {/* Mobile Menu Fullscreen */}
       <div

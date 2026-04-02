@@ -28,10 +28,11 @@ export function StatsSection() {
   useEffect(() => {
     const canvas = document.createElement('canvas');
     const gl = canvas.getContext('webgl2') || canvas.getContext('webgl');
-    const cores = navigator.hardwareConcurrency || 2;
     const mobile = /Mobi|Android/i.test(navigator.userAgent);
     setIsMobile(mobile);
-    setCanRender3D(gl !== null && cores >= 4);
+    // Desktop: solo necesita WebGL. Mobile: WebGL + 4+ cores (performance)
+    const cores = navigator.hardwareConcurrency || 2;
+    setCanRender3D(gl !== null && (!mobile || cores >= 4));
   }, []);
 
   /* ── GSAP scroll-driven timeline ── */
