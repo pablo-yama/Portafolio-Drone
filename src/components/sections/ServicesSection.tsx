@@ -148,12 +148,12 @@ export function ServicesSection() {
               )}
 
               {/* Tier name */}
-              <h4
+              <h3
                 className="text-xl font-bold uppercase tracking-wider"
                 style={{ fontFamily: 'var(--font-clash)' }}
               >
                 {tier.name}
-              </h4>
+              </h3>
 
               {/* Description — 16px below name */}
               <p className="mt-4 text-sm leading-relaxed text-[var(--color-text-muted)]">

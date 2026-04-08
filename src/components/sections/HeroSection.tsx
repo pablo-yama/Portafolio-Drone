@@ -98,7 +98,7 @@ export function HeroSection() {
       {/* Content */}
       <div className="container-custom relative z-10 flex flex-col items-center text-center">
         <p ref={subtitleRef} className="mb-10 text-xs uppercase tracking-[0.4em] text-[var(--color-accent)]">
-          Piloto de Drones &bull; Fotógrafo Aéreo
+          Veo el mundo desde otra perspectiva &bull; CDMX
         </p>
 
         <h1
@@ -114,13 +114,13 @@ export function HeroSection() {
           }}
         >
           <span className="hero-line block overflow-hidden">
-            <span className="inline-block">VEO EL MUNDO</span>
+            <span className="inline-block">FOTOGRAFÍA Y</span>
           </span>
           <span className="hero-line block overflow-hidden">
-            <span className="inline-block">DESDE</span>
+            <span className="inline-block">VIDEO AÉREO</span>
           </span>
           <span className="hero-line block overflow-hidden">
-            <span className="inline-block text-gradient">OTRA PERSPECTIVA</span>
+            <span className="inline-block text-gradient">CON DRONES</span>
           </span>
         </h1>
 

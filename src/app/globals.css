@@ -64,7 +64,7 @@
   --color-elevated: var(--color-bg-elevated);
   --font-sans: var(--font-satoshi);
   --font-display: var(--font-clash);
-  --font-mono: var(--font-jetbrains);
+  --font-mono: ui-monospace, 'Cascadia Code', 'Source Code Pro', Menlo, Consolas, 'DejaVu Sans Mono', monospace;
 }
 
 /* ============================================
