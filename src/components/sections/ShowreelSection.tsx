@@ -10,8 +10,6 @@ gsap.registerPlugin(ScrollTrigger);
 
 const CLIPS = [
   { src: media.videos.bosques, label: 'Bosques' },
-  { src: media.videos.reforma, label: 'Reforma' },
-  { src: media.videos.cu,      label: 'C.U.' },
 ];
 
 function ReelCard({ clip }: { clip: typeof CLIPS[number] }) {
@@ -26,7 +24,7 @@ function ReelCard({ clip }: { clip: typeof CLIPS[number] }) {
         muted
         loop
         playsInline
-        preload="auto"
+        preload="none"
       >
         <source src={clip.src} />
       </video>

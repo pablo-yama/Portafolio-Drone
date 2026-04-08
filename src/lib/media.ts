@@ -14,8 +14,6 @@ export const media = {
     pablo: getMediaUrl('img/Pablo.jpg'),
   },
   videos: {
-    reforma: getMediaUrl('videos/reforma.mov'),
     bosques: getMediaUrl('videos/bosques.mov'),
-    cu: getMediaUrl('videos/cu.mov'),
   },
 } as const;

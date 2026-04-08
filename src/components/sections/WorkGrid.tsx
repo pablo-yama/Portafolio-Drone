@@ -5,7 +5,7 @@ import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { EASE, DURATION } from '@/lib/constants';
-import { media, getMediaUrl } from '@/lib/media';
+import { media } from '@/lib/media';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -93,29 +93,26 @@ export function WorkGrid() {
           </h2>
         </div>
 
-        {/* Hero video — full width */}
+        {/* Hero video — YouTube embed, full width */}
         <div
           className="work-item group relative overflow-hidden rounded-lg aspect-[16/9]"
           data-cursor-text="Ver proyecto"
         >
-          <div className="absolute inset-0 will-change-transform transition-transform duration-700 ease-out group-hover:scale-105">
-            <video
-              className="absolute inset-0 h-full w-full object-cover"
-              src={getMediaUrl('videos/reforma.mov')}
-              autoPlay
-              muted
-              loop
-              playsInline
-              preload="auto"
-            />
-          </div>
-          <div className="absolute top-5 right-5 z-10">
+          <iframe
+            className="absolute inset-0 h-full w-full"
+            src="https://www.youtube.com/embed/PauvAqk388s?autoplay=1&mute=1&loop=1&playlist=PauvAqk388s&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+            title="Hyperlapse Reforma — CDMX"
+            allow="autoplay; encrypted-media"
+            allowFullScreen
+            loading="lazy"
+          />
+          <div className="absolute top-5 right-5 z-10 pointer-events-none">
             <span className="rounded-full border border-white/20 bg-black/50 px-4 py-1.5 text-[10px] uppercase tracking-wider backdrop-blur-sm">
               Hyperlapse
             </span>
           </div>
-          <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
-          <div className="absolute inset-0 flex flex-col justify-end p-8 lg:p-10">
+          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 via-transparent to-transparent h-1/3 pointer-events-none" />
+          <div className="absolute bottom-0 left-0 right-0 flex flex-col justify-end p-8 lg:p-10 pointer-events-none">
             <span className="mb-2 text-[10px] font-semibold uppercase tracking-[0.3em] text-[var(--color-accent)]">
               Ciudad
             </span>
@@ -129,7 +126,7 @@ export function WorkGrid() {
               CDMX, Paseo de la Reforma
             </p>
           </div>
-          <div className="absolute inset-0 rounded-lg border border-transparent transition-all duration-500 group-hover:border-white/20" />
+          <div className="absolute inset-0 rounded-lg border border-transparent transition-all duration-500 group-hover:border-white/20 pointer-events-none" />
         </div>
 
         {/* Two photos side by side */}

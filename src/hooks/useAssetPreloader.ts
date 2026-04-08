@@ -3,7 +3,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { media } from '@/lib/media';
 
-const TIMEOUT_MS = 20000;
+const TIMEOUT_MS = 8000;
 
 export function useAssetPreloader() {
   const [progress, setProgress] = useState(0);
@@ -13,8 +13,7 @@ export function useAssetPreloader() {
 
   useEffect(() => {
     const imageUrls = Object.values(media.images);
-    const videoUrls = Object.values(media.videos);
-    const total = imageUrls.length + videoUrls.length;
+    const total = imageUrls.length;
 
     if (total === 0) {
       setProgress(1);
@@ -38,21 +37,6 @@ export function useAssetPreloader() {
       img.onload = update;
       img.onerror = update;
       img.src = url;
-    });
-
-    videoUrls.forEach((url) => {
-      const video = document.createElement('video');
-      video.preload = 'auto';
-      video.muted = true;
-      video.playsInline = true;
-      const handler = () => {
-        video.removeEventListener('canplay', handler);
-        video.removeEventListener('error', handler);
-        update();
-      };
-      video.addEventListener('canplay', handler);
-      video.addEventListener('error', handler);
-      video.src = url;
     });
 
     const timeout = setTimeout(() => {
