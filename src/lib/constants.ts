@@ -283,9 +283,9 @@ export const SERVICE_PACKAGES = [
 
 export const FAQ_ITEMS = [
   {
-    question: '¿Cuentas con certificación y permisos para volar?',
+    question: '¿Cómo gestionas los permisos para volar?',
     answer:
-      'Sí, cuento con registro ante la DGAC (Dirección General de Aeronáutica Civil) y opero bajo todas las regulaciones vigentes en México. Gestiono los permisos necesarios para cada vuelo según la zona y el tipo de operación.',
+      'Opero bajo las regulaciones vigentes en México y coordino los permisos necesarios según la zona y el tipo de operación. Antes de cada vuelo reviso restricciones aéreas, zonas prohibidas y condiciones locales para cumplir con la normatividad.',
   },
   {
     question: '¿Tienes seguro de responsabilidad civil?',

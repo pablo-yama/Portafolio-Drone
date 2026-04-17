@@ -16,4 +16,4 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
-Sitemap: https://pablo-piloto-de-drones.vercel.app/sitemap.xml
+Sitemap: https://yamamotoaerial.com/sitemap.xml

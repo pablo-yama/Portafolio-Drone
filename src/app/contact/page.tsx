@@ -1,9 +1,7 @@
 'use client';
 
-import { Suspense, useRef, useState, useEffect } from 'react';
+import { Suspense, useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import Link from 'next/link';
-import { Navigation } from '@/components/layout/Navigation';
 import { Footer } from '@/components/layout/Footer';
 import { SmoothScroll } from '@/components/layout/SmoothScroll';
 import { Cursor } from '@/components/layout/Cursor';
@@ -119,22 +117,22 @@ function ContactContent() {
     <>
       <Cursor />
       <SmoothScroll>
-        <Navigation />
         <main className="min-h-screen pt-32 pb-0">
           <div className="container-custom">
 
             {/* Header */}
             <div className="mb-20">
-              <p className="mb-5 text-xs uppercase tracking-[0.3em] text-[var(--color-accent)]">Contacto</p>
+              <p className="mb-5 text-xs uppercase tracking-[0.3em] text-[var(--color-accent)]">Contacto &bull; CDMX</p>
               <h1
                 className="text-[var(--text-h1)] font-bold uppercase leading-none"
                 style={{ fontFamily: 'var(--font-clash)' }}
               >
-                ¿Tienes un proyecto<br />
-                <span className="text-gradient">que necesita verse?</span>
+                Cotiza tu proyecto de<br />
+                <span className="text-gradient">fotografía o video aéreo</span>
               </h1>
-              <p className="mt-8 max-w-xl text-[var(--text-body)] leading-relaxed text-[var(--color-text-muted)]">
-                Cuéntame qué tienes en mente. Respondo en menos de 24 horas.
+              <p className="mt-40 max-w-xl text-[var(--text-body)] leading-relaxed text-[var(--color-text-muted)] lg:mt-56">
+                Servicios de drones en Ciudad de México. Cuéntame qué tienes en mente y te respondo
+                con una propuesta en menos de 24 horas por WhatsApp o email.
               </p>
             </div>
 

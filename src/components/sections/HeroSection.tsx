@@ -11,7 +11,6 @@ gsap.registerPlugin(ScrollTrigger);
 export function HeroSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLHeadingElement>(null);
-  const subtitleRef = useRef<HTMLParagraphElement>(null);
   const ctaRef = useRef<HTMLDivElement>(null);
   const scrollIndicatorRef = useRef<HTMLDivElement>(null);
   const imageRef = useRef<HTMLDivElement>(null);
@@ -33,10 +32,6 @@ export function HeroSection() {
         ease: 'power4.out',
         stagger: 0.15,
       }, 0.5);
-
-      if (subtitleRef.current) {
-        tl.from(subtitleRef.current, { y: 30, opacity: 0, duration: 0.8, ease: 'power3.out' }, '-=0.5');
-      }
 
       if (ctaRef.current) {
         tl.from(ctaRef.current.children, { y: 20, opacity: 0, duration: 0.6, ease: 'power3.out', stagger: 0.1 }, '-=0.4');
@@ -97,15 +92,11 @@ export function HeroSection() {
 
       {/* Content */}
       <div className="container-custom relative z-10 flex flex-col items-center text-center">
-        <p ref={subtitleRef} className="mb-10 text-xs uppercase tracking-[0.4em] text-[var(--color-accent)]">
-          Veo el mundo desde otra perspectiva &bull; CDMX
-        </p>
-
         <h1
           ref={headingRef}
           className="overflow-hidden"
           style={{
-            fontSize: 'var(--text-hero)',
+            fontSize: 'clamp(2.25rem, 5.5vw + 0.5rem, 6.5rem)',
             fontFamily: 'var(--font-clash)',
             fontWeight: 700,
             lineHeight: 0.95,
@@ -120,7 +111,7 @@ export function HeroSection() {
             <span className="inline-block">VIDEO AÉREO</span>
           </span>
           <span className="hero-line block overflow-hidden">
-            <span className="inline-block text-gradient">CON DRONES</span>
+            <span className="inline-block text-gradient">CON DRONES EN CDMX</span>
           </span>
         </h1>
 

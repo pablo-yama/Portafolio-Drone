@@ -112,17 +112,26 @@ export function ServicesSection() {
         </div>
 
         {/* ── Service tabs ── */}
-        <div className="services-tabs-row mb-24 flex flex-wrap gap-4">
-          {SERVICE_PACKAGES.map((svc, i) => (
-            <button
-              key={svc.slug}
-              onClick={() => setActiveService(i)}
-              className={`service-tab-home pill-btn ${i === activeService ? 'active' : ''}`}
-              data-cursor-text="Ver"
-            >
-              {svc.title}
-            </button>
-          ))}
+        <div className="services-tabs-row mb-24 flex flex-wrap gap-3">
+          {SERVICE_PACKAGES.map((svc, i) => {
+            const isActive = i === activeService;
+            return (
+              <button
+                key={svc.slug}
+                type="button"
+                onClick={() => setActiveService(i)}
+                className={`service-tab-home rounded-full border px-6 py-3 text-xs font-medium uppercase tracking-[0.15em] whitespace-nowrap transition-all duration-300 ${
+                  isActive
+                    ? 'border-[var(--color-accent)] bg-[rgba(0,212,255,0.08)] text-[var(--color-accent)]'
+                    : 'border-[var(--glass-border)] text-[var(--color-text-muted)] hover:border-white/40 hover:text-[var(--color-text)]'
+                }`}
+                data-cursor-text="Ver"
+                aria-pressed={isActive}
+              >
+                {svc.title}
+              </button>
+            );
+          })}
         </div>
 
         {/* ── Pricing cards ── */}

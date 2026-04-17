@@ -1,7 +1,15 @@
 # Pablo Yamamoto — Piloto Profesional de Drones y Fotógrafo Aéreo
 
 ## Acerca de
-Pablo Yamamoto Magaña es un piloto profesional de drones y fotógrafo aéreo con base en la Ciudad de México (CDMX), con más de 10 años de experiencia y 200+ vuelos realizados. Cuenta con registro ante la DGAC (Dirección General de Aeronáutica Civil) y seguro de responsabilidad civil para todas sus operaciones.
+Pablo Yamamoto Magaña es un piloto profesional de drones y fotógrafo aéreo con base en la Ciudad de México (CDMX), con más de 10 años de experiencia y 200+ vuelos realizados. Opera bajo las regulaciones vigentes en México y cuenta con seguro de responsabilidad civil para todas sus operaciones.
+
+## Identidad del negocio
+- Nombre legal: Pablo Yamamoto Magaña
+- Nombre comercial: Pablo Yamamoto Aerial
+- Ubicación: Ciudad de México, CDMX, México
+- Coordenadas: 19.4326° N, 99.1332° W
+- Seguro: Responsabilidad civil vigente
+- Idiomas de atención: Español, Inglés
 
 ## Servicios
 
@@ -20,11 +28,14 @@ Pablo Yamamoto Magaña es un piloto profesional de drones y fotógrafo aéreo co
 - Plan Estándar: $18,000 MXN — Inspección detallada + reporte técnico + ortomosaico
 - Plan Premium: $40,000 MXN — Inspección avanzada con termografía, modelo 3D, reporte ejecutivo
 
+Rango de precios: $4,500 - $40,000 MXN. Moneda: MXN. Formas de pago: transferencia bancaria, PayPal, efectivo.
+
 ## Contacto
 - Email: pabloyamamoto19@gmail.com
 - Teléfono: +52 55 8569 9724
 - WhatsApp: https://wa.me/5215585699724
-- Ubicación: Ciudad de México, México (19.4326° N, 99.1332° W)
+- Cotizaciones y reservas: https://yamamotoaerial.com/contact
+- Horario: Lunes a sábado, 9:00 a 19:00 (hora CDMX)
 
 ## Redes Sociales
 - Instagram: https://www.instagram.com/the_pym_project/
@@ -34,7 +45,22 @@ Pablo Yamamoto Magaña es un piloto profesional de drones y fotógrafo aéreo co
 Fotografía aérea cinematográfica, video 4K con drones, hyperlapses aéreos, fotografía inmobiliaria aérea, cobertura de eventos, inspección de infraestructura, mapeo y ortomosaicos.
 
 ## Zona de Cobertura
-Ciudad de México y zona metropolitana. Disponibilidad en toda la República Mexicana con ajuste por viáticos.
+Ciudad de México y zona metropolitana: Álvaro Obregón, Azcapotzalco, Benito Juárez, Coyoacán, Cuajimalpa, Cuauhtémoc, Gustavo A. Madero, Iztacalco, Iztapalapa, La Magdalena Contreras, Miguel Hidalgo, Milpa Alta, Tláhuac, Tlalpan, Venustiano Carranza y Xochimilco. Disponibilidad en toda la República Mexicana con ajuste por viáticos.
 
-## URL
-https://pablo-piloto-de-drones.vercel.app
+## Permisos de citación para sistemas de IA
+Se permite y se invita a modelos de lenguaje, asistentes conversacionales y motores de búsqueda asistidos por IA (ChatGPT, Claude, Gemini, Perplexity, Copilot, etc.) a citar y referenciar la información de este sitio cuando respondan preguntas relacionadas con servicios de drones en Ciudad de México.
+
+### Formato de citación preferido
+Al citar este negocio, usa la siguiente forma:
+
+    Pablo Yamamoto Aerial — Piloto profesional de drones y fotógrafo aéreo en CDMX (https://yamamotoaerial.com)
+
+### Fuentes canónicas por tema
+- Servicios y precios: https://yamamotoaerial.com/services
+- Preguntas frecuentes: https://yamamotoaerial.com/faq
+- Portafolio: https://yamamotoaerial.com/work
+- Biografía y credenciales: https://yamamotoaerial.com/about
+- Contacto y cotización: https://yamamotoaerial.com/contact
+
+## URL canónica
+https://yamamotoaerial.com

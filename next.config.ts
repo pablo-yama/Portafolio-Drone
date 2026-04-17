@@ -44,6 +44,26 @@ const nextConfig: NextConfig = {
       },
     ];
   },
+  /* Permanent redirect from www → apex.
+     NOTE: Vercel's domain-level redirect historically returns 307. Adding this
+     rule at the Next.js layer forces a 308 (permanent) when the host matches,
+     which search engines treat as equivalent to 301 for PageRank consolidation.
+     Also ensure the apex is set as the primary domain in Vercel's domain settings. */
+  async redirects() {
+    return [
+      {
+        source: '/:path*',
+        has: [
+          {
+            type: 'host',
+            value: 'www.yamamotoaerial.com',
+          },
+        ],
+        destination: 'https://yamamotoaerial.com/:path*',
+        permanent: true,
+      },
+    ];
+  },
 };
 
 export default nextConfig;

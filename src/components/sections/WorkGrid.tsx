@@ -49,7 +49,7 @@ export function WorkGrid() {
         });
 
         gsap.to(item, {
-          y: () => window.innerHeight * -0.06,
+          y: () => window.innerHeight * -0.025,
           ease: 'none',
           scrollTrigger: {
             trigger: item,
@@ -83,49 +83,27 @@ export function WorkGrid() {
       <div className="container-custom relative z-10">
         {/* Section heading */}
         <div ref={headingRef} className="mb-16 lg:mb-24">
-          <p className="section-label mb-6">Mi Trabajo</p>
           <h2
             className="text-[var(--text-h1)] font-bold uppercase leading-none"
             style={{ fontFamily: 'var(--font-clash)' }}
           >
-            Proyectos<br />
-            <span className="text-gradient">Seleccionados</span>
+            <span className="text-gradient">Proyectos</span>
           </h2>
         </div>
 
         {/* Hero video — YouTube embed, full width */}
         <div
-          className="work-item group relative overflow-hidden rounded-lg aspect-[16/9]"
+          className="work-item group relative mt-8 overflow-hidden rounded-lg aspect-[16/9] lg:mt-16"
           data-cursor-text="Ver proyecto"
         >
           <iframe
             className="absolute inset-0 h-full w-full"
             src="https://www.youtube.com/embed/PauvAqk388s?autoplay=1&mute=1&loop=1&playlist=PauvAqk388s&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
-            title="Hyperlapse Reforma — CDMX"
+            title="Hyperlapse aéreo"
             allow="autoplay; encrypted-media"
             allowFullScreen
             loading="lazy"
           />
-          <div className="absolute top-5 right-5 z-10 pointer-events-none">
-            <span className="rounded-full border border-white/20 bg-black/50 px-4 py-1.5 text-[10px] uppercase tracking-wider backdrop-blur-sm">
-              Hyperlapse
-            </span>
-          </div>
-          <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/70 via-transparent to-transparent h-1/3 pointer-events-none" />
-          <div className="absolute bottom-0 left-0 right-0 flex flex-col justify-end p-8 lg:p-10 pointer-events-none">
-            <span className="mb-2 text-[10px] font-semibold uppercase tracking-[0.3em] text-[var(--color-accent)]">
-              Ciudad
-            </span>
-            <h3
-              className="text-2xl font-bold uppercase lg:text-4xl"
-              style={{ fontFamily: 'var(--font-clash)' }}
-            >
-              Hyperlapse Reforma
-            </h3>
-            <p className="mt-2 text-sm text-white/60">
-              CDMX, Paseo de la Reforma
-            </p>
-          </div>
           <div className="absolute inset-0 rounded-lg border border-transparent transition-all duration-500 group-hover:border-white/20 pointer-events-none" />
         </div>
 
@@ -171,7 +149,7 @@ export function WorkGrid() {
             <div className="absolute inset-0 will-change-transform transition-transform duration-700 ease-out group-hover:scale-105">
               <Image
                 src={media.images.dji0633}
-                alt="Vista aérea — Arquitectura"
+                alt="Vista aérea del estadio en Acapulco"
                 fill
                 loading="lazy"
                 quality={75}
@@ -182,15 +160,15 @@ export function WorkGrid() {
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-transparent to-transparent" />
             <div className="absolute inset-0 flex flex-col justify-end p-8">
               <span className="mb-2 text-[10px] font-semibold uppercase tracking-[0.3em] text-[var(--color-accent)]">
-                Arquitectura
+                Deportes
               </span>
               <h3
                 className="text-xl font-bold uppercase lg:text-2xl"
                 style={{ fontFamily: 'var(--font-clash)' }}
               >
-                Vista Aérea
+                Estadio
               </h3>
-              <p className="mt-1 text-sm text-white/60">CDMX</p>
+              <p className="mt-1 text-sm text-white/60">Acapulco</p>
             </div>
             <div className="absolute inset-0 rounded-lg border border-transparent transition-all duration-500 group-hover:border-white/20" />
           </div>

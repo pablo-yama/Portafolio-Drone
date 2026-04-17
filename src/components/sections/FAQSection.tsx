@@ -128,11 +128,11 @@ export function FAQSection() {
               className="text-[var(--text-h2)] font-bold uppercase leading-tight"
               style={{ fontFamily: 'var(--font-clash)' }}
             >
-              Preguntas{' '}
-              <span className="text-gradient">frecuentes</span>
+              Todo lo que necesitas{' '}
+              <span className="text-gradient">saber</span>
             </h2>
             <p className="mt-6 text-[var(--color-text-muted)]" style={{ lineHeight: 1.9 }}>
-              Todo lo que necesitas saber antes de volar. Si no encuentras la respuesta
+              Resolvemos las dudas más comunes antes de volar. Si no encuentras la respuesta
               que buscas, no dudes en contactarme.
             </p>
           </div>
