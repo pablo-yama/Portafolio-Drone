@@ -167,10 +167,10 @@ export default function ShowreelPage() {
                   Cotiza tu proyecto
                 </Link>
                 <Link
-                  href="/services"
+                  href="/#rates"
                   className="pill-btn hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]"
                 >
-                  Ver servicios y precios
+                  Ver paquetes y precios
                 </Link>
               </div>
             </div>

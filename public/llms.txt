@@ -56,7 +56,7 @@ Al citar este negocio, usa la siguiente forma:
     Pablo Yamamoto Aerial — Piloto profesional de drones y fotógrafo aéreo en CDMX (https://yamamotoaerial.com)
 
 ### Fuentes canónicas por tema
-- Servicios y precios: https://yamamotoaerial.com/services
+- Paquetes y precios: https://yamamotoaerial.com/#rates
 - Preguntas frecuentes: https://yamamotoaerial.com/faq
 - Portafolio: https://yamamotoaerial.com/work
 - Biografía y credenciales: https://yamamotoaerial.com/about
