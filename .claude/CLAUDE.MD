@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project
 
-Personal aerial-drone portfolio for Pablo Yamamoto (CDMX). Copy and metadata are Spanish (`es-MX`). The site ships as a single long scroll with a handful of supporting pages (`/about`, `/services`, `/work`, `/archivo`, `/faq`, `/contact`, `/showreel`). Domain is `yamamotoaerial.com`; www → apex 308 redirect is enforced in `next.config.ts`.
+Personal aerial-drone portfolio for Pablo Yamamoto (CDMX). Copy and metadata are Spanish (`es-MX`). The site ships as a single long scroll with a handful of supporting pages (`/about`, `/services`, `/work`, `/archivo`, `/faq`, `/contact`). Domain is `yamamotoaerial.com`; www → apex 308 redirect is enforced in `next.config.ts`.
 
 ## Commands
 
@@ -28,7 +28,7 @@ No test runner is configured. There is no typecheck script — use `npx tsc --no
 
 ### Homepage is a scroll narrative composed of section components
 
-[src/app/page.tsx](src/app/page.tsx) is the whole homepage. It mounts, in order: `HeroSection → ArchiveSection → AboutSection → LedgerSection → MethodSection → PricingSection → ContactSection`, wrapped by `Navigation` + `Footer`. Adding a section = add a component to [src/components/sections/](src/components/sections/) and drop it into this page. Other section files in that directory (`ShowreelSection`, `StatsSection`, `FAQSection`, `WorkGrid`, etc.) are used by the dedicated sub-pages, not by the homepage.
+[src/app/page.tsx](src/app/page.tsx) is the whole homepage. It mounts, in order: `HeroSection → ArchiveSection → AboutSection → LedgerSection → MethodSection → PricingSection → ContactSection`, wrapped by `Navigation` + `Footer`. Adding a section = add a component to [src/components/sections/](src/components/sections/) and drop it into this page. Other section files in that directory ( `StatsSection`, `FAQSection`, `WorkGrid`, etc.) are used by the dedicated sub-pages, not by the homepage.
 
 Internal pages follow the same composition pattern: each `src/app/<route>/page.tsx` imports one or more section components plus `Navigation` + `Footer`. Per-route `layout.tsx` files exist primarily to set route-specific metadata.
 

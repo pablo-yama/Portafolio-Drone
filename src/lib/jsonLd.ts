@@ -190,7 +190,7 @@ export function buildOfferCatalog() {
         priceCurrency: tier.currency,
         priceValidUntil: validUntil,
         availability: 'https://schema.org/InStock',
-        url: `${SITE_URL}/services`,
+        url: `${SITE_URL}/#rates`,
         eligibleRegion: {
           '@type': 'City',
           name: 'Ciudad de México',
@@ -271,103 +271,6 @@ export function buildArchiveImageObjects() {
     },
     keywords: [entry.cat, entry.loc, 'fotografía aérea con drones', 'drone photography'],
   }));
-}
-
-export function buildShowreelVideo() {
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'VideoObject',
-    '@id': `${SITE_URL}/showreel#video`,
-    name: 'Showreel de video aéreo con drones — Ciudad de México 4K',
-    description:
-      'Showreel cinematográfico 2025 de Pablo Yamamoto Aerial. Hyperlapses aéreos, ' +
-      'fotografía 4K y cobertura de proyectos de arquitectura, urbanismo y deportes ' +
-      'captados en Ciudad de México y alrededores.',
-    thumbnailUrl: `${SITE_URL}/img/archivo/reforma-bbva_urbanismo_cdmx_2024.jpg`,
-    uploadDate: '2025-01-01',
-    duration: 'PT2M30S',
-    contentUrl: `${SITE_URL}/videos/bosques.mov`,
-    embedUrl: `${SITE_URL}/showreel`,
-    inLanguage: 'es-MX',
-    publisher: { '@id': `${SITE_URL}/#business` },
-    author: { '@id': `${SITE_URL}/#person` },
-    creator: { '@id': `${SITE_URL}/#person` },
-    copyrightHolder: { '@id': `${SITE_URL}/#person` },
-    copyrightYear: 2025,
-    license: `${SITE_URL}/about`,
-    keywords: [
-      'drone video CDMX',
-      'hyperlapse aéreo Ciudad de México',
-      'video aéreo 4K',
-      'fotografía aérea cinematográfica',
-    ],
-  };
-}
-
-export function buildServicesSchema() {
-  return [
-    {
-      '@context': 'https://schema.org',
-      '@type': 'Service',
-      '@id': `${SITE_URL}/services#service-fotografia-video`,
-      name: 'Fotografía y Video Aéreo con Drones',
-      description:
-        'Servicio profesional de fotografía y video aéreo cinematográfico con drones en 4K. ' +
-        'Sensor CMOS 4/3 Hasselblad, RAW 24MP, color grading en DaVinci Resolve. ' +
-        'Para arquitectura, real estate, marcas y producción audiovisual.',
-      provider: { '@id': `${SITE_URL}/#business` },
-      areaServed: { '@type': 'City', name: 'Ciudad de México' },
-      url: `${SITE_URL}/services`,
-      serviceType: 'Fotografía y Video Aéreo con Drones',
-      offers: {
-        '@type': 'AggregateOffer',
-        lowPrice: '4500',
-        highPrice: '25000',
-        priceCurrency: 'MXN',
-        offerCount: 3,
-      },
-    },
-    {
-      '@context': 'https://schema.org',
-      '@type': 'Service',
-      '@id': `${SITE_URL}/services#service-eventos`,
-      name: 'Cobertura de Eventos con Drones',
-      description:
-        'Fotografía y video aéreo en vivo para eventos deportivos, corporativos, sociales y culturales en Ciudad de México. ' +
-        'Coordinación con producción en tierra, entrega rápida post-evento.',
-      provider: { '@id': `${SITE_URL}/#business` },
-      areaServed: { '@type': 'City', name: 'Ciudad de México' },
-      url: `${SITE_URL}/services`,
-      serviceType: 'Cobertura de Eventos con Drones',
-      offers: {
-        '@type': 'AggregateOffer',
-        lowPrice: '6000',
-        highPrice: '35000',
-        priceCurrency: 'MXN',
-        offerCount: 3,
-      },
-    },
-    {
-      '@context': 'https://schema.org',
-      '@type': 'Service',
-      '@id': `${SITE_URL}/services#service-inspeccion`,
-      name: 'Inspección de Infraestructura con Drones',
-      description:
-        'Inspección visual y técnica de paneles solares, fachadas, azoteas y estructuras de difícil acceso. ' +
-        'Reporte fotográfico georreferenciado, ortomosaicos y modelo 3D. Norma AFAC vigente.',
-      provider: { '@id': `${SITE_URL}/#business` },
-      areaServed: { '@type': 'City', name: 'Ciudad de México' },
-      url: `${SITE_URL}/services`,
-      serviceType: 'Inspección de Infraestructura con Drones',
-      offers: {
-        '@type': 'AggregateOffer',
-        lowPrice: '8000',
-        highPrice: '40000',
-        priceCurrency: 'MXN',
-        offerCount: 3,
-      },
-    },
-  ];
 }
 
 export function buildBreadcrumbList(items: Array<{ name: string; url: string }>) {

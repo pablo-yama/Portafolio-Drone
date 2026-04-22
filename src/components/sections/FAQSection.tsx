@@ -3,20 +3,21 @@
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { FAQ_ITEMS, EASE } from '@/lib/constants';
+import { FAQ_ITEMS, EASE, DURATION } from '@/lib/constants';
 
 gsap.registerPlugin(ScrollTrigger);
 
-function FAQItem({
-  item,
-  isOpen,
-  onToggle,
-}: {
+interface FAQItemProps {
+  idx: string;
   item: { question: string; answer: string };
   isOpen: boolean;
   onToggle: () => void;
-}) {
+}
+
+function FAQItem({ idx, item, isOpen, onToggle }: FAQItemProps) {
   const answerRef = useRef<HTMLDivElement>(null);
+  const panelId = `faq-panel-${idx}`;
+  const buttonId = `faq-q-${idx}`;
 
   useEffect(() => {
     if (!answerRef.current) return;
@@ -25,7 +26,7 @@ function FAQItem({
       gsap.to(answerRef.current, {
         height: 'auto',
         opacity: 1,
-        duration: 0.5,
+        duration: DURATION.normal,
         ease: EASE.smooth,
       });
     } else {
@@ -33,44 +34,63 @@ function FAQItem({
         height: 0,
         opacity: 0,
         duration: 0.4,
-        ease: 'power2.inOut',
+        ease: EASE.cinematic,
       });
     }
   }, [isOpen]);
 
   return (
-    <div
-      className="faq-item border-b border-[var(--glass-border)] transition-colors duration-300"
-    >
+    <li className={`faq-row${isOpen ? ' open' : ''}`}>
       <button
+        id={buttonId}
+        aria-expanded={isOpen}
+        aria-controls={panelId}
         onClick={onToggle}
-        className="flex w-full items-center justify-between gap-4 py-6 text-left transition-colors duration-300 hover:text-[var(--color-accent)]"
+        className="faq-q"
         data-cursor-text={isOpen ? 'Cerrar' : 'Abrir'}
       >
-        <span className="text-base font-medium lg:text-lg">{item.question}</span>
-        <span
-          className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-[var(--glass-border)] transition-all duration-300"
-          style={{
-            transform: isOpen ? 'rotate(45deg)' : 'rotate(0deg)',
-            borderColor: isOpen ? 'var(--color-accent)' : undefined,
-            color: isOpen ? 'var(--color-accent)' : undefined,
-          }}
-        >
-          <svg width="14" height="14" viewBox="0 0 14 14" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round">
-            <line x1="7" y1="1" x2="7" y2="13" />
-            <line x1="1" y1="7" x2="13" y2="7" />
+        <span className="idx">§ {idx}</span>
+        <span className="q">{item.question}</span>
+        <span className="mk" aria-hidden="true">
+          <svg
+            width="12"
+            height="12"
+            viewBox="0 0 12 12"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="1.25"
+            strokeLinecap="round"
+          >
+            <line x1="6" y1="1" x2="6" y2="11" />
+            <line x1="1" y1="6" x2="11" y2="6" />
           </svg>
         </span>
       </button>
-      <div ref={answerRef} className="overflow-hidden" style={{ height: 0, opacity: 0 }}>
-        <p className="pb-6 pr-12 text-[var(--color-text-muted)]" style={{ lineHeight: 1.9 }}>
-          {item.answer}
-        </p>
+      <div
+        ref={answerRef}
+        id={panelId}
+        role="region"
+        aria-labelledby={buttonId}
+        className="faq-a"
+        style={{ height: 0, opacity: 0 }}
+      >
+        <div className="faq-a-inner">
+          <p>{item.answer}</p>
+        </div>
       </div>
-    </div>
+    </li>
   );
 }
 
+/**
+ * FAQSection — editorial accordion in the Archive v2 language.
+ *
+ * Each row: mono `§ 0X` index · serif italic question · signal plus-marker.
+ * Open state tints the row with a warm signal wash and lights a left rail.
+ * Answers are indented under the question column and open with a GSAP
+ * auto-height tween. Emits no FAQPage schema — that is handled in
+ * `src/lib/jsonLd.ts` and injected by the /faq layout.
+ */
 export function FAQSection() {
   const sectionRef = useRef<HTMLElement>(null);
   const [openIndex, setOpenIndex] = useState<number | null>(null);
@@ -79,26 +99,26 @@ export function FAQSection() {
     if (!sectionRef.current) return;
 
     const ctx = gsap.context(() => {
-      gsap.from('.faq-heading', {
-        y: 40,
+      gsap.from('.faq-head', {
+        y: 32,
         opacity: 0,
-        duration: 1,
+        duration: DURATION.slow,
         ease: EASE.smooth,
         scrollTrigger: {
           trigger: sectionRef.current,
-          start: 'top 75%',
+          start: 'top 78%',
         },
       });
 
-      gsap.from('.faq-item', {
-        y: 30,
+      gsap.from('.faq-row', {
+        y: 24,
         opacity: 0,
-        duration: 0.6,
-        stagger: 0.08,
+        duration: 0.55,
+        stagger: 0.05,
         ease: EASE.smooth,
         scrollTrigger: {
           trigger: '.faq-list',
-          start: 'top 80%',
+          start: 'top 82%',
         },
       });
     }, sectionRef);
@@ -107,48 +127,38 @@ export function FAQSection() {
   }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      id="faq"
-      className="relative py-[var(--section-padding)]"
-    >
-      <div
-        className="absolute inset-0 pointer-events-none"
-        style={{
-          background: 'radial-gradient(ellipse at 70% 50%, rgba(0,212,255,0.04) 0%, transparent 60%)',
-        }}
-      />
-
-      <div className="container-custom relative z-10">
-        <div className="grid gap-12 lg:grid-cols-[1fr_1.5fr] lg:gap-20">
-          {/* Left column — heading */}
-          <div className="faq-heading">
-            <p className="section-label">FAQ</p>
-            <h2
-              className="text-[var(--text-h2)] font-bold uppercase leading-tight"
-              style={{ fontFamily: 'var(--font-clash)' }}
-            >
-              Todo lo que necesitas{' '}
-              <span className="text-gradient">saber</span>
-            </h2>
-            <p className="mt-6 text-[var(--color-text-muted)]" style={{ lineHeight: 1.9 }}>
-              Resolvemos las dudas más comunes antes de volar. Si no encuentras la respuesta
-              que buscas, no dudes en contactarme.
-            </p>
-          </div>
-
-          {/* Right column — accordion */}
-          <div className="faq-list border-t border-[var(--glass-border)]">
-            {FAQ_ITEMS.map((item, i) => (
-              <FAQItem
-                key={i}
-                item={item}
-                isOpen={openIndex === i}
-                onToggle={() => setOpenIndex(openIndex === i ? null : i)}
-              />
-            ))}
-          </div>
+    <section ref={sectionRef} id="faq" className="faq">
+      <div className="sect-top faq-head">
+        <h2>
+          Dudas frecuentes <span className="b">antes de volar.</span>
+        </h2>
+        <div className="faq-meta">
+          § 07 / Preguntas
+          <br />
+          {String(FAQ_ITEMS.length).padStart(2, '0')} entradas
         </div>
+      </div>
+
+      <ol className="faq-list">
+        {FAQ_ITEMS.map((item, i) => {
+          const idx = String(i + 1).padStart(2, '0');
+          return (
+            <FAQItem
+              key={idx}
+              idx={idx}
+              item={item}
+              isOpen={openIndex === i}
+              onToggle={() => setOpenIndex(openIndex === i ? null : i)}
+            />
+          );
+        })}
+      </ol>
+
+      <div className="faq-foot">
+        <span>¿No encontraste tu respuesta? Cada proyecto es único.</span>
+        <a href="/contact" data-cursor-text="Contactar">
+          Escríbeme directo →
+        </a>
       </div>
     </section>
   );

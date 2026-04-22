@@ -11,16 +11,6 @@ function escapeXml(str: string): string {
 
 const VIDEOS = [
   {
-    page: '/showreel',
-    title: 'Showreel de video aéreo con drones — Ciudad de México 4K',
-    description:
-      'Showreel cinematográfico 2025 de Pablo Yamamoto Aerial. Hyperlapses aéreos, fotografía 4K y cobertura de proyectos de arquitectura, urbanismo y deportes captados en Ciudad de México.',
-    thumbnailUrl: `${BASE_URL}/img/archivo/reforma-bbva_urbanismo_cdmx_2024.jpg`,
-    contentUrl: `${BASE_URL}/videos/bosques.mov`,
-    duration: 'PT2M30S',
-    uploadDate: '2025-01-01',
-  },
-  {
     page: '/',
     title: 'Hyperlapse aéreo · Bosques de las Lomas — CDMX',
     description:

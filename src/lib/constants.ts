@@ -325,16 +325,6 @@ export const SERVICE_PACKAGES = [
 
 export const FAQ_ITEMS = [
   {
-    question: '¿Cómo planeas cada vuelo?',
-    answer:
-      'Cada vuelo empieza con un reconocimiento del sitio: reviso la ubicación en Google Maps y, cuando es posible, en persona. Analizo la ventana de luz óptima (hora dorada, hora azul o luz plana según el objetivo), consulto los pronósticos de viento y lluvia de al menos tres fuentes, y verifico restricciones de espacio aéreo en la zona. Con esa información armo un plan de vuelo con ruta, altitud máxima y puntos de interés jerarquizados. Coordinamos horarios, accesos, contactos de seguridad del edificio o evento, y siempre definimos un plan B por si el clima cambia el día de la operación. El resultado es predecible desde antes de despegar, no una improvisación en campo.',
-  },
-  {
-    question: '¿Qué pasa si tengo requerimientos operativos propios?',
-    answer:
-      'Trabajo con desarrolladores inmobiliarios, productoras de cine y corporativos que tienen protocolos internos bien definidos, y me adapto a todos ellos. Si tu proyecto requiere aviso previo a seguridad privada, coordinación con un director de fotografía en tierra, ventanas horarias específicas por ruido o por contrato de locación, o transmisión en vivo del feed de la cámara al equipo de producción, todo eso va incluido en la planeación desde la cotización. No cobro extra por complejidad operativa estándar: si el requerimiento es parte del proyecto, es parte del servicio. Los protocolos extraordinarios los discutimos antes de firmar.',
-  },
-  {
     question: '¿Qué pasa si hay mal clima el día del vuelo?',
     answer:
       'La seguridad del vuelo y la calidad del resultado siempre son prioridad. En CDMX el clima cambia rápido, especialmente entre mayo y octubre cuando las lluvias vespertinas son frecuentes en alcaldías como Tlalpan, Xochimilco y Coyoacán. Monitoreo las condiciones con 48 horas de anticipación y te aviso si preveo que el vuelo debe moverse. Los criterios de cancelación son viento sostenido mayor a 30 km/h, lluvia activa, visibilidad reducida por neblina o presencia de tormentas eléctricas en un radio de 20 km. Las reprogramaciones por clima no tienen costo adicional y normalmente encontramos una nueva fecha en menos de 72 horas.',
@@ -363,16 +353,6 @@ export const FAQ_ITEMS = [
     question: '¿Cuánto dura una sesión de vuelo típica?',
     answer:
       'Una sesión básica en una ubicación toma entre una y dos horas en locación, incluyendo el montaje del equipo, los vuelos efectivos y el desmontaje. Llevo entre seis y ocho baterías cargadas al 100%, lo que garantiza entre 45 y 60 minutos de tiempo de vuelo efectivo sin apuros. Para proyectos de medio día (2-3 ubicaciones), reservo de cuatro a cinco horas. Los proyectos de día completo o con múltiples locaciones se planifican por separado. El tiempo en locación no incluye desplazamientos entre puntos; si el proyecto implica movimiento entre colonias o alcaldías, lo contemplamos en la logística desde la cotización.',
-  },
-  {
-    question: '¿Pablo Yamamoto tiene licencia AFAC para drones comerciales?',
-    answer:
-      'Sí. Opero bajo la normativa de la Agencia Federal de Aviación Civil (AFAC) vigente en México para sistemas de aeronaves pilotadas a distancia (RPAS) de uso comercial. Esto incluye el registro del equipo ante la AFAC, cobertura con seguro de responsabilidad civil para operaciones aéreas, y cumplimiento de las restricciones de espacio aéreo establecidas en el AIP México. Para operaciones en zonas de influencia del Aeropuerto Internacional Felipe Ángeles (AIFA), el Aeropuerto Internacional de la Ciudad de México (AICM) o la Base Aérea de Santa Lucía, tramito las autorizaciones correspondientes con anticipación. Puedo proporcionar copia del registro y seguro a clientes corporativos que lo requieran para sus expedientes internos.',
-  },
-  {
-    question: '¿Qué regulaciones aplican para drones comerciales en CDMX?',
-    answer:
-      'En México, los drones comerciales de más de 250 gramos deben registrarse ante la AFAC y operar bajo las reglas de la Circular Obligatoria CO AV-23/10 R3. En la Ciudad de México aplican restricciones adicionales: no se permite volar sobre multitudes sin autorización, se prohíbe el vuelo sobre infraestructura crítica (plantas de energía, instalaciones militares, hospitales) y existen zonas de exclusión permanente alrededor del AICM y el NAIM con radios de 5 km y 8 km respectivamente. Para eventos masivos en el Zócalo, el Estadio Azteca o el Estadio GNP se requieren permisos específicos de la Secretaría de Seguridad Ciudadana y la AFAC. Gestiono todos estos trámites como parte del servicio sin costo extra para el cliente.',
   },
   {
     question: '¿Has tenido incidentes o accidentes en operación?',

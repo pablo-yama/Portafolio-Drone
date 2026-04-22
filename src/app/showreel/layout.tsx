@@ -1,5 +1,4 @@
 import type { Metadata } from 'next';
-import { buildShowreelVideo, buildBreadcrumbList, SITE_URL } from '@/lib/jsonLd';
 
 export const metadata: Metadata = {
   title: 'Showreel — Video Aéreo con Drones en CDMX',
@@ -7,7 +6,6 @@ export const metadata: Metadata = {
     'Mira el showreel de Pablo Yamamoto con tomas aéreas en 4K de Ciudad de México. Hyperlapses, cinematografía y vuelo nocturno con drones.',
   alternates: {
     canonical: '/showreel',
-    languages: { 'es-MX': '/showreel' },
   },
   openGraph: {
     title: 'Showreel — Video Aéreo con Drones en CDMX | Pablo Yamamoto',
@@ -30,16 +28,5 @@ export const metadata: Metadata = {
 };
 
 export default function ShowreelLayout({ children }: { children: React.ReactNode }) {
-  const videoJsonLd = buildShowreelVideo();
-  const breadcrumb = buildBreadcrumbList([
-    { name: 'Inicio', url: SITE_URL },
-    { name: 'Showreel', url: `${SITE_URL}/showreel` },
-  ]);
-  return (
-    <>
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(videoJsonLd) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
-      {children}
-    </>
-  );
+  return children;
 }
