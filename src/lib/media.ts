@@ -11,7 +11,7 @@ export const media = {
     paneles: getMediaUrl('img/paneles.jpg'),
     imayina: getMediaUrl('img/imayina.jpg'),
     dji0633: getMediaUrl('img/DJI_0633.jpg'),
-    pablo: getMediaUrl('img/Pablo.jpg'),
+    pablo: getMediaUrl('public/img/archivo/Pablo.jpg'),
   },
   videos: {
     bosques: getMediaUrl('videos/bosques.mov'),

@@ -124,7 +124,7 @@ export function buildPerson() {
     url: `${SITE_URL}/about`,
     email: 'pabloyamamoto19@gmail.com',
     telephone: '+525585699724',
-    image: `${SITE_URL}/img/Pablo.jpg`,
+    image: `${SITE_URL}/public/image/archivo/Pablo.jpg`,
     sameAs: [
       'https://www.instagram.com/the_pym_project/',
       'https://stock.adobe.com/es/contributor/211067778/Pablo',
