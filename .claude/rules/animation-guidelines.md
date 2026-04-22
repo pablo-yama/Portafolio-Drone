@@ -1,5 +1,5 @@
 ---
-description: GSAP animation principles, presets, and patterns for the drone portfolio
+description: GSAP animation principles, presets, and patterns for the aerial portfolio
 globs: ["**/*.tsx", "**/*.ts"]
 ---
 
@@ -7,16 +7,19 @@ globs: ["**/*.tsx", "**/*.ts"]
 
 ## Core Principles
 
-1. **60fps always** — Animate only `transform` and `opacity`. Never animate `width`, `height`, `top`, `left`.
-2. **Reduced motion** — Respect `prefers-reduced-motion`: disable parallax, particles, and complex animations. Keep basic fades.
-3. **Mobile first** — On mobile: replace heavy 3D scenes with static images/video, reduce particles, simplify shaders.
-4. **Always stagger** — Never animate elements simultaneously. Use stagger `0.05–0.15s` between elements.
-5. **Cinematic easing** — `power3.out` / `power4.out` for entrances, `power2.inOut` for transitions. Avoid `linear`.
-6. **GSAP context** — Always wrap animations in `gsap.context(() => {...}, scopeRef)` and call `ctx.revert()` on cleanup.
+1. **60fps always** — animate only `transform` and `opacity`. Never animate `width`, `height`, `top`, `left`.
+2. **Reduced motion** — respect `prefers-reduced-motion`: disable parallax, particles, and complex animations; keep basic fades.
+3. **Mobile first** — on coarse-pointer / low-core devices, replace heavy 3D scenes with static images or video. See the `canRender3D()` pattern in [.claude/rules/performance.md](performance.md).
+4. **Stagger everything** — don't animate elements simultaneously. Use stagger `0.05–0.15s`.
+5. **Cinematic easing** — `power3.out` / `power4.out` for entrances, `power2.inOut` for transitions. Avoid `linear` unless paired with `scrub`.
+6. **Cleanup is mandatory** — every `useEffect` that creates GSAP tweens / ScrollTriggers / event listeners must reverse them in the return function. Wrap scoped animations in `gsap.context(() => {...}, scopeRef)` and call `ctx.revert()`.
 
-## GSAP Presets (`lib/animations.ts`)
+## Where the presets live
+
+`EASE` and `DURATION` are exported from [src/lib/constants.ts](../../src/lib/constants.ts), and reusable animation helpers are in [src/lib/animations.ts](../../src/lib/animations.ts) (`animateTextReveal`, `animateImageReveal`, `animateFadeIn`, `animateStaggerIn`, `createParallax`, `animateCounter`). Prefer these over inline one-offs.
 
 ```typescript
+// src/lib/constants.ts
 export const EASE = {
   smooth:    'power3.out',
   smoother:  'power4.out',
@@ -33,9 +36,47 @@ export const DURATION = {
 } as const;
 ```
 
-## Common Patterns
+## ScrollTrigger registration
+
+`ScrollTrigger` is registered **once** in [src/components/layout/SmoothScroll.tsx](../../src/components/layout/SmoothScroll.tsx) via `gsap.registerPlugin(ScrollTrigger)`. If you add another GSAP plugin (Flip, SplitText, DrawSVG), register it at module scope in the file that first imports it, not inside `useEffect`.
+
+## Lenis + GSAP integration (the real pattern from the codebase)
+
+[src/components/layout/SmoothScroll.tsx](../../src/components/layout/SmoothScroll.tsx) is the canonical wiring. Don't reinvent it — if smooth scroll breaks, fix it there.
+
+```tsx
+'use client';
+import Lenis from 'lenis';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/ScrollTrigger';
+
+gsap.registerPlugin(ScrollTrigger);
+
+useEffect(() => {
+  const lenis = new Lenis({
+    duration: 1.2,
+    easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+    touchMultiplier: 2,
+  });
+
+  lenis.on('scroll', ScrollTrigger.update);
+
+  // Store the exact reference so cleanup removes the right function
+  const rafCallback = (time: number) => lenis.raf(time * 1000);
+  gsap.ticker.add(rafCallback);
+  gsap.ticker.lagSmoothing(0);
+
+  return () => {
+    lenis.destroy();
+    gsap.ticker.remove(rafCallback);
+  };
+}, []);
+```
+
+## Common patterns
 
 ### Text reveal from below
+
 ```typescript
 gsap.from(element, {
   y: '110%', opacity: 0,
@@ -44,16 +85,18 @@ gsap.from(element, {
 ```
 
 ### Image reveal with clip-path
+
 ```typescript
-// IMPORTANT: do NOT set clipPath as an inline JSX style when GSAP also controls it.
+// IMPORTANT: don't set clipPath as an inline JSX style when GSAP also controls it.
 // Let GSAP own the initial state via gsap.set() inside useEffect.
 gsap.fromTo(element,
   { clipPath: 'inset(100% 0 0 0)' },
-  { clipPath: 'inset(0% 0 0 0)', duration: DURATION.cinematic, ease: EASE.cinematic }
+  { clipPath: 'inset(0% 0 0 0)', duration: DURATION.cinematic, ease: EASE.cinematic },
 );
 ```
 
-### Parallax on scroll
+### Parallax on scroll (simple)
+
 ```typescript
 gsap.to(element, {
   y: () => window.innerHeight * speed * -1,
@@ -62,7 +105,8 @@ gsap.to(element, {
 });
 ```
 
-### GPU-accelerated parallax (preferred for performance)
+### GPU-accelerated parallax (preferred for long lists)
+
 ```typescript
 const setY = gsap.quickSetter(element, 'y', 'px');
 ScrollTrigger.create({
@@ -73,7 +117,8 @@ ScrollTrigger.create({
 });
 ```
 
-### Animated counter
+### Animated counter (used in [StatsSection](../../src/components/sections/StatsSection.tsx))
+
 ```typescript
 gsap.to(element, {
   textContent: target,
@@ -83,9 +128,18 @@ gsap.to(element, {
 });
 ```
 
-### Horizontal scroll section (pin)
+### Cursor with quickTo — see [Cursor.tsx](../../src/components/layout/Cursor.tsx)
+
 ```typescript
-const panels = gsap.utils.toArray('.service-panel');
+const xTo = gsap.quickTo(cursorRef.current, 'x', { duration: 0.6, ease: 'power3' });
+const yTo = gsap.quickTo(cursorRef.current, 'y', { duration: 0.6, ease: 'power3' });
+window.addEventListener('mousemove', (e) => { xTo(e.clientX); yTo(e.clientY); });
+```
+
+### Horizontal scroll / pinned sections (reference only — not currently on the homepage)
+
+```typescript
+const panels = gsap.utils.toArray<HTMLElement>('.service-panel');
 gsap.to(panels, {
   xPercent: -100 * (panels.length - 1),
   ease: 'none',
@@ -93,25 +147,7 @@ gsap.to(panels, {
     trigger: '.services-container',
     pin: true, scrub: 1,
     snap: 1 / (panels.length - 1),
-    end: () => '+=' + document.querySelector('.services-container').offsetWidth,
+    end: () => '+=' + (document.querySelector('.services-container') as HTMLElement).offsetWidth,
   },
 });
-```
-
-### Cursor with quickTo
-```typescript
-const xTo = gsap.quickTo(cursorRef.current, 'x', { duration: 0.6, ease: 'power3' });
-const yTo = gsap.quickTo(cursorRef.current, 'y', { duration: 0.6, ease: 'power3' });
-window.addEventListener('mousemove', (e) => { xTo(e.clientX); yTo(e.clientY); });
-```
-
-## Lenis Smooth Scroll
-
-Sync Lenis with GSAP ticker — store the callback reference so it can be removed on cleanup:
-```typescript
-const rafCallback = (time: number) => lenis.raf(time * 1000);
-gsap.ticker.add(rafCallback);
-gsap.ticker.lagSmoothing(0);
-// cleanup:
-gsap.ticker.remove(rafCallback);
 ```

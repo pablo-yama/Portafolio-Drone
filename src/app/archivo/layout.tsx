@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { buildArchiveImageObjects, buildBreadcrumbList, SITE_URL } from '@/lib/jsonLd';
 
 export const metadata: Metadata = {
   title: 'Archivo completo — 37 piezas · 2022–2026',
@@ -8,6 +9,7 @@ export const metadata: Metadata = {
     + 'ubicación o año. Operaciones en CDMX, Morelos y Guerrero.',
   alternates: {
     canonical: '/archivo',
+    languages: { 'es-MX': '/archivo' },
   },
   openGraph: {
     type: 'website',
@@ -31,10 +33,17 @@ export const metadata: Metadata = {
   },
 };
 
-export default function ArchivoLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
-  return children;
+export default function ArchivoLayout({ children }: { children: React.ReactNode }) {
+  const imageObjects = buildArchiveImageObjects();
+  const breadcrumb = buildBreadcrumbList([
+    { name: 'Inicio', url: SITE_URL },
+    { name: 'Archivo de Vuelos', url: `${SITE_URL}/archivo` },
+  ]);
+  return (
+    <>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(imageObjects) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumb) }} />
+      {children}
+    </>
+  );
 }

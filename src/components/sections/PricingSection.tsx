@@ -28,7 +28,7 @@ const TIER_GROUPS: TierGroup[] = [
         idx: '01 · Básico',
         name: 'Básico.',
         desc: '1 ubicación · sesión de 1 hora. Ideal para catálogo o anuncio único.',
-        amt: '$3,500',
+        amt: '$4,500',
         cur: 'MXN',
         tierSlug: 'Básico',
         feat: [

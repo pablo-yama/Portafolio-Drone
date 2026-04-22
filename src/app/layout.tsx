@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import { Fraunces, JetBrains_Mono } from 'next/font/google';
+import { SpeedInsights } from '@vercel/speed-insights/next';
+import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
 import { buildGlobalStructuredData, SITE_URL } from '@/lib/jsonLd';
 
@@ -27,7 +29,8 @@ export const metadata: Metadata = {
   description:
     'Fotografía y video aéreo profesional con drones en Ciudad de México. ' +
     'Más de 10 años de experiencia en vuelos cinematográficos. ' +
-    'Desde $3,500 MXN. Cotiza gratis con Pablo Yamamoto.',
+    'Desde $4,500 MXN. Cotiza gratis con Pablo Yamamoto.',
+  authors: [{ name: 'Pablo Yamamoto Magaña', url: `${SITE_URL}/about` }],
   keywords: [
     'piloto de drones CDMX',
     'fotografía aérea Ciudad de México',
@@ -53,7 +56,7 @@ export const metadata: Metadata = {
     title: 'Pablo Yamamoto — Fotografía y Video Aéreo con Drones en CDMX',
     description:
       'Fotografía y video aéreo profesional con drones en Ciudad de México. ' +
-      'Desde $3,500 MXN.',
+      'Desde $4,500 MXN.',
     url: SITE_URL,
     images: [
       {
@@ -97,7 +100,6 @@ export default function RootLayout({
       className={`${fraunces.variable} ${jetBrainsMono.variable}`}
     >
       <head>
-        <link rel="alternate" hrefLang="es-MX" href={SITE_URL} />
         {structuredData.map((data, i) => (
           <script
             key={i}
@@ -109,6 +111,8 @@ export default function RootLayout({
       <body>
         {children}
         <div className="vignette" aria-hidden="true" />
+        <SpeedInsights />
+        <Analytics />
       </body>
     </html>
   );

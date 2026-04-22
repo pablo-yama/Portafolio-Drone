@@ -9,9 +9,14 @@ interface CountUpProps {
   duration?: number;
 }
 
+const format = (n: number, pad: number) => {
+  const s = n.toLocaleString('es-MX');
+  return pad > 0 ? s.padStart(pad, '0') : s;
+};
+
 /**
- * CountUp — animates from 0 → target when scrolled into view.
- * Uses IntersectionObserver; writes text directly to avoid React re-renders.
+ * CountUp — SSR renders the real target so crawlers/AI read actual numbers,
+ * then on mount resets to 0 and animates up when scrolled into view.
  */
 export function CountUp({ target, className = '', pad = 0, duration = 1600 }: CountUpProps) {
   const ref = useRef<HTMLSpanElement>(null);
@@ -20,10 +25,7 @@ export function CountUp({ target, className = '', pad = 0, duration = 1600 }: Co
     const el = ref.current;
     if (!el) return;
 
-    const format = (n: number) => {
-      const s = n.toLocaleString('es-MX');
-      return pad > 0 ? s.padStart(pad, '0') : s;
-    };
+    el.textContent = format(0, pad);
 
     const run = () => {
       let start: number | null = null;
@@ -32,9 +34,9 @@ export function CountUp({ target, className = '', pad = 0, duration = 1600 }: Co
         const k = Math.min(1, (ts - start) / duration);
         const eased = 1 - Math.pow(1 - k, 3);
         const v = Math.floor(target * eased);
-        el.textContent = format(v);
+        el.textContent = format(v, pad);
         if (k < 1) requestAnimationFrame(step);
-        else el.textContent = format(target);
+        else el.textContent = format(target, pad);
       };
       requestAnimationFrame(step);
     };
@@ -56,7 +58,7 @@ export function CountUp({ target, className = '', pad = 0, duration = 1600 }: Co
 
   return (
     <span ref={ref} className={className}>
-      {pad > 0 ? '0'.repeat(pad) : '0'}
+      {format(target, pad)}
     </span>
   );
 }

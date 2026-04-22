@@ -227,7 +227,7 @@ export function StatsSection() {
                     className="stat-value text-[clamp(2rem,4vw+0.5rem,4rem)] font-bold"
                     style={{ fontFamily: 'var(--font-clash)' }}
                   >
-                    0
+                    {stat.value}
                   </span>
                   {stat.suffix && (
                     <span className="text-[var(--text-h3)] text-[var(--color-accent)]">

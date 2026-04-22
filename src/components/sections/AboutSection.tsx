@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import Image from 'next/image';
 
 /**
  * AboutSection — §02 Piloto.
@@ -79,7 +80,16 @@ export function AboutSection() {
             <div className="layer l-bg" data-depth="8" />
             <div className="layer l-mid" data-depth="18" />
             <div className="layer l-photo" data-depth="12">
-              <img src="/img/Pablo.jpg" alt="Pablo Yamamoto — piloto" />
+              <div style={{ position: 'relative', width: '100%', height: '100%' }}>
+                <Image
+                  src="/img/Pablo.jpg"
+                  alt="Pablo Yamamoto — piloto de drones en CDMX"
+                  fill
+                  priority
+                  sizes="(max-width: 768px) 100vw, 50vw"
+                  style={{ objectFit: 'cover', objectPosition: 'center 30%', filter: 'grayscale(0.15) contrast(1.05)' }}
+                />
+              </div>
             </div>
             <div className="layer l-grid" data-depth="30" />
             <div className="layer l-scan" />

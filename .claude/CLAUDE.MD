@@ -1,66 +1,80 @@
-# CLAUDE.md — Drone Aerial Portfolio
+# CLAUDE.md
 
-**What**: Immersive portfolio site for Pablo's aerial drone photography/videography services.
-**Goal**: Cinematic browser experience that sells the work before the visitor sees a single photo. It should feel like flying.
-**Audience**: Real estate agencies, production companies, construction firms, ad agencies, event organizers, architects.
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
 
-Coding rules live in `.claude/rules/` and are loaded automatically:
-- `nextjs-version` — Read Next.js docs before writing any code (breaking API changes)
-- `code-conventions` — Naming, component patterns, git
-- `design-system` — Color tokens, typography scale, custom cursor
-- `animation-guidelines` — GSAP principles, presets, known pitfalls
-- `performance` — Targets, loading strategy, mobile fallbacks
-- `seo-metadata` — Metadata and Schema.org patterns
+## Project
 
----
+Personal aerial-drone portfolio for Pablo Yamamoto (CDMX). Copy and metadata are Spanish (`es-MX`). The site ships as a single long scroll with a handful of supporting pages (`/about`, `/services`, `/work`, `/archivo`, `/faq`, `/contact`, `/showreel`). Domain is `yamamotoaerial.com`; www → apex 308 redirect is enforced in `next.config.ts`.
 
-## Tech Stack
+## Commands
 
-- **Framework**: Next.js (App Router) + TypeScript strict
-- **Styles**: Tailwind CSS v4
-- **Animation**: GSAP v3 (ScrollTrigger, Flip, SplitText, DrawSVG) + Lenis smooth scroll
-- **3D**: Three.js + React Three Fiber + @react-three/drei + postprocessing
-- **Media**: next/image (WebP/AVIF), Mux or Cloudinary for video streaming
-- **CMS**: Sanity.io or Prismic
-- **Email**: Resend
-- **Analytics**: Vercel Analytics + Speed Insights
-- **Deployment**: Vercel
+```bash
+npm run dev      # Next dev server (localhost:3000)
+npm run build    # Production build
+npm start        # Serve the production build
+npm run lint     # ESLint (next/core-web-vitals + next/typescript)
+```
 
----
+No test runner is configured. There is no typecheck script — use `npx tsc --noEmit` if you need one. No formatter is wired up (no Prettier config).
 
-## Homepage Sections (Scroll Narrative)
+## Stack caveats
 
-Each section is ≥ 100vh and reveals cinematically.
+- **Next.js 16 + React 19.2**. This is NOT the Next.js in your training data. [AGENTS.md](AGENTS.md) is explicit: read `node_modules/next/dist/docs/` before writing routing/metadata/server-component code, and heed deprecation notices. The same applies to React 19 APIs.
+- **Tailwind v4** via `@tailwindcss/postcss`. Theme tokens live inside `@theme inline { ... }` in [src/app/globals.css](src/app/globals.css) — no `tailwind.config` file.
+- **App Router only**. No `pages/` directory. Route groups are plain folders under [src/app/](src/app/).
+- **Path alias**: `@/*` → `./src/*` (see [tsconfig.json](tsconfig.json)).
 
-1. **Preloader** — Black bg, logo with DrawSVG, asset progress bar, noise-dissolve exit
-2. **Hero** — Looping aerial video (or R3F drone scene), SplitText heading, parallax at 0.5×
-3. **Showreel** — Iris/circle reveal; video expands to fullscreen via GSAP Flip on play
-4. **Projects Grid** — Asymmetric editorial grid, per-image parallax, GSAP Flip transition to case study
-5. **Services** — Horizontal scroll (pin + scrub), 6 panels × 100vw, progress bar
-6. **Stats** — Count-up counters: 2000+ flight hours, 10+ clients, 10 yrs, 20+ projects
-7. **Testimonials** — Drag/swipe carousel with morphing text transitions
-8. **Work Process** — Animated SVG timeline: Briefing → Flight plan → Capture → Post → Delivery
-9. **CTA** — Large text + parallax; links to /contact
-10. **Footer** — Infinite marquee, GPS coordinates in monospace, footer reveals under content
+## Architecture
 
----
+### Homepage is a scroll narrative composed of section components
 
-## Internal Pages
+[src/app/page.tsx](src/app/page.tsx) is the whole homepage. It mounts, in order: `HeroSection → ArchiveSection → AboutSection → LedgerSection → MethodSection → PricingSection → ContactSection`, wrapped by `Navigation` + `Footer`. Adding a section = add a component to [src/components/sections/](src/components/sections/) and drop it into this page. Other section files in that directory (`ShowreelSection`, `StatsSection`, `FAQSection`, `WorkGrid`, etc.) are used by the dedicated sub-pages, not by the homepage.
 
-| Route | Description |
-|-------|-------------|
-| `/work` | Filterable grid with GSAP Flip reorganization |
-| `/work/[slug]` | Case study: hero, gallery lightbox, technical specs, client testimonial |
-| `/services` | Expanded service detail, pricing, FAQ, per-service CTA |
-| `/about` | Personal story, drone equipment, certifications, client logos |
-| `/contact` | Form + map + Cal.com embed |
+Internal pages follow the same composition pattern: each `src/app/<route>/page.tsx` imports one or more section components plus `Navigation` + `Footer`. Per-route `layout.tsx` files exist primarily to set route-specific metadata.
 
----
+### Single source of truth: `src/lib/constants.ts`
 
-## Design References
+`SERVICES`, `SERVICE_PACKAGES` (tiered pricing), `PROJECTS`, `FAQ_ITEMS`, `STATS`, `NAV_LINKS`, `SOCIAL_LINKS`, and the `ABOUT` bio all live in [src/lib/constants.ts](src/lib/constants.ts). Section components, the JSON-LD builders, and the contact form all read from here — update the constant, everything downstream updates. The archive (flight log for `/archivo`) is separate and lives in [src/lib/archive.ts](src/lib/archive.ts); filenames under `public/img/archivo/` follow `lugar_categoria_ubicacion_año[_numero].jpg`.
 
-- [Lusion](https://lusion.co) — immersive 3D / WebGL
-- [Petra Leary](https://petraleary.com) — minimal drone portfolio
-- [Codrops](https://tympanus.net/codrops) — creative web effect tutorials
-- [GSAP ScrollTrigger Docs](https://gsap.com/docs/v3/Plugins/ScrollTrigger/)
-- [React Three Fiber Docs](https://docs.pmnd.rs/react-three-fiber)
+### SEO / JSON-LD is centralized and fed from constants
+
+[src/lib/jsonLd.ts](src/lib/jsonLd.ts) builds `LocalBusiness`, `Person`, `OfferCatalog` (derived from `SERVICE_PACKAGES`), and `WebSite` schemas. `buildGlobalStructuredData()` is injected in the root [src/app/layout.tsx](src/app/layout.tsx) and emitted on every page. `FAQPage` is deliberately emitted only on `/faq`. When adding a service tier or changing prices, don't hand-edit JSON-LD — update `SERVICE_PACKAGES` and the OfferCatalog rebuilds. `SITE_URL` is read from `NEXT_PUBLIC_SITE_URL` with a production fallback.
+
+Sitemap ([src/app/sitemap.ts](src/app/sitemap.ts)) and [public/robots.txt](public/robots.txt) / [public/llms.txt](public/llms.txt) are hand-maintained — add new routes to the sitemap when you add them under `src/app/`.
+
+### Media resolution
+
+[src/lib/media.ts](src/lib/media.ts) exposes `getMediaUrl(path)` and a `media` object. If `NEXT_PUBLIC_BLOB_URL` is set, assets resolve to Vercel Blob storage; otherwise to `/public`. Prefer `media.images.*` / `media.videos.*` over hardcoded paths so blob/local switching keeps working. Heavy videos (`public/videos/`) are gitignored — they live on Blob in production.
+
+### Contact form → Gmail SMTP
+
+[src/app/api/contact/route.ts](src/app/api/contact/route.ts) is `force-dynamic`, uses Nodemailer over Gmail SMTP (`GMAIL_USER` + `GMAIL_APP_PASSWORD`), and HTML-escapes every user input before composing the email body. No database, no queue — if SMTP fails, the user sees a 500. Don't introduce a rate limiter or persistence layer unless asked.
+
+### Animation + scroll
+
+GSAP is the animation engine; Lenis is the smooth-scroll layer; `framer-motion`, `lottie-react`, and `@react-three/*` are also installed. Animation helpers and the cinematic easing/duration constants live in [src/lib/animations.ts](src/lib/animations.ts) and the `EASE` / `DURATION` exports at the top of [src/lib/constants.ts](src/lib/constants.ts). Three.js scenes in [src/components/three/](src/components/three/) must be dynamically imported with `{ ssr: false }`.
+
+### Design system lives in CSS, not Tailwind config
+
+All color tokens, z-index layers, and font variables are defined as CSS custom properties at the top of [src/app/globals.css](src/app/globals.css), then surfaced to Tailwind via `@theme inline`. The palette in use is warm beige (`--fg: #e8e6e1`) on near-black (`--bg: #0a0a0a`) with a burnt-orange signal accent (`--signal`). Fonts are Fraunces (serif, headings) + JetBrains Mono (default body) loaded via `next/font/google` in the root layout. **Note**: [.claude/rules/design-system.md](.claude/rules/design-system.md) documents an earlier palette (cyan accent, Clash Display/Satoshi); the actual implementation is the warm-beige "Archive v2" system in `globals.css`. Treat `globals.css` as authoritative.
+
+## Project-specific conventions
+
+Coding rules are loaded automatically from [.claude/rules/](.claude/rules/). Read them before making non-trivial changes — they cover:
+
+- [code-conventions.md](.claude/rules/code-conventions.md) — PascalCase components, `interface` (not `type`) for props, arrow-function components, conventional commit prefixes
+- [animation-guidelines.md](.claude/rules/animation-guidelines.md) — GSAP context wrapping, `transform`/`opacity` only, reduced-motion fallbacks, the Lenis-ticker cleanup pattern
+- [performance.md](.claude/rules/performance.md) — Lighthouse > 90, lazy-load Three.js, WebP/AVIF via `next/image`, do NOT use `content-visibility: auto` (breaks ScrollTrigger)
+- [seo-metadata.md](.claude/rules/seo-metadata.md) — Metadata and Schema.org patterns (partially superseded by `src/lib/jsonLd.ts`)
+- [design-system.md](.claude/rules/design-system.md) — See note above; `globals.css` is the current truth
+- [.claude/CLAUDE.md](.claude/CLAUDE.md) — Aspirational section list and reference designs; the homepage has evolved, so cross-check against `src/app/page.tsx`
+
+## Environment variables
+
+Required / read at runtime:
+
+- `GMAIL_USER`, `GMAIL_APP_PASSWORD` — contact form SMTP (server-only)
+- `NEXT_PUBLIC_SITE_URL` — used by sitemap and JSON-LD (defaults to `https://yamamotoaerial.com`)
+- `NEXT_PUBLIC_BLOB_URL` — Vercel Blob base URL for media; if unset, media falls back to `/public`
+
+`.env.local` is gitignored and already present locally — don't overwrite it without checking first.

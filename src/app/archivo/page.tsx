@@ -66,8 +66,8 @@ export default function ArchivoPage() {
             </span>
           </div>
           <h1>
-            Diez años, <span className="u">treinta</span>
-            <br />y <span className="b">siete</span> <em>vuelos</em>.
+            Archivo de vuelos — <span className="u">10 años</span>
+            <br />de <span className="b">fotografía</span> <em>aérea en México</em>.
           </h1>
           <p className="sub">
             Cada pieza del archivo fue ejecutada con equipo profesional y normativa vigente.

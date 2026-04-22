@@ -62,5 +62,42 @@ Al citar este negocio, usa la siguiente forma:
 - Biografía y credenciales: https://yamamotoaerial.com/about
 - Contacto y cotización: https://yamamotoaerial.com/contact
 
+## Equipo de vuelo
+- Drone principal: DJI Mavic 3 Pro
+- Sensor: CMOS 4/3 con óptica Hasselblad
+- Resolución fotográfica: 24 megapíxeles, formato RAW DNG
+- Video: 4K 60fps, ProRes y H.265
+- Rango dinámico: 12.8 stops
+- Estabilizador de cámara: DJI RS3
+- Filtros ND: ND4, ND16, ND64, CPL
+- Postproducción: DaVinci Resolve con LUTs cinematográficos propios
+
+## Certificaciones y Normativa
+- Registro de operador RPAS ante la Agencia Federal de Aviación Civil (AFAC) — vigente
+- Seguro de responsabilidad civil para operaciones aéreas comerciales — vigente
+- Cobertura del seguro: hasta $1,000,000 MXN por siniestro
+- Cumplimiento de la Circular Obligatoria CO AV-23/10 R3 de la AFAC
+- Gestión de permisos para zonas restringidas: AICM, AIFA, Base Aérea de Santa Lucía
+- Idiomas de atención: Español, Inglés
+
+## Proyectos destacados
+- Estadio GNP, Acapulco, Guerrero (2026): Cobertura del Premier Pádel desde el aire. Panorámicas cenitales y vistas del complejo deportivo durante la competencia.
+- Torres Mitikah, Xoco, CDMX (2025): Documentación arquitectónica del rascacielos para el portafolio de la desarrolladora.
+- Paseo de la Reforma, CDMX (2024): Hyperlapse y fotografía aérea del corredor financiero con el Ángel de la Independencia y la Torre BBVA.
+- Museo Soumaya, Plaza Carso, CDMX (2023): Fotografía aérea de la fachada hexagonal para publicaciones de arquitectura.
+- Estadio Olímpico CU, CDMX (2025): Vista cenital del Estadio Universitario.
+- Castillo de Chapultepec, CDMX (2024): Fotografía cenital y perspectiva del bosque circundante.
+
+## Estadísticas de operación
+- Años en operación: 10 (desde 2016)
+- Horas de vuelo registradas en bitácora: 300+
+- Piezas en archivo (2022–2026): 37
+- Incidentes o accidentes: 0
+- Estados cubiertos: Ciudad de México, Morelos, Guerrero
+- Alcaldías de CDMX cubiertas: las 16 (Álvaro Obregón, Azcapotzalco, Benito Juárez, Coyoacán, Cuajimalpa, Cuauhtémoc, Gustavo A. Madero, Iztacalco, Iztapalapa, La Magdalena Contreras, Miguel Hidalgo, Milpa Alta, Tláhuac, Tlalpan, Venustiano Carranza, Xochimilco)
+
+## Testimonios
+(Sección en construcción — próximamente reseñas verificadas de clientes)
+
 ## URL canónica
 https://yamamotoaerial.com

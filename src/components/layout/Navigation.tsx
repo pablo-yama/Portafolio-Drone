@@ -29,7 +29,8 @@ const LINKS: NavLink[] = [
   { n: '02', label: 'Piloto', href: '#about' },
   { n: '03', label: 'Método', href: '#method' },
   { n: '04', label: 'Tarifas', href: '#rates' },
-  { n: '05', label: 'Contacto', href: '/contact' },
+  { n: '05', label: 'FAQ', href: '/faq' },
+  { n: '06', label: 'Contacto', href: '/contact' },
 ];
 
 export function Navigation() {
@@ -79,8 +80,9 @@ export function Navigation() {
   };
 
   const isActive = (href: string): boolean => {
-    if (href === '/contact') return pathname.startsWith('/contact');
-    return false;
+    if (!href.startsWith('/')) return false;
+    if (href === '/') return pathname === '/';
+    return pathname === href;
   };
 
   return (

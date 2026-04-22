@@ -1,4 +1,5 @@
 import { FAQ_ITEMS, SERVICE_PACKAGES } from '@/lib/constants';
+import { ARCHIVE } from '@/lib/archive';
 
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL ?? 'https://yamamotoaerial.com';
@@ -33,7 +34,7 @@ export function priceValidUntil(): string {
 export function buildLocalBusiness() {
   return {
     '@context': 'https://schema.org',
-    '@type': 'LocalBusiness',
+    '@type': ['LocalBusiness', 'ProfessionalService'],
     '@id': `${SITE_URL}/#business`,
     name: 'Pablo Yamamoto Aerial',
     alternateName: 'Pablo Yamamoto — Piloto de Drones y Fotógrafo Aéreo',
@@ -46,7 +47,7 @@ export function buildLocalBusiness() {
     image: `${SITE_URL}/og-image.jpg`,
     telephone: '+525585699724',
     email: 'pabloyamamoto19@gmail.com',
-    priceRange: '$3,500 - $40,000 MXN',
+    priceRange: 'MXN 4,500–40,000',
     currenciesAccepted: 'MXN',
     paymentAccepted: ['Transferencia bancaria', 'PayPal', 'Efectivo'],
     areaServed: [
@@ -54,6 +55,15 @@ export function buildLocalBusiness() {
         '@type': 'City',
         name: 'Ciudad de México',
         sameAs: 'https://es.wikipedia.org/wiki/Ciudad_de_M%C3%A9xico',
+      },
+      {
+        '@type': 'GeoCircle',
+        geoMidpoint: {
+          '@type': 'GeoCoordinates',
+          latitude: 19.4326,
+          longitude: -99.1332,
+        },
+        geoRadius: '60000',
       },
       ...CDMX_ALCALDIAS.map((name) => ({
         '@type': 'AdministrativeArea',
@@ -94,9 +104,23 @@ export function buildLocalBusiness() {
       'https://www.instagram.com/the_pym_project/',
       'https://stock.adobe.com/es/contributor/211067778/Pablo',
     ],
+    foundingDate: '2016',
     founder: { '@id': `${SITE_URL}/#person` },
     hasOfferCatalog: { '@id': `${SITE_URL}/#services` },
-    makesOffer: { '@id': `${SITE_URL}/#services` },
+    contactPoint: {
+      '@type': 'ContactPoint',
+      telephone: '+525585699724',
+      email: 'pabloyamamoto19@gmail.com',
+      contactType: 'sales',
+      availableLanguage: ['Spanish', 'English'],
+      areaServed: 'MX',
+      hoursAvailable: {
+        '@type': 'OpeningHoursSpecification',
+        dayOfWeek: ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'],
+        opens: '09:00',
+        closes: '19:00',
+      },
+    },
     knowsLanguage: ['es', 'en'],
     inLanguage: 'es-MX',
     serviceType: [
@@ -124,7 +148,7 @@ export function buildPerson() {
     url: `${SITE_URL}/about`,
     email: 'pabloyamamoto19@gmail.com',
     telephone: '+525585699724',
-    image: `${SITE_URL}/public/image/archivo/Pablo.jpg`,
+    image: `${SITE_URL}/img/Pablo.jpg`,
     sameAs: [
       'https://www.instagram.com/the_pym_project/',
       'https://stock.adobe.com/es/contributor/211067778/Pablo',
@@ -215,6 +239,146 @@ export function buildFAQPage() {
         '@type': 'Answer',
         text: item.answer,
       },
+    })),
+  };
+}
+
+export function buildArchiveImageObjects() {
+  return ARCHIVE.filter((entry) => entry.thumbUrl).map((entry) => ({
+    '@context': 'https://schema.org',
+    '@type': 'ImageObject',
+    '@id': `${SITE_URL}/archivo#${entry.id}`,
+    contentUrl: `${SITE_URL}${entry.thumbUrl}`,
+    name: entry.title.replace(/<[^>]+>/g, ''),
+    description: `Fotografía aérea — ${entry.cat}, ${entry.loc}, ${entry.year}. Capturada en ${entry.fmt} por Pablo Yamamoto Aerial.`,
+    encodingFormat: 'image/jpeg',
+    width: 2400,
+    height: 1600,
+    dateCreated: `${entry.year}-01-01`,
+    author: { '@id': `${SITE_URL}/#person` },
+    copyrightHolder: { '@id': `${SITE_URL}/#person` },
+    copyrightNotice: `© ${entry.year} Pablo Yamamoto Magaña — Todos los derechos reservados`,
+    creditText: 'Pablo Yamamoto Aerial',
+    license: `${SITE_URL}/about`,
+    acquireLicensePage: `${SITE_URL}/contact`,
+    locationCreated: {
+      '@type': 'Place',
+      name: entry.loc === 'CDMX' ? 'Ciudad de México' : entry.loc,
+      address: {
+        '@type': 'PostalAddress',
+        addressCountry: 'MX',
+      },
+    },
+    keywords: [entry.cat, entry.loc, 'fotografía aérea con drones', 'drone photography'],
+  }));
+}
+
+export function buildShowreelVideo() {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'VideoObject',
+    '@id': `${SITE_URL}/showreel#video`,
+    name: 'Showreel de video aéreo con drones — Ciudad de México 4K',
+    description:
+      'Showreel cinematográfico 2025 de Pablo Yamamoto Aerial. Hyperlapses aéreos, ' +
+      'fotografía 4K y cobertura de proyectos de arquitectura, urbanismo y deportes ' +
+      'captados en Ciudad de México y alrededores.',
+    thumbnailUrl: `${SITE_URL}/img/archivo/reforma-bbva_urbanismo_cdmx_2024.jpg`,
+    uploadDate: '2025-01-01',
+    duration: 'PT2M30S',
+    contentUrl: `${SITE_URL}/videos/bosques.mov`,
+    embedUrl: `${SITE_URL}/showreel`,
+    inLanguage: 'es-MX',
+    publisher: { '@id': `${SITE_URL}/#business` },
+    author: { '@id': `${SITE_URL}/#person` },
+    creator: { '@id': `${SITE_URL}/#person` },
+    copyrightHolder: { '@id': `${SITE_URL}/#person` },
+    copyrightYear: 2025,
+    license: `${SITE_URL}/about`,
+    keywords: [
+      'drone video CDMX',
+      'hyperlapse aéreo Ciudad de México',
+      'video aéreo 4K',
+      'fotografía aérea cinematográfica',
+    ],
+  };
+}
+
+export function buildServicesSchema() {
+  return [
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Service',
+      '@id': `${SITE_URL}/services#service-fotografia-video`,
+      name: 'Fotografía y Video Aéreo con Drones',
+      description:
+        'Servicio profesional de fotografía y video aéreo cinematográfico con drones en 4K. ' +
+        'Sensor CMOS 4/3 Hasselblad, RAW 24MP, color grading en DaVinci Resolve. ' +
+        'Para arquitectura, real estate, marcas y producción audiovisual.',
+      provider: { '@id': `${SITE_URL}/#business` },
+      areaServed: { '@type': 'City', name: 'Ciudad de México' },
+      url: `${SITE_URL}/services`,
+      serviceType: 'Fotografía y Video Aéreo con Drones',
+      offers: {
+        '@type': 'AggregateOffer',
+        lowPrice: '4500',
+        highPrice: '25000',
+        priceCurrency: 'MXN',
+        offerCount: 3,
+      },
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Service',
+      '@id': `${SITE_URL}/services#service-eventos`,
+      name: 'Cobertura de Eventos con Drones',
+      description:
+        'Fotografía y video aéreo en vivo para eventos deportivos, corporativos, sociales y culturales en Ciudad de México. ' +
+        'Coordinación con producción en tierra, entrega rápida post-evento.',
+      provider: { '@id': `${SITE_URL}/#business` },
+      areaServed: { '@type': 'City', name: 'Ciudad de México' },
+      url: `${SITE_URL}/services`,
+      serviceType: 'Cobertura de Eventos con Drones',
+      offers: {
+        '@type': 'AggregateOffer',
+        lowPrice: '6000',
+        highPrice: '35000',
+        priceCurrency: 'MXN',
+        offerCount: 3,
+      },
+    },
+    {
+      '@context': 'https://schema.org',
+      '@type': 'Service',
+      '@id': `${SITE_URL}/services#service-inspeccion`,
+      name: 'Inspección de Infraestructura con Drones',
+      description:
+        'Inspección visual y técnica de paneles solares, fachadas, azoteas y estructuras de difícil acceso. ' +
+        'Reporte fotográfico georreferenciado, ortomosaicos y modelo 3D. Norma AFAC vigente.',
+      provider: { '@id': `${SITE_URL}/#business` },
+      areaServed: { '@type': 'City', name: 'Ciudad de México' },
+      url: `${SITE_URL}/services`,
+      serviceType: 'Inspección de Infraestructura con Drones',
+      offers: {
+        '@type': 'AggregateOffer',
+        lowPrice: '8000',
+        highPrice: '40000',
+        priceCurrency: 'MXN',
+        offerCount: 3,
+      },
+    },
+  ];
+}
+
+export function buildBreadcrumbList(items: Array<{ name: string; url: string }>) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((item, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      name: item.name,
+      item: item.url,
     })),
   };
 }
