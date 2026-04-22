@@ -6,6 +6,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { EASE, DURATION } from '@/lib/constants';
 import { media } from '@/lib/media';
+import { SectionNumber } from '@/components/ui/SectionNumber';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -83,6 +84,7 @@ export function WorkGrid() {
       <div className="container-custom relative z-10">
         {/* Section heading */}
         <div ref={headingRef} className="mb-16 lg:mb-24">
+          <SectionNumber index="02" label="Portafolio" meta="Work · Reel" />
           <h2
             className="text-[var(--text-h1)] font-bold uppercase leading-none"
             style={{ fontFamily: 'var(--font-clash)' }}

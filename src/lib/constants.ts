@@ -37,10 +37,10 @@ export const SOCIAL_LINKS = [
 ] as const;
 
 export const STATS = [
-  { value: 200, suffix: '+', label: 'Vuelos' },
-  { value: 10, suffix: '+', label: 'Clientes Felices' },
+  { value: 300, suffix: 'h', label: 'Horas de Vuelo' },
+  { value: 10, suffix: '', label: 'Clientes' },
   { value: 10, suffix: '', label: 'Años Volando' },
-  { value: 20, suffix: '+', label: 'Proyectos Realizados' },
+  { value: 10, suffix: '+', label: 'Proyectos Realizados' },
 ] as const;
 
 export const SERVICES = [
@@ -144,7 +144,7 @@ export const SERVICE_PACKAGES = [
           '25-30 fotos editadas + retoque avanzado',
           'Video aéreo editado de 2-3 min en 4K',
           'Color grading cinematográfico',
-          'Música con licencia incluida',
+          'Banda sonora curada',
           'Entrega en 5 días hábiles',
         ],
         popular: true,
@@ -283,14 +283,14 @@ export const SERVICE_PACKAGES = [
 
 export const FAQ_ITEMS = [
   {
-    question: '¿Cómo gestionas los permisos para volar?',
+    question: '¿Cómo planeas cada vuelo?',
     answer:
-      'Opero bajo las regulaciones vigentes en México y coordino los permisos necesarios según la zona y el tipo de operación. Antes de cada vuelo reviso restricciones aéreas, zonas prohibidas y condiciones locales para cumplir con la normatividad.',
+      'Antes de cada sesión reviso el sitio, el clima, la ventana de luz y las condiciones aéreas. Coordinamos horarios, accesos y un plan B por si el día del vuelo cambia el escenario, para que llegues con un resultado previsible en lugar de improvisar en campo.',
   },
   {
-    question: '¿Tienes seguro de responsabilidad civil?',
+    question: '¿Qué pasa si tengo requerimientos operativos propios?',
     answer:
-      'Sí, todos mis vuelos están cubiertos por un seguro de responsabilidad civil. Esto es un requisito para operaciones comerciales y garantiza protección total para tu proyecto.',
+      'Si tu sitio, predio o evento exige protocolos adicionales (aviso a seguridad privada, coordinación con producción, ventanas específicas), los integro al plan de vuelo desde la cotización. Me adapto a tus tiempos y a las reglas que aplican a tu operación.',
   },
   {
     question: '¿Qué pasa si hay mal clima el día del vuelo?',
@@ -315,7 +315,7 @@ export const FAQ_ITEMS = [
   {
     question: '¿Puedes volar de noche?',
     answer:
-      'Sí, cuento con la capacitación y equipo necesario para vuelos nocturnos. Estos requieren permisos especiales y coordinación adicional, lo cual gestiono como parte del servicio.',
+      'Sí, realizo vuelos nocturnos cuando el proyecto lo pide: hora azul, eventos al cierre del día o tomas urbanas con luces encendidas. Estos vuelos requieren una planeación adicional y coordinación con el sitio, lo cual incluyo como parte del servicio.',
   },
   {
     question: '¿Cuánto dura una sesión de vuelo típica?',

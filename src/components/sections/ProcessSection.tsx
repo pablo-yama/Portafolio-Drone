@@ -26,7 +26,7 @@ const STEPS = [
   {
     number: '02',
     title: 'Plan de Vuelo',
-    description: 'Diseño la ruta óptima, gestiono permisos y coordino la logística completa del vuelo.',
+    description: 'Diseño la ruta óptima, coordino accesos y la logística completa del vuelo.',
     icon: (
       <svg width="40" height="40" viewBox="0 0 40 40" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M20 4C14.5 4 10 8.5 10 13.5c0 8 10 22.5 10 22.5s10-14.5 10-22.5C30 8.5 25.5 4 20 4z" />

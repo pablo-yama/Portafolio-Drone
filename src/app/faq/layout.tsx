@@ -4,14 +4,14 @@ import { buildFAQPage } from '@/lib/jsonLd';
 export const metadata: Metadata = {
   title: 'Preguntas Frecuentes — Servicios de Drones en CDMX',
   description:
-    'Resolvemos tus dudas sobre permisos, seguros, clima, tiempos de entrega, formatos y cobertura de vuelos con drones en Ciudad de México.',
+    'Resolvemos tus dudas sobre planeación de vuelos, clima, tiempos de entrega, formatos y cobertura para proyectos con drones en Ciudad de México.',
   alternates: {
     canonical: '/faq',
   },
   openGraph: {
     title: 'Preguntas Frecuentes — Servicios de Drones en CDMX | Pablo Yamamoto',
     description:
-      'Resolvemos tus dudas sobre permisos, seguros, clima, tiempos de entrega, formatos y cobertura de vuelos con drones en Ciudad de México.',
+      'Resolvemos tus dudas sobre planeación de vuelos, clima, tiempos de entrega, formatos y cobertura para proyectos con drones en Ciudad de México.',
     url: '/faq',
   },
 };

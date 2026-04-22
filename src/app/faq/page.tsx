@@ -28,8 +28,8 @@ export default function FAQPage() {
               <span className="text-gradient">servicios de drones en CDMX</span>
             </h1>
             <p className="mt-8 max-w-2xl text-[var(--text-body)] leading-relaxed text-[var(--color-text-muted)]">
-              Todo lo que necesitas saber sobre permisos, seguros, clima,
-              tiempos de entrega, formatos y cobertura de vuelos con drones en Ciudad de México.
+              Todo lo que necesitas saber sobre planeación de vuelos, clima,
+              tiempos de entrega, formatos y cobertura para proyectos con drones en Ciudad de México.
             </p>
           </header>
 

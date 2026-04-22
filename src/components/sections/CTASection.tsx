@@ -4,6 +4,7 @@ import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Link from 'next/link';
+import { SectionNumber } from '@/components/ui/SectionNumber';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -57,6 +58,10 @@ export function CTASection() {
       />
 
       <div className="container-custom relative z-10 text-center">
+        <div className="mb-12 flex justify-center">
+          <SectionNumber index="06" label="Contacto" meta="MX · Global" />
+        </div>
+
         <h2
           ref={headingRef}
           className="overflow-hidden"

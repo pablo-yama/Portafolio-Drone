@@ -46,7 +46,7 @@ export function buildLocalBusiness() {
     image: `${SITE_URL}/og-image.jpg`,
     telephone: '+525585699724',
     email: 'pabloyamamoto19@gmail.com',
-    priceRange: '$4,500 - $40,000 MXN',
+    priceRange: '$3,500 - $40,000 MXN',
     currenciesAccepted: 'MXN',
     paymentAccepted: ['Transferencia bancaria', 'PayPal', 'Efectivo'],
     areaServed: [

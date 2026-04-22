@@ -1,52 +1,21 @@
 import type { Metadata } from 'next';
-import localFont from 'next/font/local';
+import { Fraunces, JetBrains_Mono } from 'next/font/google';
 import './globals.css';
 import { buildGlobalStructuredData, SITE_URL } from '@/lib/jsonLd';
 
-const clashDisplay = localFont({
-  src: [
-    {
-      path: '../../public/fonts/ClashDisplay-Regular.woff2',
-      weight: '400',
-      style: 'normal',
-    },
-    {
-      path: '../../public/fonts/ClashDisplay-Semibold.woff2',
-      weight: '600',
-      style: 'normal',
-    },
-    {
-      path: '../../public/fonts/ClashDisplay-Bold.woff2',
-      weight: '700',
-      style: 'normal',
-    },
-  ],
-  variable: '--font-clash',
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  weight: ['300', '400', '500', '600'],
+  style: ['normal', 'italic'],
+  variable: '--font-fraunces',
   display: 'swap',
-  fallback: ['system-ui', 'sans-serif'],
 });
 
-const satoshi = localFont({
-  src: [
-    {
-      path: '../../public/fonts/Satoshi-Regular.woff2',
-      weight: '400',
-      style: 'normal',
-    },
-    {
-      path: '../../public/fonts/Satoshi-Medium.woff2',
-      weight: '500',
-      style: 'normal',
-    },
-    {
-      path: '../../public/fonts/Satoshi-Bold.woff2',
-      weight: '700',
-      style: 'normal',
-    },
-  ],
-  variable: '--font-satoshi',
+const jetBrainsMono = JetBrains_Mono({
+  subsets: ['latin'],
+  weight: ['400', '500', '600'],
+  variable: '--font-mono',
   display: 'swap',
-  fallback: ['system-ui', 'sans-serif'],
 });
 
 export const metadata: Metadata = {
@@ -57,8 +26,8 @@ export const metadata: Metadata = {
   },
   description:
     'Fotografía y video aéreo profesional con drones en Ciudad de México. ' +
-    'Más de 10 años de experiencia con seguro de responsabilidad civil. ' +
-    'Desde $4,500 MXN. Cotiza gratis con Pablo Yamamoto.',
+    'Más de 10 años de experiencia en vuelos cinematográficos. ' +
+    'Desde $3,500 MXN. Cotiza gratis con Pablo Yamamoto.',
   keywords: [
     'piloto de drones CDMX',
     'fotografía aérea Ciudad de México',
@@ -84,9 +53,16 @@ export const metadata: Metadata = {
     title: 'Pablo Yamamoto — Fotografía y Video Aéreo con Drones en CDMX',
     description:
       'Fotografía y video aéreo profesional con drones en Ciudad de México. ' +
-      'Desde $4,500 MXN.',
+      'Desde $3,500 MXN.',
     url: SITE_URL,
-    images: [{ url: '/og-image.jpg', width: 1200, height: 630, alt: 'Pablo Yamamoto — Fotografía y video aéreo con drones en CDMX' }],
+    images: [
+      {
+        url: '/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'Pablo Yamamoto — Fotografía y video aéreo con drones en CDMX',
+      },
+    ],
   },
   twitter: {
     card: 'summary_large_image',
@@ -118,7 +94,7 @@ export default function RootLayout({
   return (
     <html
       lang="es"
-      className={`${clashDisplay.variable} ${satoshi.variable}`}
+      className={`${fraunces.variable} ${jetBrainsMono.variable}`}
     >
       <head>
         <link rel="alternate" hrefLang="es-MX" href={SITE_URL} />
@@ -130,7 +106,10 @@ export default function RootLayout({
           />
         ))}
       </head>
-      <body>{children}</body>
+      <body>
+        {children}
+        <div className="vignette" aria-hidden="true" />
+      </body>
     </html>
   );
 }

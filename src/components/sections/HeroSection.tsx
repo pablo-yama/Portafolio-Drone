@@ -1,148 +1,224 @@
 'use client';
 
+import dynamic from 'next/dynamic';
 import { useEffect, useRef } from 'react';
-import Image from 'next/image';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { media } from '@/lib/media';
+import { useTelemetry } from '@/hooks/useTelemetry';
+import { CountUp } from '@/components/ui/CountUp';
 
-gsap.registerPlugin(ScrollTrigger);
+const HeroDroneScene = dynamic(() => import('@/components/three/HeroDroneScene'), {
+  ssr: false,
+  loading: () => null,
+});
 
+/**
+ * HeroSection — split hero: topographic 3D on the left, live telemetry on the right.
+ *
+ * The left pane hosts the dynamic Three.js scene plus the flight-log header, oversized
+ * italic-serif headline with staggered entry, copy, CTAs and a compact metric strip.
+ * The right pane is a mock telemetry dashboard driven by `useTelemetry`, which
+ * animates altitude/speed/GPS/battery readouts and a crosshair along an SVG flight
+ * path. Class names match the CSS tokens in globals.css.
+ */
 export function HeroSection() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  const ctaRef = useRef<HTMLDivElement>(null);
-  const scrollIndicatorRef = useRef<HTMLDivElement>(null);
-  const imageRef = useRef<HTMLDivElement>(null);
+  const leftRef = useRef<HTMLDivElement>(null);
+  const rightRef = useRef<HTMLDivElement>(null);
+
+  useTelemetry();
 
   useEffect(() => {
-    if (!sectionRef.current || !headingRef.current) return;
+    const left = leftRef.current;
+    if (!left) return;
+    const reveals = left.querySelectorAll<HTMLElement>('.fade-up');
+    reveals.forEach((el, i) => {
+      el.style.transitionDelay = i * 80 + 'ms';
+      requestAnimationFrame(() => el.classList.add('in'));
+    });
+  }, []);
 
-    const ctx = gsap.context(() => {
-      const tl = gsap.timeline({ delay: 0.3 });
-
-      if (imageRef.current) {
-        tl.from(imageRef.current, { scale: 1.3, duration: 2, ease: 'power3.out' }, 0);
-      }
-
-      const lines = headingRef.current!.querySelectorAll('.hero-line');
-      tl.from(lines, {
-        y: '110%',
-        duration: 1.2,
-        ease: 'power4.out',
-        stagger: 0.15,
-      }, 0.5);
-
-      if (ctaRef.current) {
-        tl.from(ctaRef.current.children, { y: 20, opacity: 0, duration: 0.6, ease: 'power3.out', stagger: 0.1 }, '-=0.4');
-      }
-
-      if (scrollIndicatorRef.current) {
-        tl.from(scrollIndicatorRef.current, { opacity: 0, duration: 0.6 }, '-=0.2');
-
-        ScrollTrigger.create({
-          trigger: sectionRef.current,
-          start: 'top top',
-          end: '10% top',
-          onLeave: () => gsap.to(scrollIndicatorRef.current, { opacity: 0, duration: 0.3 }),
-          onEnterBack: () => gsap.to(scrollIndicatorRef.current, { opacity: 1, duration: 0.3 }),
+  useEffect(() => {
+    const right = rightRef.current;
+    if (!right) return;
+    const els = right.querySelectorAll<HTMLElement>('.fade-up');
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e, i) => {
+          if (e.isIntersecting) {
+            (e.target as HTMLElement).style.transitionDelay = i * 60 + 'ms';
+            e.target.classList.add('in');
+            io.unobserve(e.target);
+          }
         });
-      }
-
-      // GPU-accelerated parallax with quickSetter
-      const setHeadingY = gsap.quickSetter(headingRef.current!, 'y', 'px');
-      const setImageY = gsap.quickSetter(imageRef.current!, 'y', 'px');
-
-      ScrollTrigger.create({
-        trigger: sectionRef.current,
-        start: 'top top',
-        end: 'bottom top',
-        scrub: true,
-        onUpdate: (self) => {
-          setHeadingY(self.progress * 150);
-          setImageY(self.progress * -80);
-        },
-      });
-    }, sectionRef);
-
-    return () => ctx.revert();
+      },
+      { threshold: 0.1 },
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
   }, []);
 
   return (
-    <section
-      ref={sectionRef}
-      className="relative flex min-h-screen items-center justify-center overflow-hidden"
-    >
-      {/* Background image */}
-      <div ref={imageRef} className="absolute inset-0 scale-110 will-change-transform">
-        <Image
-          src={media.images.heroReforma}
-          alt="Vista aérea nocturna de Reforma, Ciudad de México"
-          fill
-          priority
-          quality={80}
-          className="object-cover"
-          sizes="100vw"
-        />
-      </div>
+    <section className="hero" id="hero">
+      <div className="hero-left" ref={leftRef}>
+        <HeroDroneScene />
 
-      {/* Gradient overlays */}
-      <div className="absolute inset-0 bg-gradient-to-b from-[var(--color-bg)]/70 via-[var(--color-bg)]/30 to-[var(--color-bg)]/80" />
-      <div className="absolute inset-0 bg-[var(--color-bg)]/20" />
+        <div className="kicker fade-up">
+          FLIGHT LOG · 2016 — 2026
+          <span className="slash">//</span>
+          <span id="sessClock">SESIÓN · 00:00:00</span>
+        </div>
 
-      {/* Content */}
-      <div className="container-custom relative z-10 flex flex-col items-center text-center">
-        <h1
-          ref={headingRef}
-          className="overflow-hidden"
-          style={{
-            fontSize: 'clamp(2.25rem, 5.5vw + 0.5rem, 6.5rem)',
-            fontFamily: 'var(--font-clash)',
-            fontWeight: 700,
-            lineHeight: 0.95,
-            letterSpacing: '-0.02em',
-            textShadow: '0 2px 30px rgba(0,0,0,0.5)',
-          }}
-        >
-          <span className="hero-line block overflow-hidden">
-            <span className="inline-block">FOTOGRAFÍA Y</span>
+        <h1>
+          <span className="reveal d1">
+            <span>Una cámara,</span>
           </span>
-          <span className="hero-line block overflow-hidden">
-            <span className="inline-block">VIDEO AÉREO</span>
+          <br />
+          <span className="reveal d2">
+            <span>
+              mil <em>ángulos</em>
+            </span>
           </span>
-          <span className="hero-line block overflow-hidden">
-            <span className="inline-block text-gradient">CON DRONES EN CDMX</span>
+          <br />
+          <span className="reveal d3">
+            <span>
+              que <span className="b">no existen</span>
+            </span>
+          </span>
+          <br />
+          <span className="reveal d4">
+            <span>
+              desde el <span className="u">suelo</span>.
+            </span>
           </span>
         </h1>
 
-        <div ref={ctaRef} className="mt-14 flex flex-wrap items-center justify-center gap-5">
-          <a
-            href="#work"
-            className="group flex items-center gap-3 rounded-full bg-[var(--color-accent)] px-10 py-5 text-sm font-semibold uppercase tracking-wider text-[var(--color-bg)] transition-all duration-300 hover:scale-105 hover:shadow-[0_0_30px_rgba(0,212,255,0.3)]"
-            data-cursor-text="Ver"
-          >
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth="1.5" className="transition-transform duration-300 group-hover:translate-y-1">
-              <path d="M8 2v12M3 9l5 5 5-5" />
-            </svg>
-            Ver Mi Trabajo
+        <p className="hero-lead fade-up">
+          Fotografía y video aéreo cinematográfico para arquitectura, eventos, paisaje e
+          infraestructura. Diez años de vuelos en CDMX, el Valle y cualquier sitio que
+          pida altura.
+        </p>
+
+        <div className="hero-cta fade-up">
+          <a href="#archive" className="btn btn-fill">
+            Abrir archivo <span className="arr">→</span>
           </a>
-          <a
-            href="#contact"
-            className="rounded-full border border-white/30 px-10 py-5 text-sm uppercase tracking-wider backdrop-blur-sm transition-all duration-300 hover:border-white/60 hover:bg-white/10"
-            data-cursor-text="Contactar"
-          >
-            Hablemos
+          <a href="/contact" className="btn btn-out">
+            Iniciar uplink <span className="arr">↗</span>
           </a>
+        </div>
+
+        <div className="hero-foot fade-up">
+          <div>
+            Vuelos
+            <span className="v">
+              <CountUp target={1240} />+
+            </span>
+          </div>
+          <div>
+            Clientes
+            <span className="v">
+              <CountUp target={140} />+
+            </span>
+          </div>
+          <div>
+            Años
+            <span className="v">
+              <CountUp target={10} />
+            </span>
+          </div>
+          <div>
+            Incidentes
+            <span className="v">
+              <CountUp target={0} pad={2} />
+            </span>
+          </div>
         </div>
       </div>
 
-      {/* Scroll Indicator */}
-      <div ref={scrollIndicatorRef} className="absolute bottom-10 left-1/2 flex -translate-x-1/2 flex-col items-center gap-3">
-        <span className="text-[10px] uppercase tracking-[0.3em] text-white/60">Scroll</span>
-        <div className="h-12 w-px overflow-hidden bg-white/20">
-          <div className="scroll-line h-full w-full bg-[var(--color-accent)]" />
+      <aside className="hero-right" ref={rightRef}>
+        <div className="tick fade-up">
+          <span>TELEMETRÍA · LIVE</span>
+          <span className="rec">OPERANDO</span>
         </div>
-      </div>
+
+        <div className="telem-feed">
+          <div className="telem-map fade-up">
+            <svg viewBox="0 0 400 220" preserveAspectRatio="none">
+              <defs>
+                <pattern id="hgrid" width="20" height="20" patternUnits="userSpaceOnUse">
+                  <path
+                    d="M 20 0 L 0 0 0 20"
+                    fill="none"
+                    stroke="rgba(232,230,225,0.06)"
+                    strokeWidth="0.5"
+                  />
+                </pattern>
+              </defs>
+              <rect width="400" height="220" fill="url(#hgrid)" />
+              <path
+                id="flightPath"
+                d="M 10 180 Q 80 120 150 140 T 300 90 T 400 70"
+                fill="none"
+                stroke="var(--signal)"
+                strokeWidth="1.5"
+                strokeDasharray="4 4"
+                opacity="0.85"
+              />
+              <circle cx="10" cy="180" r="3" fill="var(--signal)" />
+              <circle cx="390" cy="72" r="3" fill="var(--fg)" />
+            </svg>
+            <div className="crosshair" id="crosshair" />
+            <span className="coord tl">ORIGIN · 19.4326°N</span>
+            <span className="coord br">TARGET · 99.1332°W</span>
+          </div>
+
+          <div className="telem-row fade-up">
+            <span className="lbl">ALT</span>
+            <div className="bar-wrap">
+              <div className="bar-fill" id="bAlt" />
+            </div>
+            <span className="val" id="vAlt">0 M</span>
+          </div>
+          <div className="telem-row fade-up">
+            <span className="lbl">SPD</span>
+            <div className="bar-wrap">
+              <div className="bar-fill" id="bSpd" />
+            </div>
+            <span className="val" id="vSpd">0 M/S</span>
+          </div>
+          <div className="telem-row fade-up">
+            <span className="lbl">GPS</span>
+            <div className="bar-wrap">
+              <div className="bar-fill" id="bGps" />
+            </div>
+            <span className="val" id="vGps">0/22</span>
+          </div>
+          <div className="telem-row fade-up warn">
+            <span className="lbl">BAT</span>
+            <div className="bar-wrap">
+              <div className="bar-fill" id="bBat" />
+            </div>
+            <span className="val" id="vBat">0%</span>
+          </div>
+
+          <div className="telem-grid fade-up">
+            <div className="telem-card">
+              <span className="k">Equipo</span>
+              <span className="v">Mavic 3 Pro</span>
+            </div>
+            <div className="telem-card">
+              <span className="k">Sensor</span>
+              <span className="v">4/3 CMOS</span>
+            </div>
+            <div className="telem-card">
+              <span className="k">Formato</span>
+              <span className="v">DNG · ProRes</span>
+            </div>
+            <div className="telem-card">
+              <span className="k">Ventana</span>
+              <span className="v">Hora azul</span>
+            </div>
+          </div>
+        </div>
+      </aside>
     </section>
   );
 }

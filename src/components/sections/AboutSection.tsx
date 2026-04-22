@@ -1,89 +1,137 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import Image from 'next/image';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { ABOUT } from '@/lib/constants';
-import { media } from '@/lib/media';
-import { FloatingPaths } from '@/components/ui/background-paths';
 
-gsap.registerPlugin(ScrollTrigger);
-
+/**
+ * AboutSection — §02 Piloto.
+ *
+ * Left column: layered portrait mock that parallaxes with the pointer. Each
+ * `[data-depth]` layer translates at a different ratio so the whole thing feels
+ * like a diorama reacting to the cursor. Right column: long-form text + a compact
+ * spec table.
+ */
 export function AboutSection() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const photoRef = useRef<HTMLDivElement>(null);
-  const textRef = useRef<HTMLDivElement>(null);
+  const splitRef = useRef<HTMLElement>(null);
+  const imgRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    if (!sectionRef.current) return;
-
-    const ctx = gsap.context(() => {
-      if (photoRef.current) {
-        gsap.from(photoRef.current, {
-          clipPath: 'inset(100% 0 0 0)',
-          duration: 1.5,
-          ease: 'power3.inOut',
-          scrollTrigger: { trigger: photoRef.current, start: 'top 75%' },
+    const split = splitRef.current;
+    if (!split) return;
+    const els = split.querySelectorAll<HTMLElement>('.fade-up');
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((e, i) => {
+          if (e.isIntersecting) {
+            (e.target as HTMLElement).style.transitionDelay = i * 80 + 'ms';
+            e.target.classList.add('in');
+            io.unobserve(e.target);
+          }
         });
-      }
+      },
+      { threshold: 0.15 },
+    );
+    els.forEach((el) => io.observe(el));
+    return () => io.disconnect();
+  }, []);
 
-      if (textRef.current) {
-        gsap.from(textRef.current.children, {
-          y: 40, opacity: 0, duration: 0.8, ease: 'power3.out', stagger: 0.15,
-          scrollTrigger: { trigger: textRef.current, start: 'top 80%' },
-        });
-      }
-    }, sectionRef);
-
-    return () => ctx.revert();
+  useEffect(() => {
+    const portrait = imgRef.current;
+    if (!portrait) return;
+    const layers = portrait.querySelectorAll<HTMLElement>('[data-depth]');
+    const onMove = (e: MouseEvent) => {
+      const r = portrait.getBoundingClientRect();
+      const x = (e.clientX - r.left) / r.width - 0.5;
+      const y = (e.clientY - r.top) / r.height - 0.5;
+      layers.forEach((layer) => {
+        const depth = Number(layer.dataset.depth || 0);
+        layer.style.transform = `translate3d(${x * depth}px, ${y * depth}px, 0)`;
+      });
+    };
+    const onLeave = () => {
+      layers.forEach((layer) => (layer.style.transform = ''));
+    };
+    portrait.addEventListener('mousemove', onMove);
+    portrait.addEventListener('mouseleave', onLeave);
+    return () => {
+      portrait.removeEventListener('mousemove', onMove);
+      portrait.removeEventListener('mouseleave', onLeave);
+    };
   }, []);
 
   return (
-    <section ref={sectionRef} id="about" className="relative min-h-screen w-full flex flex-col justify-center py-[var(--section-padding)] overflow-hidden">
-      <FloatingPaths position={1} />
-      <FloatingPaths position={-1} />
-      <div className="container-custom">
-        <span className="section-label">Sobre Mí</span>
+    <>
+      <div className="section-head" id="about">
+        <div className="idx">§ 02 / Piloto</div>
+        <h2>
+          <span className="b">Pablo</span> Yamamoto <br />
+          <em>— operador &amp; ojo.</em>
+        </h2>
+        <div className="meta">
+          10 años en vuelo
+          <br />
+          Base · Polanco, CDMX
+        </div>
+      </div>
 
-        <div className="grid grid-cols-1 gap-[var(--space-xl)] lg:grid-cols-2">
-          <div
-            ref={photoRef}
-            className="relative mx-auto w-full max-w-xs aspect-[3/4] overflow-hidden rounded-lg"
-            style={{ clipPath: 'inset(0% 0 0 0)' }}
-          >
-            <Image
-              src={media.images.pablo}
-              alt="Pablo — Piloto de Drones"
-              fill
-              loading="lazy"
-              quality={80}
-              className="object-cover object-top"
-              sizes="(max-width: 1024px) 100vw, 50vw"
-            />
-            <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
-            <div className="absolute inset-0 flex items-end p-8">
-              <div>
-                <h3 className="text-3xl font-bold uppercase drop-shadow-lg lg:text-4xl" style={{ fontFamily: 'var(--font-clash)' }}>
-                  {ABOUT.name}
-                </h3>
-                <p className="mt-1 text-sm text-white/80 drop-shadow-md">{ABOUT.role}</p>
-              </div>
+      <section className="split" ref={splitRef}>
+        <div className="split-img fade-up" ref={imgRef}>
+          <div className="portrait">
+            <div className="layer l-bg" data-depth="8" />
+            <div className="layer l-mid" data-depth="18" />
+            <div className="layer l-photo" data-depth="12" />
+            <div className="layer l-grid" data-depth="30" />
+            <div className="layer l-scan" />
+            <div className="portrait-chip mono">
+              <span className="c">●</span> PILOTO · ACTIVO
             </div>
+            <div className="portrait-coords mono">19.4326°N · 99.1332°W</div>
           </div>
+        </div>
 
-          <div className="flex flex-col justify-center">
-            <div ref={textRef}>
-              <h2 className="mb-[var(--space-md)] text-[var(--text-h2)] font-bold uppercase leading-tight" style={{ fontFamily: 'var(--font-clash)' }}>
-                El cielo es mi<br /><span className="text-gradient">estudio fotográfico</span>
-              </h2>
-              {ABOUT.bio.map((paragraph, i) => (
-                <p key={i} className="section-body mb-8 text-[var(--text-body)]">{paragraph}</p>
-              ))}
+        <div className="split-txt fade-up">
+          <h3>
+            El cielo <br />
+            es el <em>estudio</em>.
+          </h3>
+          <p>
+            Empecé en 2016 con un Phantom 3 y un mapa de azoteas. Diez años después,
+            sigo midiendo cada vuelo por lo mismo: la toma que sólo existe arriba, la
+            que rescata una historia que desde tierra no se ve.
+          </p>
+          <p>
+            Trabajo con desarrolladores, productoras, arquitectos y marcas que
+            entienden que el <em>frame</em> es tan importante como el lente. Cada
+            proyecto arranca con una conversación corta sobre la intención y termina
+            con archivos listos para editorial, impresión o redes.
+          </p>
+          <p>
+            Si vienes a pedir cielo, llegaste al lugar correcto.
+          </p>
+
+          <div className="spec-table">
+            <div className="r">
+              <span className="k">Base</span>
+              <span className="v">Polanco · CDMX</span>
+            </div>
+            <div className="r">
+              <span className="k">Radio</span>
+              <span className="v">CDMX · EDOMEX · Nacional</span>
+            </div>
+            <div className="r">
+              <span className="k">Equipo</span>
+              <span className="v">Mavic 3 Pro · DJI RS3</span>
+            </div>
+            <div className="r">
+              <span className="k">Entrega</span>
+              <span className="v">3–5 días hábiles</span>
+            </div>
+            <div className="r">
+              <span className="k">Disponibilidad</span>
+              <span className="v">LUN–VIE · 08–19H</span>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

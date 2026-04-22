@@ -1,204 +1,114 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { NAV_LINKS, SITE_NAME } from '@/lib/constants';
-import { cn } from '@/lib/utils';
-import gsap from 'gsap';
+import { usePathname, useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
+
+/**
+ * Navigation — Archive v2 bar.
+ *
+ * Fixed header split into three zones:
+ *   • Brand (signal dot + name / MX)
+ *   • Numbered nav links (01 Archivo → 05 Contacto)
+ *   • Live altitude readout + availability indicator
+ *
+ * Anchor links (#archive, #about, …) only resolve on the homepage. When the
+ * user is on a subpage like /contact, we route to /#anchor instead so the
+ * links actually do something.
+ */
+
+interface NavLink {
+  n: string;
+  label: string;
+  /** Anchor hash (e.g. '#archive') or a full path (e.g. '/contact') */
+  href: string;
+}
+
+const LINKS: NavLink[] = [
+  { n: '01', label: 'Archivo', href: '#archive' },
+  { n: '02', label: 'Piloto', href: '#about' },
+  { n: '03', label: 'Método', href: '#method' },
+  { n: '04', label: 'Tarifas', href: '#rates' },
+  { n: '05', label: 'Contacto', href: '/contact' },
+];
 
 export function Navigation() {
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [showStickyCta, setShowStickyCta] = useState(false);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-  const navRef = useRef<HTMLElement>(null);
-  const mobileMenuRef = useRef<HTMLDivElement>(null);
+  const pathname = usePathname();
+  const router = useRouter();
+  const [altText, setAltText] = useState('ALT 120M');
+
+  const isHome = pathname === '/';
 
   useEffect(() => {
-    const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50);
-      setShowStickyCta(window.scrollY > window.innerHeight);
-    };
-    window.addEventListener('scroll', handleScroll, { passive: true });
-    return () => window.removeEventListener('scroll', handleScroll);
+    const el = document.getElementById('altBar');
+    if (!el) return;
+    const observer = new MutationObserver(() =>
+      setAltText(el.textContent || 'ALT 120M'),
+    );
+    observer.observe(el, { childList: true, characterData: true, subtree: true });
+    return () => observer.disconnect();
   }, []);
 
-  useEffect(() => {
-    if (!navRef.current) return;
-    gsap.from(navRef.current, {
-      y: -100,
-      opacity: 0,
-      duration: 1,
-      ease: 'power3.out',
-      delay: 0.2,
-    });
-  }, []);
+  /**
+   * Given a link href, return what should actually load:
+   *   • '/contact' → always '/contact'
+   *   • '#archive' on home → scroll in-page
+   *   • '#archive' off home → navigate to '/#archive'
+   */
+  const resolveHref = (href: string): string => {
+    if (!href.startsWith('#')) return href;
+    return isHome ? href : `/${href}`;
+  };
 
-  useEffect(() => {
-    if (!mobileMenuRef.current) return;
-    if (isMobileMenuOpen) {
-      gsap.to(mobileMenuRef.current, {
-        clipPath: 'inset(0% 0% 0% 0%)',
-        duration: 0.6,
-        ease: 'power4.inOut',
-      });
-      gsap.from(mobileMenuRef.current.querySelectorAll('a'), {
-        y: 40,
-        opacity: 0,
-        duration: 0.5,
-        stagger: 0.08,
-        ease: 'power3.out',
-        delay: 0.3,
-      });
-    } else {
-      gsap.to(mobileMenuRef.current, {
-        clipPath: 'inset(0% 0% 100% 0%)',
-        duration: 0.5,
-        ease: 'power4.inOut',
-      });
-    }
-  }, [isMobileMenuOpen]);
+  const handleNavClick = (
+    e: React.MouseEvent<HTMLAnchorElement>,
+    href: string,
+  ) => {
+    if (!href.startsWith('#')) return; // normal route nav, let <Link> handle it
 
-  const handleNavClick = (e: React.MouseEvent<HTMLAnchorElement>, href: string) => {
-    if (href.startsWith('#')) {
+    if (isHome) {
+      // in-page smooth scroll
       e.preventDefault();
       const el = document.querySelector(href);
       if (el) el.scrollIntoView({ behavior: 'smooth' });
-      setIsMobileMenuOpen(false);
+    } else {
+      // off-home: go back to home with hash, and let the browser jump to the anchor
+      e.preventDefault();
+      router.push(`/${href}`);
     }
   };
 
+  const isActive = (href: string): boolean => {
+    if (href === '/contact') return pathname.startsWith('/contact');
+    return false;
+  };
+
   return (
-    <>
-      <nav
-        ref={navRef}
-        className={cn(
-          'fixed top-0 left-0 right-0 z-[var(--z-nav)] px-[var(--container-padding)] py-5 transition-all duration-500',
-          isScrolled && 'glass py-3'
-        )}
-      >
-        <div className="container-custom flex items-center justify-between">
-          {/* Logo — Personal name */}
+    <header className="bar">
+      <Link href="/" className="brand" aria-label="Ir al inicio">
+        <span className="sig" />
+        YAMAMOTO · AERIAL <span style={{ color: 'var(--dim-2)' }}>/ MX</span>
+      </Link>
+      <div className="mid">
+        {LINKS.map((l) => (
           <Link
-            href="/"
-            className="relative z-10 text-xl font-bold tracking-wider uppercase"
-            style={{ fontFamily: 'var(--font-clash)' }}
+            key={l.href}
+            href={resolveHref(l.href)}
+            onClick={(e) => handleNavClick(e, l.href)}
+            style={isActive(l.href) ? { color: 'var(--signal)' } : undefined}
           >
-            <span className="text-[var(--color-text)]">PABLO</span>
-            <span className="text-[var(--color-accent)]">.</span>
+            <span className="n">{l.n}</span>
+            {l.label}
           </Link>
-
-          {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center gap-8">
-            {NAV_LINKS.map((link) => (
-              <a
-                key={link.href}
-                href={link.href}
-                onClick={(e) => handleNavClick(e, link.href)}
-                className="relative text-sm uppercase tracking-widest text-[var(--color-text-muted)] transition-colors duration-300 hover:text-[var(--color-text)] group"
-              >
-                {link.label}
-                <span className="absolute bottom-0 left-0 h-px w-0 bg-[var(--color-accent)] transition-all duration-300 group-hover:w-full" />
-              </a>
-            ))}
-          </div>
-
-          {/* CTA Button */}
-          <Link
-            href="/contact"
-            className="hidden lg:flex items-center gap-2 rounded-full border border-[var(--glass-border)] px-6 py-2.5 text-sm uppercase tracking-wider transition-all duration-300 hover:bg-[var(--color-accent)] hover:text-[var(--color-bg)] hover:border-[var(--color-accent)]"
-          >
-            Hablemos
-          </Link>
-
-          {/* Mobile Menu Button */}
-          <button
-            className="relative z-10 flex flex-col gap-1.5 lg:hidden p-2"
-            onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            aria-label={isMobileMenuOpen ? 'Cerrar menú' : 'Abrir menú'}
-          >
-            <span
-              className={cn(
-                'block h-0.5 w-6 bg-[var(--color-text)] transition-all duration-300',
-                isMobileMenuOpen && 'translate-y-2 rotate-45'
-              )}
-            />
-            <span
-              className={cn(
-                'block h-0.5 w-6 bg-[var(--color-text)] transition-all duration-300',
-                isMobileMenuOpen && 'opacity-0'
-              )}
-            />
-            <span
-              className={cn(
-                'block h-0.5 w-6 bg-[var(--color-text)] transition-all duration-300',
-                isMobileMenuOpen && '-translate-y-2 -rotate-45'
-              )}
-            />
-          </button>
-        </div>
-      </nav>
-
-      {/* Sticky CTA Bar — appears after scrolling past hero */}
-      <div
-        className={cn(
-          'fixed bottom-0 left-0 right-0 z-[998] flex items-center justify-between px-[var(--container-padding)] py-3 glass',
-          showStickyCta && !isMobileMenuOpen
-            ? 'translate-y-0 opacity-100'
-            : 'translate-y-full opacity-0'
-        )}
-        style={{ transition: 'transform 0.5s cubic-bezier(0.4,0,0.2,1), opacity 0.5s cubic-bezier(0.4,0,0.2,1)' }}
-      >
-        <p className="hidden text-sm text-[var(--color-text-muted)] sm:block">
-          <span className="font-medium text-[var(--color-text)]">¿Listo para volar?</span>{' '}
-          Cotiza tu proyecto hoy
-        </p>
-        <div className="flex w-full items-center justify-center gap-4 sm:w-auto">
-          <Link
-            href="/contact"
-            className="inline-flex items-center gap-2 rounded-full bg-[var(--color-accent)] px-6 py-2.5 text-xs font-semibold uppercase tracking-wider text-[var(--color-bg)] transition-all duration-300 hover:shadow-[0_0_25px_rgba(0,212,255,0.3)]"
-            data-cursor-text="Contactar"
-          >
-            Cotizar Ahora
-            <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="currentColor">
-              <path d="M3 8h10M9 4l4 4-4 4" strokeWidth="1.5" />
-            </svg>
-          </Link>
-          <Link
-            href="/services"
-            className="hidden rounded-full border border-[var(--glass-border)] px-5 py-2.5 text-xs uppercase tracking-wider transition-all duration-300 hover:border-[var(--color-text)] sm:inline-flex"
-          >
-            Ver Servicios
-          </Link>
-        </div>
+        ))}
       </div>
-
-      {/* Mobile Menu Fullscreen */}
-      <div
-        ref={mobileMenuRef}
-        className="fixed inset-0 z-[calc(var(--z-nav)-1)] flex flex-col items-center justify-center bg-[var(--color-bg)] lg:hidden"
-        style={{ clipPath: 'inset(0% 0% 100% 0%)' }}
-      >
-        <div className="flex flex-col items-center gap-8">
-          {NAV_LINKS.map((link) => (
-            <a
-              key={link.href}
-              href={link.href}
-              onClick={(e) => handleNavClick(e, link.href)}
-              className="text-3xl font-bold uppercase tracking-wider text-[var(--color-text)] transition-colors hover:text-[var(--color-accent)]"
-              style={{ fontFamily: 'var(--font-clash)' }}
-            >
-              {link.label}
-            </a>
-          ))}
-          <Link
-            href="/contact"
-            onClick={() => setIsMobileMenuOpen(false)}
-            className="mt-4 rounded-full border border-[var(--color-accent)] px-8 py-3 text-sm uppercase tracking-widest text-[var(--color-accent)] transition-all hover:bg-[var(--color-accent)] hover:text-[var(--color-bg)]"
-          >
-            Hablemos
-          </Link>
-        </div>
+      <div className="right">
+        {/* altBar text is mirrored from the live telemetry simulator */}
+        <span className="alt" id="altBar">
+          {altText}
+        </span>
+        <span className="live">Disponible</span>
       </div>
-    </>
+    </header>
   );
 }
