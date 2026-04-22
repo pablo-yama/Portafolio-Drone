@@ -78,7 +78,9 @@ export function AboutSection() {
           <div className="portrait">
             <div className="layer l-bg" data-depth="8" />
             <div className="layer l-mid" data-depth="18" />
-            <div className="layer l-photo" data-depth="12" />
+            <div className="layer l-photo" data-depth="12">
+              <img src="/img/Pablo.jpg" alt="Pablo Yamamoto — piloto" />
+            </div>
             <div className="layer l-grid" data-depth="30" />
             <div className="layer l-scan" />
             <div className="portrait-chip mono">
