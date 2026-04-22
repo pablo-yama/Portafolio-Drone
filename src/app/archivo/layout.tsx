@@ -1,9 +1,9 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Archivo completo — 37 piezas · 2023–2025',
+  title: 'Archivo completo — 37 piezas · 2022–2026',
   description:
-    'Archivo completo de vuelos ejecutados por Pablo Yamamoto: 37 piezas entre 2023 y 2025. '
+    'Archivo completo de vuelos ejecutados por Pablo Yamamoto: 37 piezas entre 2022 y 2026. '
     + 'Arquitectura, real estate, urbanismo, naturaleza, deportes y eventos — filtrables por categoría, '
     + 'ubicación o año. Operaciones en CDMX, Morelos y Guerrero.',
   alternates: {
@@ -13,7 +13,7 @@ export const metadata: Metadata = {
     type: 'website',
     locale: 'es_MX',
     title: 'Archivo completo — Yamamoto Aerial',
-    description: '37 piezas de fotografía aérea, 2023–2025.',
+    description: '37 piezas de fotografía aérea, 2022–2026.',
     url: '/archivo',
     images: [
       {
@@ -27,7 +27,7 @@ export const metadata: Metadata = {
   twitter: {
     card: 'summary_large_image',
     title: 'Archivo completo — Yamamoto Aerial',
-    description: '37 piezas de fotografía y video aéreo, 2023–2025.',
+    description: '37 piezas de fotografía y video aéreo, 2022–2026.',
   },
 };
 

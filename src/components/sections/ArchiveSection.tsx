@@ -16,14 +16,14 @@ interface ArchiveEntry {
 const base = '/img/archivo';
 
 const ENTRIES: ArchiveEntry[] = [
-  { idx: '0037', thumb: 't2', thumbUrl: `${base}/cu-arquitectura-cdmx-2025.jpg`,                  title: (<>Ciudad Universitaria · <em>campus</em></>), cat: 'Arquitectura', loc: 'CDMX',     year: '2025' },
-  { idx: '0036', thumb: 't5', thumbUrl: `${base}/parque-la-mexicana-naturaleza-cdmx-2025.jpg`,    title: 'Parque La Mexicana',                          cat: 'Naturaleza',   loc: 'CDMX',     year: '2025' },
-  { idx: '0034', thumb: 't2', thumbUrl: `${base}/paseo-reforma-arquitectura-cdmx-2024.jpg`,       title: (<>Paseo de la <em>Reforma</em></>),           cat: 'Arquitectura', loc: 'CDMX',     year: '2024' },
-  { idx: '0024', thumb: 't7', thumbUrl: `${base}/estadio-gnp-deportes-guerrero-2024.jpg`,         title: 'Estadio GNP · panorámica',                    cat: 'Deportes',     loc: 'Guerrero', year: '2024' },
-  { idx: '0018', thumb: 't5', thumbUrl: `${base}/ex-convento-desierto-leones-naturaleza-cdmx-2024.jpg`, title: (<>Ex Convento · <em>Los Leones</em></>), cat: 'Naturaleza',   loc: 'CDMX',     year: '2024' },
-  { idx: '0013', thumb: 't3', thumbUrl: `${base}/mundo-imayina-real-estate-morelos-2024.jpg`,     title: 'Mundo Imayina · residencial',                 cat: 'Real Estate',  loc: 'Morelos',  year: '2024' },
-  { idx: '0011', thumb: 't3', thumbUrl: `${base}/paneles-solares-real-estate-cdmx-2024.jpg`,      title: (<>Paneles Solares · <em>aéreo</em></>),       cat: 'Real Estate',  loc: 'CDMX',     year: '2024' },
-  { idx: '0008', thumb: 't2', thumbUrl: `${base}/mitikah-arquitectura-cdmx-2023.jpg`,             title: (<>Torres <em>Mitikah</em></>),                cat: 'Arquitectura', loc: 'CDMX',     year: '2023' },
+  { idx: '0037', thumb: 't7', thumbUrl: `${base}/estadio-gnp_deportes_guerrero_2026.jpg`,               title: (<>Estadio GNP · <em>Acapulco</em></>),        cat: 'Deportes',     loc: 'Guerrero', year: '2026' },
+  { idx: '0032', thumb: 't3', thumbUrl: `${base}/bosques-lomas_real-estate_cdmx_2026.jpg`,              title: (<>Bosques de las <em>Lomas</em></>),          cat: 'Real Estate',  loc: 'CDMX',     year: '2026' },
+  { idx: '0031', thumb: 't2', thumbUrl: `${base}/mitikah_arquitectura_cdmx_2025.jpg`,                   title: (<>Torres <em>Mitikah</em></>),                cat: 'Arquitectura', loc: 'CDMX',     year: '2025' },
+  { idx: '0028', thumb: 't6', thumbUrl: `${base}/aztlan-rueda_eventos_cdmx_2025.jpg`,                   title: (<>Aztlán · <em>rueda</em></>),                cat: 'Eventos',      loc: 'CDMX',     year: '2025' },
+  { idx: '0023', thumb: 't1', thumbUrl: `${base}/reforma-bbva_urbanismo_cdmx_2024.jpg`,                 title: (<>Paseo de la <em>Reforma</em></>),           cat: 'Urbanismo',    loc: 'CDMX',     year: '2024' },
+  { idx: '0018', thumb: 't2', thumbUrl: `${base}/castillo-chapultepec-top_arquitectura_cdmx_2024.jpg`,  title: (<>Castillo de <em>Chapultepec</em></>),       cat: 'Arquitectura', loc: 'CDMX',     year: '2024' },
+  { idx: '0016', thumb: 't6', thumbUrl: `${base}/parque-acuatico_eventos_morelos_2024.jpg`,             title: (<>Parque <em>Acuático</em></>),               cat: 'Eventos',      loc: 'Morelos',  year: '2024' },
+  { idx: '0013', thumb: 't2', thumbUrl: `${base}/soumaya_arquitectura_cdmx_2023.jpg`,                   title: (<>Museo <em>Soumaya</em></>),                 cat: 'Arquitectura', loc: 'CDMX',     year: '2023' },
 ];
 
 /**

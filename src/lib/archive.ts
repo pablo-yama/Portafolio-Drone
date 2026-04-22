@@ -6,7 +6,7 @@
  * is used as a fallback whenever `thumbUrl` is absent.
  *
  * Filename convention in public/img/archivo/:
- *   lugar-categoria-ubicacion-año[-numero].jpg
+ *   lugar_categoria_ubicacion_año[_numero].jpg
  */
 
 export type ArchiveCategory =
@@ -42,48 +42,52 @@ export interface ArchiveEntry {
 const base = '/img/archivo';
 
 export const ARCHIVE: ArchiveEntry[] = [
+  // ===== 2026 =====
+  { id: '0037', title: 'Estadio GNP · <em>panorámica</em>',      cat: 'Deportes',     loc: 'Guerrero', year: 2026, fmt: 'RAW 24MP', thumb: 't7', thumbUrl: `${base}/estadio-gnp_deportes_guerrero_2026.jpg`, feat: true },
+  { id: '0036', title: 'Estadio GNP · <em>cenital</em>',         cat: 'Deportes',     loc: 'Guerrero', year: 2026, fmt: 'RAW 24MP', thumb: 't7', thumbUrl: `${base}/estadio-gnp-top_deportes_guerrero_2026.jpg` },
+  { id: '0035', title: 'Premier Pádel · <em>Acapulco</em>',      cat: 'Deportes',     loc: 'Guerrero', year: 2026, fmt: 'RAW 24MP', thumb: 't7', thumbUrl: `${base}/premier-padel_deportes_guerrero_2026.jpg` },
+  { id: '0034', title: 'Premier Pádel · complejo',               cat: 'Deportes',     loc: 'Guerrero', year: 2026, fmt: 'RAW 24MP', thumb: 't7', thumbUrl: `${base}/premier-padel_deportes_guerrero_2026_2.jpg` },
+  { id: '0033', title: 'Premier Pádel · atardecer',              cat: 'Deportes',     loc: 'Guerrero', year: 2026, fmt: 'RAW 24MP', thumb: 't7', thumbUrl: `${base}/premier-padel_deportes_guerrero_2026_3.jpg` },
+  { id: '0032', title: 'Bosques de las <em>Lomas</em>',          cat: 'Real Estate',  loc: 'CDMX',     year: 2026, fmt: 'RAW 24MP', thumb: 't3', thumbUrl: `${base}/bosques-lomas_real-estate_cdmx_2026.jpg` },
+
   // ===== 2025 =====
-  { id: '0037', title: 'Ciudad Universitaria · <em>campus</em>',      cat: 'Arquitectura', loc: 'CDMX',    year: 2025, fmt: 'RAW 24MP', thumb: 't2', thumbUrl: `${base}/cu-arquitectura-cdmx-2025.jpg`, feat: true },
-  { id: '0036', title: 'Parque La Mexicana',                          cat: 'Naturaleza',   loc: 'CDMX',    year: 2025, fmt: 'RAW 24MP', thumb: 't5', thumbUrl: `${base}/parque-la-mexicana-naturaleza-cdmx-2025.jpg` },
-  { id: '0035', title: 'Santa Fe · <em>residencial</em>',             cat: 'Real Estate',  loc: 'CDMX',    year: 2025, fmt: 'RAW 24MP', thumb: 't3', thumbUrl: `${base}/santa-fe-real-estate-cdmx-2025.jpg` },
+  { id: '0031', title: 'Torres <em>Mitikah</em>',                cat: 'Arquitectura', loc: 'CDMX',     year: 2025, fmt: 'RAW 24MP', thumb: 't2', thumbUrl: `${base}/mitikah_arquitectura_cdmx_2025.jpg`, feat: true },
+  { id: '0030', title: 'Estadio Olímpico · <em>CU</em>',         cat: 'Deportes',     loc: 'CDMX',     year: 2025, fmt: 'RAW 24MP', thumb: 't7', thumbUrl: `${base}/estadio-cu_deportes_cdmx_2025.jpg` },
+  { id: '0029', title: 'Santa Fe · <em>dorado</em>',             cat: 'Urbanismo',    loc: 'CDMX',     year: 2025, fmt: 'RAW 24MP', thumb: 't1', thumbUrl: `${base}/santa-fe-dorado_urbanismo_cdmx_2025.jpg` },
+  { id: '0028', title: 'Aztlán · <em>rueda</em>',                cat: 'Eventos',      loc: 'CDMX',     year: 2025, fmt: 'RAW 24MP', thumb: 't6', thumbUrl: `${base}/aztlan-rueda_eventos_cdmx_2025.jpg` },
+  { id: '0027', title: 'Chapultepec · rueda de la fortuna',      cat: 'Urbanismo',    loc: 'CDMX',     year: 2025, fmt: 'RAW 24MP', thumb: 't1', thumbUrl: `${base}/chapultepec-rueda_urbanismo_cdmx_2025.jpg` },
+  { id: '0026', title: 'Paneles Solares · <em>aéreo</em>',       cat: 'Arquitectura', loc: 'CDMX',     year: 2025, fmt: 'RAW 24MP', thumb: 't2', thumbUrl: `${base}/paneles-solares_arquitectura_cdmx_2025.jpg` },
+  { id: '0025', title: 'Paneles Solares · inspección',           cat: 'Arquitectura', loc: 'CDMX',     year: 2025, fmt: 'RAW 24MP', thumb: 't2', thumbUrl: `${base}/paneles-solares_arquitectura_cdmx_2025_2.jpg` },
+  { id: '0024', title: 'Paneles Solares · detalle',              cat: 'Arquitectura', loc: 'CDMX',     year: 2025, fmt: 'RAW 24MP', thumb: 't2', thumbUrl: `${base}/paneles-solares_arquitectura_cdmx_2025_3.jpg` },
 
   // ===== 2024 =====
-  { id: '0034', title: 'Paseo de la Reforma',                         cat: 'Arquitectura', loc: 'CDMX',    year: 2024, fmt: 'RAW 24MP', thumb: 't2', thumbUrl: `${base}/paseo-reforma-arquitectura-cdmx-2024.jpg`, feat: true },
-  { id: '0033', title: 'Museo Soumaya · <em>exterior</em>',           cat: 'Arquitectura', loc: 'CDMX',    year: 2024, fmt: 'RAW 24MP', thumb: 't2', thumbUrl: `${base}/soumaya-arquitectura-cdmx-2024.jpg` },
-  { id: '0032', title: 'Castillo de Chapultepec',                     cat: 'Arquitectura', loc: 'CDMX',    year: 2024, fmt: 'RAW 24MP', thumb: 't2', thumbUrl: `${base}/castillo-chapultepec-arquitectura-cdmx-2024.jpg` },
-  { id: '0031', title: 'Arcos Bosques',                               cat: 'Arquitectura', loc: 'CDMX',    year: 2024, fmt: 'RAW 24MP', thumb: 't2', thumbUrl: `${base}/arcos-bosques-arquitectura-cdmx-2024.jpg` },
-  { id: '0030', title: 'Cancha de basquetbol',                        cat: 'Arquitectura', loc: 'CDMX',    year: 2024, fmt: 'RAW 24MP', thumb: 't2', thumbUrl: `${base}/cancha-basquetball-arquitectura-cdmx-2024.jpg` },
-  { id: '0029', title: 'Santa Fe · <em>torres</em>',                  cat: 'Arquitectura', loc: 'CDMX',    year: 2024, fmt: 'RAW 24MP', thumb: 't2', thumbUrl: `${base}/santa-fe-arquitectura-cdmx-2024.jpg` },
-  { id: '0028', title: 'Santa Fe · torres II',                        cat: 'Arquitectura', loc: 'CDMX',    year: 2024, fmt: 'RAW 24MP', thumb: 't2', thumbUrl: `${base}/santa-fe-arquitectura-cdmx-2024-2.jpg` },
-  { id: '0027', title: 'Chapultepec · <em>urbanismo</em>',            cat: 'Urbanismo',    loc: 'CDMX',    year: 2024, fmt: 'RAW 24MP', thumb: 't1', thumbUrl: `${base}/chapultepec-urbanismo-cdmx-2024.jpg` },
-  { id: '0026', title: 'Lago de Chapultepec',                         cat: 'Urbanismo',    loc: 'CDMX',    year: 2024, fmt: 'RAW 24MP', thumb: 't1', thumbUrl: `${base}/lago-chapultepec-urbanismo-cdmx-2024.jpg` },
-  { id: '0025', title: 'San Jerónimo',                                cat: 'Urbanismo',    loc: 'CDMX',    year: 2024, fmt: 'RAW 24MP', thumb: 't1', thumbUrl: `${base}/san-jeronimo-urbanismo-cdmx-2024.jpg` },
-  { id: '0024', title: 'Estadio GNP · <em>panorámica</em>',           cat: 'Deportes',     loc: 'Guerrero', year: 2024, fmt: 'RAW 24MP', thumb: 't7', thumbUrl: `${base}/estadio-gnp-deportes-guerrero-2024.jpg`, feat: true },
-  { id: '0023', title: 'Estadio GNP · acercamiento',                  cat: 'Deportes',     loc: 'Guerrero', year: 2024, fmt: 'RAW 24MP', thumb: 't7', thumbUrl: `${base}/estadio-gnp-deportes-guerrero-2024-2.jpg` },
-  { id: '0022', title: 'Estadio GNP · cancha',                        cat: 'Deportes',     loc: 'Guerrero', year: 2024, fmt: 'RAW 24MP', thumb: 't7', thumbUrl: `${base}/estadio-gnp-deportes-guerrero-2024-3.jpg` },
-  { id: '0021', title: 'Estadio GNP · vuelo alto',                    cat: 'Deportes',     loc: 'Guerrero', year: 2024, fmt: 'RAW 24MP', thumb: 't7', thumbUrl: `${base}/estadio-gnp-deportes-guerrero-2024-4.jpg` },
-  { id: '0020', title: 'Estadio GNP · contexto',                      cat: 'Deportes',     loc: 'Guerrero', year: 2024, fmt: 'RAW 24MP', thumb: 't7', thumbUrl: `${base}/estadio-gnp-deportes-guerrero-2024-5.jpg` },
-  { id: '0019', title: 'Estela de Luz',                               cat: 'Eventos',      loc: 'CDMX',    year: 2024, fmt: 'RAW 24MP', thumb: 't6', thumbUrl: `${base}/estela-luz-eventos-cdmx-2024.jpg` },
-  { id: '0018', title: 'Ex Convento Desierto de los Leones',          cat: 'Naturaleza',   loc: 'CDMX',    year: 2024, fmt: 'RAW 24MP', thumb: 't5', thumbUrl: `${base}/ex-convento-desierto-leones-naturaleza-cdmx-2024.jpg`, feat: true },
-  { id: '0017', title: 'Ex Convento Desierto · <em>II</em>',          cat: 'Naturaleza',   loc: 'CDMX',    year: 2024, fmt: 'RAW 24MP', thumb: 't5', thumbUrl: `${base}/ex-convento-desierto-leones-naturaleza-cdmx-2024-2.jpg` },
-  { id: '0016', title: 'Ex Convento Desierto · III',                  cat: 'Naturaleza',   loc: 'CDMX',    year: 2024, fmt: 'RAW 24MP', thumb: 't5', thumbUrl: `${base}/ex-convento-desierto-leones-naturaleza-cdmx-2024-3.jpg` },
-  { id: '0015', title: 'Museo de Antropología',                       cat: 'Naturaleza',   loc: 'CDMX',    year: 2024, fmt: 'RAW 24MP', thumb: 't5', thumbUrl: `${base}/museo-antropologia-naturaleza-cdmx-2024.jpg` },
-  { id: '0014', title: 'Mundo Imayina · <em>naturaleza</em>',         cat: 'Naturaleza',   loc: 'Morelos', year: 2024, fmt: 'RAW 24MP', thumb: 't5', thumbUrl: `${base}/mundo-imayina-naturaleza-morelos-2024.jpg` },
-  { id: '0013', title: 'Mundo Imayina · residencial',                 cat: 'Real Estate',  loc: 'Morelos', year: 2024, fmt: 'RAW 24MP', thumb: 't3', thumbUrl: `${base}/mundo-imayina-real-estate-morelos-2024.jpg` },
-  { id: '0012', title: 'Mundo Imayina · residencial II',              cat: 'Real Estate',  loc: 'Morelos', year: 2024, fmt: 'RAW 24MP', thumb: 't3', thumbUrl: `${base}/mundo-imayina-real-estate-morelos-2024-2.jpg` },
-  { id: '0011', title: 'Paneles Solares · <em>aéreo</em>',            cat: 'Real Estate',  loc: 'CDMX',    year: 2024, fmt: 'RAW 24MP', thumb: 't3', thumbUrl: `${base}/paneles-solares-real-estate-cdmx-2024.jpg` },
-  { id: '0010', title: 'Paneles Solares · cerrado',                   cat: 'Real Estate',  loc: 'CDMX',    year: 2024, fmt: 'RAW 24MP', thumb: 't3', thumbUrl: `${base}/paneles-solares-real-estate-cdmx-2024-2.jpg` },
-  { id: '0009', title: 'Paneles Solares · detalle',                   cat: 'Real Estate',  loc: 'CDMX',    year: 2024, fmt: 'RAW 24MP', thumb: 't3', thumbUrl: `${base}/paneles-solares-real-estate-cdmx-2024-3.jpg` },
+  { id: '0023', title: 'Paseo de la <em>Reforma</em>',           cat: 'Urbanismo',    loc: 'CDMX',     year: 2024, fmt: 'RAW 24MP', thumb: 't1', thumbUrl: `${base}/reforma-bbva_urbanismo_cdmx_2024.jpg`, feat: true },
+  { id: '0022', title: 'Coyoacán · <em>cenital</em>',            cat: 'Real Estate',  loc: 'CDMX',     year: 2024, fmt: 'RAW 24MP', thumb: 't3', thumbUrl: `${base}/coyoacan-aerial_real-estate_cdmx_2024.jpg` },
+  { id: '0021', title: 'Parques Polanco',                        cat: 'Arquitectura', loc: 'CDMX',     year: 2024, fmt: 'RAW 24MP', thumb: 't2', thumbUrl: `${base}/parques-polanco_arquitectura_cdmx_2024.jpg` },
+  { id: '0020', title: 'Pabellón Polanco · <em>cenital</em>',    cat: 'Arquitectura', loc: 'CDMX',     year: 2024, fmt: 'RAW 24MP', thumb: 't2', thumbUrl: `${base}/pabellon-polanco_arquitectura_cdmx_2024.jpg` },
+  { id: '0019', title: 'Canchas Tlalpan',                        cat: 'Deportes',     loc: 'CDMX',     year: 2024, fmt: 'RAW 24MP', thumb: 't7', thumbUrl: `${base}/canchas-tlalpan_deportes_cdmx_2024.jpg` },
+  { id: '0018', title: 'Castillo de Chapultepec · <em>cenital</em>', cat: 'Arquitectura', loc: 'CDMX', year: 2024, fmt: 'RAW 24MP', thumb: 't2', thumbUrl: `${base}/castillo-chapultepec-top_arquitectura_cdmx_2024.jpg` },
+  { id: '0017', title: 'Castillo de Chapultepec',                cat: 'Arquitectura', loc: 'CDMX',     year: 2024, fmt: 'RAW 24MP', thumb: 't2', thumbUrl: `${base}/castillo-chapultepec_arquitectura_cdmx_2024.jpg` },
+  { id: '0016', title: 'Parque Acuático · <em>Morelos</em>',     cat: 'Eventos',      loc: 'Morelos',  year: 2024, fmt: 'RAW 24MP', thumb: 't6', thumbUrl: `${base}/parque-acuatico_eventos_morelos_2024.jpg` },
+  { id: '0015', title: 'Parque Acuático · cenital',              cat: 'Eventos',      loc: 'Morelos',  year: 2024, fmt: 'RAW 24MP', thumb: 't6', thumbUrl: `${base}/parque-acuatico_eventos_morelos_2024_2.jpg` },
+  { id: '0014', title: 'Parque Acuático · valle',                cat: 'Eventos',      loc: 'Morelos',  year: 2024, fmt: 'RAW 24MP', thumb: 't6', thumbUrl: `${base}/parque-acuatico_eventos_morelos_2024_3.jpg` },
 
   // ===== 2023 =====
-  { id: '0008', title: 'Torres Mitikah · <em>icónico</em>',           cat: 'Arquitectura', loc: 'CDMX',    year: 2023, fmt: 'RAW 24MP', thumb: 't2', thumbUrl: `${base}/mitikah-arquitectura-cdmx-2023.jpg`, feat: true },
-  { id: '0007', title: 'Reforma · <em>avenida</em>',                  cat: 'Arquitectura', loc: 'CDMX',    year: 2023, fmt: 'RAW 24MP', thumb: 't2', thumbUrl: `${base}/reforma-arquitectura-cdmx-2023.jpg` },
-  { id: '0006', title: 'Garden Santa Fe',                             cat: 'Arquitectura', loc: 'CDMX',    year: 2023, fmt: 'RAW 24MP', thumb: 't2', thumbUrl: `${base}/garden-santa-fe-arquitectura-cdmx-2023.jpg` },
-  { id: '0005', title: 'Santa Fe · <em>skyline</em>',                 cat: 'Arquitectura', loc: 'CDMX',    year: 2023, fmt: 'RAW 24MP', thumb: 't2', thumbUrl: `${base}/santa-fe-arquitectura-cdmx-2023.jpg` },
-  { id: '0004', title: 'Santa Fe · skyline II',                       cat: 'Arquitectura', loc: 'CDMX',    year: 2023, fmt: 'RAW 24MP', thumb: 't2', thumbUrl: `${base}/santa-fe-arquitectura-cdmx-2023-2.jpg` },
-  { id: '0003', title: 'Vista Hermosa',                               cat: 'Arquitectura', loc: 'CDMX',    year: 2023, fmt: 'RAW 24MP', thumb: 't2', thumbUrl: `${base}/vista-hermosa-arquitectura-cdmx-2023.jpg` },
-  { id: '0002', title: 'Vista Hermosa · II',                          cat: 'Arquitectura', loc: 'CDMX',    year: 2023, fmt: 'RAW 24MP', thumb: 't2', thumbUrl: `${base}/vista-hermosa-arquitectura-cdmx-2023-2.jpg` },
-  { id: '0001', title: 'Desierto de los Leones · <em>aventura</em>',  cat: 'Deportes',     loc: 'CDMX',    year: 2023, fmt: 'RAW 24MP', thumb: 't7', thumbUrl: `${base}/desierto-leones-deportes-cdmx-2023.jpg` },
+  { id: '0013', title: 'Museo <em>Soumaya</em>',                 cat: 'Arquitectura', loc: 'CDMX',     year: 2023, fmt: 'RAW 24MP', thumb: 't2', thumbUrl: `${base}/soumaya_arquitectura_cdmx_2023.jpg`, feat: true },
+  { id: '0012', title: 'Santa Fe · <em>La Mexicana</em>',        cat: 'Urbanismo',    loc: 'CDMX',     year: 2023, fmt: 'RAW 24MP', thumb: 't1', thumbUrl: `${base}/santa-fe-mexicana_urbanismo_cdmx_2023.jpg` },
+  { id: '0011', title: 'Santa Fe · atardecer',                   cat: 'Urbanismo',    loc: 'CDMX',     year: 2023, fmt: 'RAW 24MP', thumb: 't1', thumbUrl: `${base}/santa-fe-atardecer_urbanismo_cdmx_2023.jpg` },
+  { id: '0010', title: 'Santa Fe · hora azul',                   cat: 'Urbanismo',    loc: 'CDMX',     year: 2023, fmt: 'RAW 24MP', thumb: 't1', thumbUrl: `${base}/santa-fe-azul_urbanismo_cdmx_2023.jpg` },
+  { id: '0009', title: 'Santa Fe · <em>Posadas</em>',            cat: 'Urbanismo',    loc: 'CDMX',     year: 2023, fmt: 'RAW 24MP', thumb: 't1', thumbUrl: `${base}/santa-fe-posadas_urbanismo_cdmx_2023.jpg` },
+  { id: '0008', title: 'Museo de Antropología',                  cat: 'Arquitectura', loc: 'CDMX',     year: 2023, fmt: 'RAW 24MP', thumb: 't2', thumbUrl: `${base}/museo-antropologia_arquitectura_cdmx_2023.jpg` },
+  { id: '0007', title: 'Ritz & <em>BBVA</em> · nocturna',        cat: 'Urbanismo',    loc: 'CDMX',     year: 2023, fmt: 'RAW 24MP', thumb: 't1', thumbUrl: `${base}/ritz-bbva_urbanismo_cdmx_2023.jpg` },
+
+  // ===== 2022 =====
+  { id: '0006', title: 'Desierto de los Leones · <em>bosque</em>', cat: 'Naturaleza', loc: 'CDMX',     year: 2022, fmt: 'RAW 24MP', thumb: 't5', thumbUrl: `${base}/desierto-leones-bosque_naturaleza_cdmx_2022.jpg`, feat: true },
+  { id: '0005', title: 'Ex Convento · Los Leones',               cat: 'Arquitectura', loc: 'CDMX',     year: 2022, fmt: 'RAW 24MP', thumb: 't2', thumbUrl: `${base}/desierto-leones_arquitectura_cdmx_2022.jpg` },
+  { id: '0004', title: 'Interlomas · <em>nocturna</em>',         cat: 'Urbanismo',    loc: 'CDMX',     year: 2022, fmt: 'RAW 24MP', thumb: 't1', thumbUrl: `${base}/interlomas-noche_urbanismo_cdmx_2022.jpg` },
+  { id: '0003', title: 'Interlomas · panorama',                  cat: 'Urbanismo',    loc: 'CDMX',     year: 2022, fmt: 'RAW 24MP', thumb: 't1', thumbUrl: `${base}/interlomas-panorama_urbanismo_cdmx_2022.jpg` },
+  { id: '0002', title: 'Las Peñas · <em>roca viva</em>',         cat: 'Naturaleza',   loc: 'Morelos',  year: 2022, fmt: 'RAW 24MP', thumb: 't5', thumbUrl: `${base}/las-penas_naturaleza_morelos_2022.jpg` },
+  { id: '0001', title: 'Zócalo · <em>15 Septiembre</em>',        cat: 'Eventos',      loc: 'CDMX',     year: 2022, fmt: 'RAW 24MP', thumb: 't6', thumbUrl: `${base}/zocalo-independencia_eventos_cdmx_2022.jpg` },
 ];
 
 /** Counts per filter chip, derived from ARCHIVE to stay in sync */

@@ -40,9 +40,6 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
-# heavy media (hosted on Vercel Blob)
-/src/img/
-/public/img/
 /public/videos/
 
 
