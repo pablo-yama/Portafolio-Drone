@@ -1,18 +1,25 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { EASE, DURATION } from '@/lib/constants';
 import { media } from '@/lib/media';
 import { SectionNumber } from '@/components/ui/SectionNumber';
+import { ImageLightbox } from '@/components/ui/ImageLightbox';
 
 gsap.registerPlugin(ScrollTrigger);
 
 export function WorkGrid() {
   const sectionRef = useRef<HTMLElement>(null);
   const headingRef = useRef<HTMLDivElement>(null);
+  const [activeImage, setActiveImage] = useState<{
+    src: string;
+    alt: string;
+    title: string;
+    meta: string;
+  } | null>(null);
 
   useEffect(() => {
     if (!sectionRef.current) return;
@@ -112,9 +119,19 @@ export function WorkGrid() {
         {/* Two photos side by side */}
         <div className="mt-8 grid grid-cols-1 gap-8 md:grid-cols-2">
           {/* Photo 1 */}
-          <div
-            className="work-item group relative overflow-hidden rounded-lg aspect-[4/3]"
-            data-cursor-text="Ver"
+          <button
+            type="button"
+            className="work-item group relative overflow-hidden rounded-lg aspect-[4/3] text-left"
+            data-cursor-text="Ampliar"
+            aria-label="Ampliar fotografía aérea de Imayina"
+            onClick={() =>
+              setActiveImage({
+                src: media.images.imayina,
+                alt: 'Imayina — Arquitectura aérea',
+                title: 'Imayina',
+                meta: 'Arquitectura · CDMX',
+              })
+            }
           >
             <div className="absolute inset-0 will-change-transform transition-transform duration-700 ease-out group-hover:scale-105">
               <Image
@@ -141,12 +158,22 @@ export function WorkGrid() {
               <p className="mt-1 text-sm text-white/60">CDMX</p>
             </div>
             <div className="absolute inset-0 rounded-lg border border-transparent transition-all duration-500 group-hover:border-white/20" />
-          </div>
+          </button>
 
           {/* Photo 2 */}
-          <div
-            className="work-item group relative overflow-hidden rounded-lg aspect-[4/3]"
-            data-cursor-text="Ver"
+          <button
+            type="button"
+            className="work-item group relative overflow-hidden rounded-lg aspect-[4/3] text-left"
+            data-cursor-text="Ampliar"
+            aria-label="Ampliar fotografía aérea del estadio en Acapulco"
+            onClick={() =>
+              setActiveImage({
+                src: media.images.dji0633,
+                alt: 'Vista aérea del estadio en Acapulco',
+                title: 'Estadio',
+                meta: 'Deportes · Acapulco',
+              })
+            }
           >
             <div className="absolute inset-0 will-change-transform transition-transform duration-700 ease-out group-hover:scale-105">
               <Image
@@ -173,9 +200,10 @@ export function WorkGrid() {
               <p className="mt-1 text-sm text-white/60">Acapulco</p>
             </div>
             <div className="absolute inset-0 rounded-lg border border-transparent transition-all duration-500 group-hover:border-white/20" />
-          </div>
+          </button>
         </div>
       </div>
+      <ImageLightbox image={activeImage} onClose={() => setActiveImage(null)} />
     </section>
   );
 }

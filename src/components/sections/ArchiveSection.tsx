@@ -1,7 +1,8 @@
 'use client';
 
 import Link from 'next/link';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { ImageLightbox } from '@/components/ui/ImageLightbox';
 
 interface ArchiveEntry {
   idx: string;
@@ -35,6 +36,12 @@ const ENTRIES: ArchiveEntry[] = [
  */
 export function ArchiveSection() {
   const listRef = useRef<HTMLDivElement>(null);
+  const [activeImage, setActiveImage] = useState<{
+    src: string;
+    alt: string;
+    title: string;
+    meta: string;
+  } | null>(null);
 
   useEffect(() => {
     if (!listRef.current) return;
@@ -114,12 +121,31 @@ export function ArchiveSection() {
 
         {ENTRIES.map((e) => {
           const bgStyle = e.thumbUrl ? { backgroundImage: `url(${e.thumbUrl})` } : undefined;
+          const title = entryTitleToText(e.title);
           return (
-            <div className="arch-row" key={e.idx}>
+            <div
+              className="arch-row"
+              key={e.idx}
+            >
+              <button
+                type="button"
+                className="row-hit"
+                onClick={() => {
+                  if (!e.thumbUrl) return;
+                  setActiveImage({
+                    src: e.thumbUrl,
+                    alt: `${title} — fotografía aérea de ${e.loc}, ${e.year}`,
+                    title,
+                    meta: `${e.cat} · ${e.loc} · ${e.year}`,
+                  });
+                }}
+                aria-label={`Ampliar ${title}`}
+                disabled={!e.thumbUrl}
+              />
               <span className="idx">{e.idx}</span>
-              <div className="thumb-wrap">
+              <span className="thumb-wrap" aria-hidden="true">
                 <div className={`thumb ${e.thumb}`} style={bgStyle} />
-              </div>
+              </span>
               <div className="title">{e.title}</div>
               <span className="cat">{e.cat}</span>
               <span className="loc">{e.loc}</span>
@@ -138,6 +164,17 @@ export function ArchiveSection() {
           </Link>
         </div>
       </div>
+      <ImageLightbox image={activeImage} onClose={() => setActiveImage(null)} />
     </section>
   );
+}
+
+function entryTitleToText(title: React.ReactNode): string {
+  if (typeof title === 'string' || typeof title === 'number') return String(title);
+  if (Array.isArray(title)) return title.map(entryTitleToText).join('');
+  if (title && typeof title === 'object' && 'props' in title) {
+    const props = title.props as { children?: React.ReactNode };
+    return entryTitleToText(props.children);
+  }
+  return '';
 }
