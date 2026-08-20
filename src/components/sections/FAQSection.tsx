@@ -129,9 +129,9 @@ export function FAQSection() {
   return (
     <section ref={sectionRef} id="faq" className="faq">
       <div className="sect-top faq-head">
-        <h2>
+        <h1>
           Dudas frecuentes <span className="b">antes de volar.</span>
-        </h2>
+        </h1>
         <div className="faq-meta">
           § 07 / Preguntas
           <br />

@@ -47,7 +47,7 @@ export function WhatsAppButton() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Contactar por WhatsApp"
-      className="fixed bottom-6 right-6 z-[var(--z-modal)] flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] shadow-[0_4px_20px_rgba(37,211,102,0.4)] transition-shadow duration-300 hover:shadow-[0_4px_30px_rgba(37,211,102,0.6)]"
+      className="fixed bottom-6 right-6 z-[var(--z-float)] flex h-14 w-14 items-center justify-center rounded-full bg-[#25D366] shadow-[0_4px_20px_rgba(37,211,102,0.4)] transition-shadow duration-300 hover:shadow-[0_4px_30px_rgba(37,211,102,0.6)]"
       style={{ scale: 0.5, opacity: 0 }}
       data-cursor-text="WhatsApp"
     >

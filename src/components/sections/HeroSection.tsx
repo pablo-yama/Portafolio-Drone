@@ -67,6 +67,7 @@ export function HeroSection() {
         </div>
 
         <h1>
+          <span className="h1-svc">Fotografía y video aéreo con drone · CDMX</span>
           <span className="reveal d1">
             <span>Una cámara,</span>
           </span>
@@ -105,17 +106,18 @@ export function HeroSection() {
           </a>
         </div>
 
+        {/* Cifras alineadas con STATS (constants.ts) y la bitácora del FAQ */}
         <div className="hero-foot fade-up">
           <div>
-            Vuelos
+            Horas de vuelo
             <span className="v">
-              <CountUp target={1240} />+
+              <CountUp target={300} />+
             </span>
           </div>
           <div>
-            Clientes
+            Proyectos
             <span className="v">
-              <CountUp target={140} />+
+              <CountUp target={10} />+
             </span>
           </div>
           <div>

@@ -47,7 +47,7 @@ export function buildLocalBusiness() {
     image: `${SITE_URL}/og-image.jpg`,
     telephone: '+525585699724',
     email: 'pabloyamamoto19@gmail.com',
-    priceRange: 'MXN 4,500–40,000',
+    priceRange: 'MXN 4,500–28,000',
     currenciesAccepted: 'MXN',
     paymentAccepted: ['Transferencia bancaria', 'PayPal', 'Efectivo'],
     areaServed: [
@@ -144,11 +144,20 @@ export function buildPerson() {
     familyName: 'Yamamoto Magaña',
     jobTitle: 'Piloto Profesional de Drones y Fotógrafo Aéreo',
     description:
-      'Piloto profesional de drones especializado en fotografía y video aéreo cinematográfico en la Ciudad de México.',
-    url: `${SITE_URL}/about`,
+      'Piloto profesional de drones con más de 10 años de experiencia en fotografía y video aéreo cinematográfico en la Ciudad de México. ' +
+      'Especialista en arquitectura, real estate, cobertura de eventos e inspección de infraestructura. ' +
+      'Opera bajo normativa AFAC con seguro de responsabilidad civil.',
+    url: `${SITE_URL}/#about`,
     email: 'pabloyamamoto19@gmail.com',
     telephone: '+525585699724',
     image: `${SITE_URL}/img/Pablo.jpg`,
+    nationality: { '@type': 'Country', name: 'México' },
+    address: {
+      '@type': 'PostalAddress',
+      addressLocality: 'Polanco',
+      addressRegion: 'Ciudad de México',
+      addressCountry: 'MX',
+    },
     sameAs: [
       'https://www.instagram.com/the_pym_project/',
       'https://stock.adobe.com/es/contributor/211067778/Pablo',
@@ -161,14 +170,34 @@ export function buildPerson() {
         '@type': 'City',
         name: 'Ciudad de México',
       },
+      skills: [
+        'Fotografía aérea con drones',
+        'Video aéreo 4K',
+        'Hyperlapse aéreo',
+        'Inspección de infraestructura con drones',
+        'Color grading cinematográfico',
+        'Fotogrametría y ortomosaicos',
+      ],
     },
     knowsAbout: [
       'Fotografía aérea con drones',
-      'Video aéreo 4K',
+      'Video aéreo 4K cinematográfico',
       'Hyperlapse aéreo',
-      'Inspección de infraestructura con drones',
-      'Fotografía inmobiliaria aérea',
-      'Post-producción cinematográfica',
+      'Inspección de infraestructura RPAS',
+      'Normativa AFAC para drones comerciales',
+      'Post-producción en DaVinci Resolve',
+    ],
+    hasCredential: [
+      {
+        '@type': 'EducationalOccupationalCredential',
+        name: 'Registro de Operador RPAS — AFAC México',
+        credentialCategory: 'license',
+        recognizedBy: {
+          '@type': 'Organization',
+          name: 'Agencia Federal de Aviación Civil (AFAC)',
+          url: 'https://www.gob.mx/afac',
+        },
+      },
     ],
   };
 }
@@ -259,7 +288,7 @@ export function buildArchiveImageObjects() {
     copyrightHolder: { '@id': `${SITE_URL}/#person` },
     copyrightNotice: `© ${entry.year} Pablo Yamamoto Magaña — Todos los derechos reservados`,
     creditText: 'Pablo Yamamoto Aerial',
-    license: `${SITE_URL}/about`,
+    license: `${SITE_URL}/contact`,
     acquireLicensePage: `${SITE_URL}/contact`,
     locationCreated: {
       '@type': 'Place',

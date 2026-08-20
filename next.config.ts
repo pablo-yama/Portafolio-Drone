@@ -19,7 +19,7 @@ const securityHeaders = [
   },
   {
     key: 'Content-Security-Policy',
-    value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval'; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:; media-src 'self' https:; frame-src https://www.youtube.com https://youtube.com;",
+    value: "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://www.googletagmanager.com https://www.google-analytics.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:; media-src 'self' https:; frame-src https://www.youtube.com https://youtube.com;",
   },
 ];
 
@@ -60,6 +60,18 @@ const nextConfig: NextConfig = {
           },
         ],
         destination: 'https://yamamotoaerial.com/:path*',
+        permanent: true,
+      },
+      /* /work y /about eran stubs vacíos indexables; el contenido real vive en
+         /archivo y en la sección #about del home. */
+      {
+        source: '/work',
+        destination: '/archivo',
+        permanent: true,
+      },
+      {
+        source: '/about',
+        destination: '/#about',
         permanent: true,
       },
     ];

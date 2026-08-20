@@ -122,7 +122,7 @@ export default function ContactPage() {
             <div className="cproc">
               <div className="s">
                 <div className="idx">01 · Envías</div>
-                <h5>Briefing inicial</h5>
+                <h2>Briefing inicial</h2>
                 <p>
                   Describe el proyecto, ubicaciones, fechas y formato de entrega
                   deseado.
@@ -130,7 +130,7 @@ export default function ContactPage() {
               </div>
               <div className="s">
                 <div className="idx">02 · Revisamos</div>
-                <h5>Llamada &amp; propuesta</h5>
+                <h2>Llamada &amp; propuesta</h2>
                 <p>
                   Una call de 20 min, alcance técnico y envío de cotización
                   formal en 48 h.
@@ -138,7 +138,7 @@ export default function ContactPage() {
               </div>
               <div className="s">
                 <div className="idx">03 · Volamos</div>
-                <h5>Captura &amp; entrega</h5>
+                <h2>Captura &amp; entrega</h2>
                 <p>
                   Plan de vuelo, operación y postproducción — todo en una
                   pieza.

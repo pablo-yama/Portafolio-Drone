@@ -37,6 +37,7 @@ export function Navigation() {
   const pathname = usePathname();
   const router = useRouter();
   const [altText, setAltText] = useState('ALT 120M');
+  const [menuOpen, setMenuOpen] = useState(false);
 
   const isHome = pathname === '/';
 
@@ -86,31 +87,64 @@ export function Navigation() {
   };
 
   return (
-    <header className="bar">
-      <Link href="/" className="brand" aria-label="Ir al inicio">
-        <span className="sig" />
-        YAMAMOTO · AERIAL <span style={{ color: 'var(--dim-2)' }}>/ MX</span>
-      </Link>
-      <div className="mid">
-        {LINKS.map((l) => (
-          <Link
-            key={l.href}
-            href={resolveHref(l.href)}
-            onClick={(e) => handleNavClick(e, l.href)}
-            style={isActive(l.href) ? { color: 'var(--signal)' } : undefined}
+    <>
+      <header className="bar">
+        <Link href="/" className="brand" aria-label="Ir al inicio">
+          <span className="sig" />
+          YAMAMOTO · AERIAL <span style={{ color: 'var(--dim-2)' }}>/ MX</span>
+        </Link>
+        <div className="mid">
+          {LINKS.map((l) => (
+            <Link
+              key={l.href}
+              href={resolveHref(l.href)}
+              onClick={(e) => handleNavClick(e, l.href)}
+              style={isActive(l.href) ? { color: 'var(--signal)' } : undefined}
+            >
+              <span className="n">{l.n}</span>
+              {l.label}
+            </Link>
+          ))}
+        </div>
+        <div className="right">
+          {/* altBar text is mirrored from the live telemetry simulator */}
+          <span className="alt" id="altBar">
+            {altText}
+          </span>
+          <span className="live">Disponible</span>
+          <button
+            type="button"
+            className={`nav-burger${menuOpen ? ' open' : ''}`}
+            aria-label={menuOpen ? 'Cerrar menú' : 'Abrir menú'}
+            aria-expanded={menuOpen}
+            onClick={() => setMenuOpen((o) => !o)}
           >
-            <span className="n">{l.n}</span>
-            {l.label}
-          </Link>
-        ))}
-      </div>
-      <div className="right">
-        {/* altBar text is mirrored from the live telemetry simulator */}
-        <span className="alt" id="altBar">
-          {altText}
-        </span>
-        <span className="live">Disponible</span>
-      </div>
-    </header>
+            <span />
+            <span />
+            <span />
+          </button>
+        </div>
+      </header>
+      {menuOpen && (
+        <nav className="mobile-menu" aria-label="Menú móvil">
+          {LINKS.map((l) => (
+            <Link
+              key={l.href}
+              href={resolveHref(l.href)}
+              onClick={(e) => {
+                handleNavClick(e, l.href);
+                setMenuOpen(false);
+              }}
+            >
+              <span className="n">{l.n}</span>
+              {l.label}
+            </Link>
+          ))}
+          <a className="mm-cta" href="/contact" onClick={() => setMenuOpen(false)}>
+            Cotiza tu vuelo →
+          </a>
+        </nav>
+      )}
+    </>
   );
 }
