@@ -20,7 +20,7 @@ export function Footer() {
       </div>
 
       <div>
-        <h5>Sitio</h5>
+        <p className="foot-h">Sitio</p>
         <ul>
           <li>
             <a href="/#archive">Archivo</a>
@@ -41,7 +41,7 @@ export function Footer() {
       </div>
 
       <div>
-        <h5>Servicios</h5>
+        <p className="foot-h">Servicios</p>
         <ul>
           <li>Arquitectura &amp; real estate</li>
           <li>Eventos &amp; festivales</li>
@@ -52,7 +52,7 @@ export function Footer() {
       </div>
 
       <div>
-        <h5>Canales</h5>
+        <p className="foot-h">Canales</p>
         <ul>
           <li>
             <a

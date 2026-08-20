@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { buildBreadcrumbList, SITE_URL } from '@/lib/jsonLd';
 
 export const metadata: Metadata = {
-  title: 'Contacto y Cotización — Drones CDMX',
+  title: 'Contacto y Cotización para Vuelos con Drone',
   description:
     'Solicita tu cotización gratuita para fotografía y video aéreo con drones en Ciudad de México. Respuesta en 24 horas por WhatsApp o email.',
   alternates: {

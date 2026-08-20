@@ -1,6 +1,7 @@
 'use client';
 
 import Link from 'next/link';
+import Image from 'next/image';
 import { useEffect, useRef, useState } from 'react';
 import { ImageLightbox } from '@/components/ui/ImageLightbox';
 
@@ -122,6 +123,7 @@ export function ArchiveSection() {
         {ENTRIES.map((e) => {
           const bgStyle = e.thumbUrl ? { backgroundImage: `url(${e.thumbUrl})` } : undefined;
           const title = entryTitleToText(e.title);
+          const alt = `${title} — fotografía aérea con drone de ${e.loc}, ${e.year}`;
           return (
             <div
               className="arch-row"
@@ -134,7 +136,7 @@ export function ArchiveSection() {
                   if (!e.thumbUrl) return;
                   setActiveImage({
                     src: e.thumbUrl,
-                    alt: `${title} — fotografía aérea de ${e.loc}, ${e.year}`,
+                    alt,
                     title,
                     meta: `${e.cat} · ${e.loc} · ${e.year}`,
                   });
@@ -143,8 +145,18 @@ export function ArchiveSection() {
                 disabled={!e.thumbUrl}
               />
               <span className="idx">{e.idx}</span>
-              <span className="thumb-wrap" aria-hidden="true">
-                <div className={`thumb ${e.thumb}`} style={bgStyle} />
+              <span className="thumb-wrap">
+                <div className={`thumb ${e.thumb}`}>
+                  {e.thumbUrl && (
+                    <Image
+                      src={e.thumbUrl}
+                      alt={alt}
+                      fill
+                      sizes="(max-width: 760px) 92px, 180px"
+                      style={{ objectFit: 'cover' }}
+                    />
+                  )}
+                </div>
               </span>
               <div className="title">{e.title}</div>
               <span className="cat">{e.cat}</span>

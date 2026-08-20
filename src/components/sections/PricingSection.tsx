@@ -241,6 +241,30 @@ export function PricingSection() {
         ))}
       </div>
 
+      <div className="tier-table-wrap">
+        <table className="tier-table">
+          <caption>Comparativa de paquetes — {group.label}</caption>
+          <thead>
+            <tr>
+              <th scope="col">Paquete</th>
+              <th scope="col">Desde</th>
+              <th scope="col">Alcance</th>
+            </tr>
+          </thead>
+          <tbody>
+            {group.tiers.map((t) => (
+              <tr key={t.name}>
+                <th scope="row">{t.name}</th>
+                <td className="amt">
+                  {t.amt} {t.cur}
+                </td>
+                <td>{t.desc}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+
       <div
         style={{
           marginTop: 40,

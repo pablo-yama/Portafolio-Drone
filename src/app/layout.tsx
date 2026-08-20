@@ -1,9 +1,14 @@
 import type { Metadata } from 'next';
 import { Fraunces, JetBrains_Mono } from 'next/font/google';
+import Script from 'next/script';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
 import { buildGlobalStructuredData, SITE_URL } from '@/lib/jsonLd';
+import { WhatsAppButton } from '@/components/ui/WhatsAppButton';
+
+const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID;
+const GSC_VERIFICATION = process.env.NEXT_PUBLIC_GSC_VERIFICATION;
 
 const fraunces = Fraunces({
   subsets: ['latin'],
@@ -30,7 +35,8 @@ export const metadata: Metadata = {
     'Fotografía y video aéreo profesional con drones en Ciudad de México. ' +
     'Más de 10 años de experiencia en vuelos cinematográficos. ' +
     'Desde $4,500 MXN. Cotiza gratis con Pablo Yamamoto.',
-  authors: [{ name: 'Pablo Yamamoto Magaña', url: `${SITE_URL}/about` }],
+  authors: [{ name: 'Pablo Yamamoto Magaña', url: `${SITE_URL}/#about` }],
+  ...(GSC_VERIFICATION ? { verification: { google: GSC_VERIFICATION } } : {}),
   keywords: [
     'piloto de drones CDMX',
     'fotografía aérea Ciudad de México',
@@ -96,7 +102,7 @@ export default function RootLayout({
 
   return (
     <html
-      lang="es"
+      lang="es-MX"
       className={`${fraunces.variable} ${jetBrainsMono.variable}`}
     >
       <head>
@@ -111,8 +117,20 @@ export default function RootLayout({
       <body>
         {children}
         <div className="vignette" aria-hidden="true" />
+        <WhatsAppButton />
         <SpeedInsights />
         <Analytics />
+        {GA4_ID && (
+          <>
+            <Script
+              src={`https://www.googletagmanager.com/gtag/js?id=${GA4_ID}`}
+              strategy="afterInteractive"
+            />
+            <Script id="ga4-init" strategy="afterInteractive">
+              {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','${GA4_ID}');`}
+            </Script>
+          </>
+        )}
       </body>
     </html>
   );

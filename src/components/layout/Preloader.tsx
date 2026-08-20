@@ -84,12 +84,12 @@ export function Preloader({ progress, isComplete, onComplete }: PreloaderProps) 
       className="fixed inset-0 z-[var(--z-preloader)] flex flex-col items-center justify-center bg-[var(--color-bg)]"
     >
       <div ref={logoRef} className="flex flex-col items-center gap-8">
-        <h1
+        <div
           className="text-4xl font-bold uppercase tracking-[0.3em]"
           style={{ fontFamily: 'var(--font-clash)' }}
         >
           PABLO<span className="text-[var(--color-accent)]">.</span>
-        </h1>
+        </div>
         <p className="text-xs uppercase tracking-[0.4em] text-[var(--color-text-muted)]">
           Drone Pilot &amp; Aerial Photographer
         </p>

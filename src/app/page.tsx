@@ -1,6 +1,7 @@
 import { Navigation } from '@/components/layout/Navigation';
 import { Footer } from '@/components/layout/Footer';
 import { HeroSection } from '@/components/sections/HeroSection';
+import { TldrSection } from '@/components/sections/TldrSection';
 import { ArchiveSection } from '@/components/sections/ArchiveSection';
 import { AboutSection } from '@/components/sections/AboutSection';
 import { LedgerSection } from '@/components/sections/LedgerSection';
@@ -14,6 +15,7 @@ export default function Home() {
       <Navigation />
       <main>
         <HeroSection />
+        <TldrSection />
         <ArchiveSection />
         <AboutSection />
         <LedgerSection />

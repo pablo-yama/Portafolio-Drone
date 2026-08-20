@@ -1,6 +1,7 @@
 'use client';
 
 import { useMemo, useState, useRef, useEffect } from 'react';
+import Image from 'next/image';
 import type {
   ArchiveEntry,
   ArchiveCategory,
@@ -155,14 +156,17 @@ export function ArchiveGrid({ entries, categories }: ArchiveGridProps) {
                   aria-label={`Ampliar ${stripTags(it.title)}`}
                   disabled={!it.thumbUrl}
                 >
-                  <div
-                    className={`bg ${it.thumb}`}
-                    style={
-                      it.thumbUrl
-                        ? { backgroundImage: `url(${it.thumbUrl})` }
-                        : undefined
-                    }
-                  />
+                  <div className={`bg ${it.thumb}`}>
+                    {it.thumbUrl && (
+                      <Image
+                        src={it.thumbUrl}
+                        alt={`${stripTags(it.title)} — fotografía aérea con drone de ${it.loc}, ${it.year}`}
+                        fill
+                        sizes="(max-width: 760px) 100vw, (max-width: 1100px) 50vw, 33vw"
+                        style={{ objectFit: 'cover' }}
+                      />
+                    )}
+                  </div>
                   <span className="idx">#{it.id}</span>
                   <span className="cat">{it.cat}</span>
                   <span className="fmt">{it.fmt}</span>
@@ -212,15 +216,18 @@ export function ArchiveGrid({ entries, categories }: ArchiveGridProps) {
                   disabled={!it.thumbUrl}
                 />
                 <span className="idx">#{it.id}</span>
-                <span className="thumb" aria-hidden="true">
-                  <div
-                    className={`bg ${it.thumb}`}
-                    style={
-                      it.thumbUrl
-                        ? { backgroundImage: `url(${it.thumbUrl})` }
-                        : undefined
-                    }
-                  />
+                <span className="thumb">
+                  <div className={`bg ${it.thumb}`}>
+                    {it.thumbUrl && (
+                      <Image
+                        src={it.thumbUrl}
+                        alt={`${stripTags(it.title)} — fotografía aérea con drone de ${it.loc}, ${it.year}`}
+                        fill
+                        sizes="104px"
+                        style={{ objectFit: 'cover' }}
+                      />
+                    )}
+                  </div>
                 </span>
                 <div
                   className="title"
