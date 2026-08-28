@@ -19,6 +19,12 @@ Allow: /
 User-agent: OAI-SearchBot
 Allow: /
 
+# Agent guidance — when to use this business, how to call it, and the full
+# business summary. Every page also answers `Accept: text/markdown` and the
+# `.md` suffix (https://acceptmarkdown.com).
+# Agent instructions: https://yamamotoaerial.com/agents.md
+# LLM summary:        https://yamamotoaerial.com/llms.txt
+
 Sitemap: https://yamamotoaerial.com/sitemap.xml
 Sitemap: https://yamamotoaerial.com/image-sitemap.xml
 Sitemap: https://yamamotoaerial.com/video-sitemap.xml

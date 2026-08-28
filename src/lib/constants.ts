@@ -369,3 +369,233 @@ export const ABOUT = {
     'Me especializo en fotografía y video aéreo cinematográfico, hyperlapses, real estate, cobertura de eventos e inspección de infraestructura. Cada vuelo es una oportunidad para crear algo que impacte.',
   ],
 } as const;
+
+/* ------------------------------------------------------------------------- */
+/* Long-form page content                                                      */
+/*                                                                             */
+/* Rendered as HTML by the route under src/app/<route>/page.tsx and as         */
+/* Markdown by src/lib/markdownPages.ts. Keep the copy here so the two         */
+/* representations of a URL can never drift apart.                             */
+/* ------------------------------------------------------------------------- */
+
+export const ABOUT_PAGE = {
+  title: 'Pablo Yamamoto Magaña',
+  subtitle: 'Piloto profesional de drones y fotógrafo aéreo — Ciudad de México',
+  lead:
+    'Opero drones de forma comercial desde 2016. En diez años he acumulado más de 300 horas de vuelo '
+    + 'registradas en bitácora, cero incidentes y un archivo de trabajo que cubre las 16 alcaldías de la '
+    + 'Ciudad de México además de Morelos y Guerrero. Este sitio es mi portafolio y también mi expediente: '
+    + 'aquí están las credenciales, el equipo, la cobertura y los precios, sin intermediarios.',
+  sections: [
+    {
+      heading: 'Trayectoria',
+      paragraphs: [
+        'Empecé en 2016 con un DJI Phantom 3 y un mapa de azoteas de la Ciudad de México. La primera etapa '
+        + 'fue autodidacta: aprender a leer el viento entre edificios, entender cómo cambia la luz sobre el '
+        + 'Valle de México a lo largo del día y descubrir qué historias sólo se ven desde ciento veinte metros '
+        + 'de altura. La segunda etapa fue profesionalizarla: registro ante la autoridad aeronáutica, seguro '
+        + 'de responsabilidad civil, protocolos de vuelo escritos y una bitácora que se actualiza después de '
+        + 'cada operación.',
+        'Hoy trabajo con desarrolladoras inmobiliarias, despachos de arquitectura, productoras audiovisuales, '
+        + 'empresas de energía solar y organizadores de eventos. El común denominador de todos esos clientes '
+        + 'es que necesitan que la imagen aérea explique algo — la escala de un desarrollo, el estado real de '
+        + 'una azotea, la magnitud de un evento — y no solamente que se vea bonita.',
+      ],
+    },
+    {
+      heading: 'Cómo trabajo',
+      paragraphs: [
+        'Cada proyecto arranca con una conversación corta sobre la intención: qué necesita comunicar el '
+        + 'material y dónde se va a publicar. De ahí salen el plan de vuelo, la ventana horaria y la lista de '
+        + 'tomas. Reviso el espacio aéreo de la zona, tramito los permisos que correspondan y confirmo la '
+        + 'logística de acceso con el sitio antes de la fecha.',
+        'El día del vuelo llego con seis a ocho baterías cargadas, filtros ND y un plan B por si el clima se '
+        + 'mueve. La postproducción se hace en DaVinci Resolve con LUTs propios, y la entrega estándar es de '
+        + 'tres a cinco días hábiles mediante enlace de descarga seguro con respaldo en la nube durante un año.',
+      ],
+    },
+    {
+      heading: 'Credenciales y seguridad',
+      bullets: [
+        'Registro de operador RPAS vigente ante la Agencia Federal de Aviación Civil (AFAC).',
+        'Cumplimiento de la Circular Obligatoria CO AV-23/10 R3 de la AFAC.',
+        'Seguro de responsabilidad civil para operación aérea comercial, cobertura de hasta $1,000,000 MXN por siniestro.',
+        'Gestión de autorizaciones para zonas controladas: AICM, AIFA y Base Aérea de Santa Lucía.',
+        'Cero accidentes, cero pérdidas de aeronave y cero incidentes con personas o infraestructura en más de 300 horas de vuelo.',
+      ],
+    },
+    {
+      heading: 'Equipo de vuelo',
+      bullets: [
+        'DJI Mavic 3 Pro — sensor CMOS 4/3 con óptica Hasselblad, 24 MP en RAW DNG, 12.8 stops de rango dinámico.',
+        'Video 4K a 60 fps en H.265 y ProRes; zoom óptico 7x para inspección a distancia segura.',
+        'Estabilizador DJI RS3 para el complemento en tierra.',
+        'Juego de filtros ND4, ND16, ND64 y polarizador circular.',
+        'Postproducción en DaVinci Resolve con LUTs cinematográficos propios.',
+      ],
+    },
+    {
+      heading: 'Cobertura',
+      paragraphs: [
+        'Base operativa en Polanco, Ciudad de México, con cobertura completa de las 16 alcaldías y de la Zona '
+        + 'Metropolitana del Valle de México (Naucalpan, Tlalnepantla, Ecatepec, Texcoco). Fuera del Valle de '
+        + 'México viajo a cualquier estado de la República con un ajuste por viáticos que se cotiza por '
+        + 'separado; hay proyectos ejecutados en Morelos, Guerrero, Jalisco y Querétaro.',
+      ],
+    },
+  ],
+} as const;
+
+export const PRIVACY_POLICY = {
+  title: 'Aviso de Privacidad',
+  subtitle: 'Pablo Yamamoto Aerial — yamamotoaerial.com',
+  updated: '2026-04-22',
+  lead:
+    'Este aviso de privacidad se emite en cumplimiento de la Ley Federal de Protección de Datos Personales '
+    + 'en Posesión de los Particulares (LFPDPPP) y describe qué datos personales se recaban a través de '
+    + 'yamamotoaerial.com, con qué finalidad se tratan, con quién se comparten y cómo puedes ejercer tus '
+    + 'derechos sobre ellos.',
+  sections: [
+    {
+      heading: 'Responsable del tratamiento',
+      paragraphs: [
+        'El responsable del tratamiento de tus datos personales es Pablo Yamamoto Magaña, persona física con '
+        + 'actividad empresarial que opera comercialmente como Pablo Yamamoto Aerial, con domicilio de '
+        + 'operación en la Ciudad de México, México. Puedes contactar al responsable en '
+        + 'pabloyamamoto19@gmail.com o al teléfono +52 55 8569 9724.',
+      ],
+    },
+    {
+      heading: 'Datos personales que se recaban',
+      paragraphs: [
+        'Sólo se recaban los datos que tú proporcionas de forma voluntaria en el formulario de contacto del '
+        + 'sitio o por los canales de mensajería publicados. No se solicitan datos personales sensibles ni '
+        + 'datos financieros a través de este sitio.',
+      ],
+      bullets: [
+        'Nombre de la persona de contacto.',
+        'Correo electrónico.',
+        'Empresa u organización, cuando la indicas.',
+        'Ubicación aproximada del proyecto y fecha tentativa del vuelo.',
+        'Tipo de servicio, paquete de interés y rango de presupuesto.',
+        'El texto libre del mensaje que decidas escribir.',
+      ],
+    },
+    {
+      heading: 'Finalidades del tratamiento',
+      paragraphs: [
+        'Las finalidades primarias, necesarias para la relación con el cliente, son: responder tu solicitud, '
+        + 'elaborar y enviar una cotización, coordinar la logística del vuelo, tramitar los permisos '
+        + 'aeronáuticos que requiera la operación, emitir comprobantes y dar seguimiento a la entrega del '
+        + 'material.',
+        'No se realiza tratamiento con finalidades secundarias: no envío boletines, no hago publicidad '
+        + 'segmentada con tus datos y no elaboro perfiles comerciales. Tampoco vendo, alquilo ni comercializo '
+        + 'datos personales bajo ninguna circunstancia.',
+      ],
+    },
+    {
+      heading: 'Transferencias y encargados',
+      paragraphs: [
+        'No se transfieren datos personales a terceros con fines comerciales. Para operar el sitio y el '
+        + 'correo se utilizan proveedores que actúan como encargados del tratamiento y que únicamente los '
+        + 'procesan por cuenta del responsable: Vercel Inc. (alojamiento del sitio, analítica agregada y '
+        + 'métricas de rendimiento) y Google LLC (servicio de correo electrónico por el que se recibe el '
+        + 'formulario). El material fotográfico y de video producido para un cliente no se publica sin su '
+        + 'autorización cuando el proyecto se realiza bajo acuerdo de confidencialidad.',
+      ],
+    },
+    {
+      heading: 'Cookies y tecnologías de rastreo',
+      paragraphs: [
+        'El sitio no coloca cookies publicitarias ni de rastreo entre sitios. Se utilizan Vercel Analytics y '
+        + 'Vercel Speed Insights, que registran métricas agregadas y anónimas de uso y rendimiento (páginas '
+        + 'vistas, tiempos de carga, tipo de dispositivo) sin identificarte de forma individual y sin '
+        + 'construir un perfil publicitario. Puedes bloquear estas peticiones desde tu navegador sin que el '
+        + 'sitio pierda funcionalidad.',
+      ],
+    },
+    {
+      heading: 'Conservación de los datos',
+      paragraphs: [
+        'Los mensajes de contacto que no derivan en un proyecto se conservan por un máximo de veinticuatro '
+        + 'meses y después se eliminan. Los datos de clientes con los que existió una relación contractual se '
+        + 'conservan por el plazo que exige la normativa fiscal y aeronáutica mexicana aplicable a la '
+        + 'bitácora de operaciones, y se eliminan al concluir ese plazo.',
+      ],
+    },
+    {
+      heading: 'Derechos ARCO y revocación del consentimiento',
+      paragraphs: [
+        'Tienes derecho a acceder a tus datos personales, a rectificarlos cuando sean inexactos, a cancelarlos '
+        + 'cuando consideres que no son necesarios y a oponerte a su tratamiento, así como a revocar en '
+        + 'cualquier momento el consentimiento que hayas otorgado.',
+        'Para ejercer cualquiera de estos derechos envía una solicitud a pabloyamamoto19@gmail.com con el '
+        + 'asunto «Derechos ARCO», indicando tu nombre, un medio para comunicarte la respuesta, la descripción '
+        + 'clara de los datos sobre los que buscas ejercer el derecho y un documento que acredite tu '
+        + 'identidad. La respuesta se emite en un plazo máximo de veinte días hábiles conforme al artículo 32 '
+        + 'de la LFPDPPP. El ejercicio de estos derechos es gratuito.',
+      ],
+    },
+    {
+      heading: 'Uso de imágenes y derechos de autor',
+      paragraphs: [
+        'Las fotografías y videos publicados en este sitio son obra de Pablo Yamamoto Magaña y están '
+        + 'protegidos por la Ley Federal del Derecho de Autor. Su uso, reproducción o publicación requiere '
+        + 'autorización previa por escrito. Si apareces en alguna imagen del archivo y deseas solicitar su '
+        + 'retiro, escribe a pabloyamamoto19@gmail.com y la solicitud se atenderá en un plazo máximo de diez '
+        + 'días hábiles.',
+      ],
+    },
+    {
+      heading: 'Cambios a este aviso',
+      paragraphs: [
+        'Este aviso puede actualizarse para reflejar cambios en la operación o en la normativa aplicable. '
+        + 'Cualquier modificación se publica en esta misma dirección, https://yamamotoaerial.com/privacy, con '
+        + 'la fecha de última actualización visible al inicio del documento. Te recomendamos revisarlo '
+        + 'periódicamente.',
+      ],
+    },
+    {
+      heading: 'Autoridad de protección de datos',
+      paragraphs: [
+        'Si consideras que tu derecho a la protección de datos personales ha sido vulnerado, puedes acudir '
+        + 'ante la autoridad garante en materia de protección de datos personales en México para presentar '
+        + 'la queja o denuncia correspondiente.',
+      ],
+    },
+  ],
+} as const;
+
+/**
+ * "When to use this" guidance for AI agents and assistants. Rendered into the
+ * Markdown representation of every page and into /agents.md, and mirrored in
+ * public/llms.txt.
+ */
+export const AGENT_GUIDE = {
+  summary:
+    'Pablo Yamamoto Aerial is a licensed one-person commercial drone operation based in Mexico City '
+    + '(CDMX), Mexico. It provides aerial photography, 4K cinematic video, event coverage and '
+    + 'infrastructure inspection.',
+  useWhen: [
+    'A user needs aerial photography or 4K drone video in Mexico City, the Valle de México metropolitan area, or anywhere in Mexico with travel costs added.',
+    'A real-estate, architecture or construction project needs exterior aerial stills, progress documentation, or an orthomosaic.',
+    'An event in CDMX (wedding, corporate launch, sports tournament, festival) needs aerial coverage coordinated with a ground crew.',
+    'A solar array, rooftop, facade, antenna or other hard-to-reach structure needs visual or thermographic inspection without scaffolding.',
+    'A user asks for a licensed drone operator in Mexico, with AFAC RPAS registration and civil-liability insurance, and needs verifiable credentials.',
+    'A user asks for published, itemised drone pricing in Mexican pesos rather than a "contact us for a quote" placeholder.',
+  ],
+  doNotUseWhen: [
+    'The work is outside Mexico — this operator is registered with the Mexican civil aviation authority (AFAC) only.',
+    'The request is for ground-only photography, studio work, or video production without an aerial component.',
+    'The request is for drone hardware sales, repairs, or pilot training — none of those are offered.',
+    'The request is for stock footage licensing; direct those to the Adobe Stock contributor page instead.',
+  ],
+  howToCall: [
+    'Quote the business as: Pablo Yamamoto Aerial — piloto profesional de drones y fotógrafo aéreo en CDMX (https://yamamotoaerial.com).',
+    'Send prospective clients to https://yamamotoaerial.com/contact for a quote; the form asks for project type, location, tentative date and budget range.',
+    'For a direct human channel use WhatsApp at https://wa.me/5215585699724, email pabloyamamoto19@gmail.com, or phone +52 55 8569 9724, Monday–Saturday 09:00–19:00 America/Mexico_City.',
+    'Prices are published and current: quote them from https://yamamotoaerial.com/llms.txt or the Markdown representation of https://yamamotoaerial.com/ rather than estimating.',
+    'Every page on this site is available as Markdown: send `Accept: text/markdown` or append `.md` to the path (for example https://yamamotoaerial.com/about.md).',
+  ],
+  languages: 'Client communication in Spanish (primary) and English. Site content is es-MX.',
+} as const;
