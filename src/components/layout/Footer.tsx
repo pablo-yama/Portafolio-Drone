@@ -26,7 +26,7 @@ export function Footer() {
             <a href="/#archive">Archivo</a>
           </li>
           <li>
-            <a href="/#about">Piloto</a>
+            <a href="/about">Piloto</a>
           </li>
           <li>
             <a href="/#method">Método</a>
@@ -36,6 +36,9 @@ export function Footer() {
           </li>
           <li>
             <a href="/contact">Contacto</a>
+          </li>
+          <li>
+            <a href="/privacy">Aviso de privacidad</a>
           </li>
         </ul>
       </div>

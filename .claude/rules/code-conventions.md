@@ -37,4 +37,5 @@ Content that appears on the site — services, pricing tiers, projects, FAQ, sta
 - Conventional commits: `feat:`, `fix:`, `style:`, `perf:`, `refactor:`, `chore:`, `docs:`
 - Branches: `feature/name`, `fix/name`, `perf/name`
 - Work on a branch; open a PR to merge to `main` (see [.gitignore](../../.gitignore) — `ACTION-PLAN.md` and `FULL-AUDIT-REPORT.md` are intentionally untracked)
-- No test or typecheck script exists — run `npm run lint` and, if changes are substantial, `npx tsc --noEmit` before committing
+- Before committing: `npm run lint` and `npm run typecheck` (`tsc --noEmit`), plus `npm test` (node:test unit suites in [tests/unit/](../../tests/unit/)).
+- Changes to [src/proxy.ts](../../src/proxy.ts), [next.config.ts](../../next.config.ts) or any route under `src/app/` also need `npm run test:endpoints`, which builds and boots a real server to assert status codes, content negotiation, `Vary`, redirects and the machine-readable files in `public/`.

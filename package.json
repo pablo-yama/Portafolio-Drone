@@ -6,7 +6,10 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "test": "node --test --import ./tests/register.mjs tests/unit/*.test.ts",
+    "test:endpoints": "next build && node --test --test-concurrency=1 --import ./tests/register.mjs tests/e2e/*.test.ts",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.4",
