@@ -1,5 +1,7 @@
 'use client';
 
+import Link from 'next/link';
+
 /**
  * Footer — archive-style sitemap. Direct children of `footer.footer` are the
  * four columns (brand block + Sitio + Servicios + Canales) so the CSS grid
@@ -23,19 +25,19 @@ export function Footer() {
         <p className="foot-h">Sitio</p>
         <ul>
           <li>
-            <a href="/#archive">Archivo</a>
+            <Link href="/#archive">Archivo</Link>
           </li>
           <li>
-            <a href="/#about">Piloto</a>
+            <Link href="/#about">Piloto</Link>
           </li>
           <li>
-            <a href="/#method">Método</a>
+            <Link href="/#method">Método</Link>
           </li>
           <li>
-            <a href="/#rates">Tarifas</a>
+            <Link href="/#rates">Tarifas</Link>
           </li>
           <li>
-            <a href="/contact">Contacto</a>
+            <Link href="/contact">Contacto</Link>
           </li>
         </ul>
       </div>

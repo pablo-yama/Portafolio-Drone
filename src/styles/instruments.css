@@ -1,0 +1,655 @@
+/* =========================================================================
+   INSTRUMENTS — WP8 LedgerInstrumentsSection (#ledger)
+   Namespaces: .ledger-v, .ledger-*, .led-shine/.led-idx, .inst-*, .chart-*
+   Loaded after globals.css via premium.css. Tokens only.
+
+   Dataviz rules: thin marks (bars 22u, ring stroke 12), 2px surface gaps
+   (arcs) and 2px surface rings (dots), labels in text tokens, one axis,
+   tabular figures on axes / value columns only, one hue for magnitude,
+   emphasis (signal vs --dim-2) on the ring, entity tones for locations.
+   Text on var(--panel) uses --inst-ink (≈5.8:1) — --dim measures 4.4:1.
+   ========================================================================= */
+
+.ledger-v {
+  --inst-ink: rgba(232, 230, 225, 0.62);
+  position: relative;
+  overflow: hidden;
+  padding: 96px var(--gutter) 88px;
+  perspective: 1400px;
+}
+
+.ledger-v .ledger-dots {
+  z-index: 0;
+}
+
+.ledger-v .ledger-in {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- head -------------------------------------------------------- */
+.ledger-head {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  grid-template-areas:
+    'kicker kicker'
+    'h2 readout'
+    'lead readout';
+  column-gap: 48px;
+  align-items: end;
+  margin-bottom: 56px;
+}
+
+.ledger-kicker {
+  grid-area: kicker;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 32px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--inst-ink);
+}
+
+.ledger-kicker::before {
+  content: '';
+  width: 40px;
+  height: 1px;
+  background: var(--signal);
+}
+
+.ledger-h2 {
+  grid-area: h2;
+}
+
+.ledger-v .ledger-h2 h2 {
+  margin-bottom: 24px;
+}
+
+.ledger-lead {
+  grid-area: lead;
+  max-width: 46ch;
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 13px;
+  line-height: 1.7;
+  color: var(--inst-ink);
+}
+
+.ledger-readout {
+  grid-area: readout;
+  align-self: end;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding-bottom: 4px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  text-align: right;
+  color: var(--inst-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.ledger-readout .is-live {
+  color: var(--green);
+}
+
+/* ---------- counters (.led from globals, amplified) --------------------- */
+.ledger-v .led {
+  /* GSAP owns the transform (quickTo) — no CSS transform transition to fight it */
+  transition: background 0.25s var(--ease-editorial);
+  transform-origin: 50% 50%;
+  /* no overflow: hidden here — it would flatten preserve-3d and drop the translateZ depth */
+}
+
+.ledger-v .led .k,
+.ledger-v .led .note {
+  color: var(--inst-ink);
+}
+
+.ledger-v .led .n {
+  display: flex;
+  align-items: flex-start;
+}
+
+.ledger-v .led .glow {
+  background: radial-gradient(
+    circle 280px at var(--mx, 50%) var(--my, 50%),
+    rgba(var(--signal-rgb), 0.3),
+    transparent 62%
+  );
+  transition: opacity 0.35s var(--ease-editorial);
+}
+
+.led-shine {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    circle 120px at var(--mx, 50%) var(--my, 50%),
+    rgba(232, 230, 225, 0.13),
+    transparent 70%
+  );
+  transition: opacity 0.35s var(--ease-editorial);
+}
+
+.ledger-v .led:hover .led-shine {
+  opacity: 1;
+}
+
+.led-idx {
+  position: absolute;
+  top: 16px;
+  left: 28px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--inst-ink);
+  transform: translateZ(20px);
+}
+
+/* signal hairline draws along the bottom edge on hover */
+.ledger-v .led::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--signal);
+  transform: scaleX(0);
+  transform-origin: 0% 50%;
+  transition: transform 0.6s var(--ease-expo);
+}
+
+.ledger-v .led:hover::after {
+  transform: scaleX(1);
+}
+
+/* ---------- instruments row -------------------------------------------- */
+.inst-row {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr 1fr;
+  gap: 1px;
+  margin-top: 1px;
+  background: var(--line);
+  border: 1px solid var(--line);
+  border-top: 0;
+}
+
+.inst {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  min-width: 0;
+  margin: 0;
+  padding: 28px 28px 24px;
+  background: var(--panel);
+}
+
+.inst-cap {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--inst-ink);
+}
+
+.inst-cap-v {
+  color: var(--inst-ink);
+}
+
+.inst-hair {
+  display: block;
+  height: 1px;
+  margin-top: -10px;
+  background: var(--line);
+}
+
+.inst-foot {
+  margin: 20px 0 0;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--inst-ink);
+}
+
+.chart {
+  position: relative;
+  min-width: 0;
+}
+
+/* ---------- YearBars ---------------------------------------------------- */
+.chart-bars-svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+.chart-baseline {
+  stroke: var(--hud-line);
+  stroke-width: 1;
+}
+
+.chart-bar {
+  cursor: default;
+}
+
+.chart-bar-hit {
+  fill: transparent;
+}
+
+.chart-bar-fill {
+  fill: var(--signal);
+  fill-opacity: 0.55;
+  transition: fill-opacity 0.25s var(--ease-editorial);
+}
+
+.chart-bar[data-max='1'] .chart-bar-fill,
+.chart-bar:hover .chart-bar-fill {
+  fill-opacity: 1;
+}
+
+.chart-bar-val {
+  font-family: var(--mono);
+  font-size: 11px;
+  fill: var(--inst-ink);
+  transition: fill 0.2s var(--ease-editorial);
+}
+
+.chart-bar[data-max='1'] .chart-bar-val,
+.chart-bar:hover .chart-bar-val {
+  fill: var(--fg);
+}
+
+.chart-bar-year {
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  fill: var(--inst-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+/* ---------- CategoryRing ------------------------------------------------ */
+.chart-ring-wrap {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 24px;
+  align-items: center;
+}
+
+.chart-ring {
+  position: relative;
+  width: 200px;
+  aspect-ratio: 1;
+  flex: none;
+}
+
+.chart-ring-svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.chart-ring-track {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 12;
+}
+
+.chart-arc-hit {
+  fill: none;
+  stroke: transparent;
+  stroke-width: 26;
+  pointer-events: stroke;
+}
+
+.chart-arc {
+  fill: none;
+  stroke: var(--dim-2);
+  stroke-width: 12;
+  stroke-linecap: butt;
+  transition: opacity 0.25s var(--ease-editorial), stroke 0.2s var(--ease-editorial);
+}
+
+.chart-arc-g {
+  transform-box: view-box;
+  transform-origin: 100px 100px;
+  transition: transform 0.45s var(--ease-expo);
+  cursor: pointer;
+}
+
+.chart-arc-g[data-on='1'] {
+  transform: scale(1.045);
+}
+
+.chart-arc-g[data-on='1'] .chart-arc {
+  stroke: var(--signal);
+}
+
+.chart-arc-g[data-dim='1'] .chart-arc {
+  opacity: 0.55;
+}
+
+.chart-ring-centre {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  text-align: center;
+}
+
+.chart-ring-readout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  max-width: 116px;
+}
+
+.chart-ring-n {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: 46px;
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--fg);
+}
+
+.chart-ring-l {
+  font-family: var(--mono);
+  font-size: 10px;
+  line-height: 1.4;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--inst-ink);
+}
+
+.chart-ring-readout.is-cat .chart-ring-l {
+  color: var(--fg);
+}
+
+/* ---------- legends (shared) ------------------------------------------- */
+.chart-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.chart-legend-row {
+  min-width: 0;
+}
+
+.chart-legend-btn {
+  display: grid;
+  grid-template-columns: 10px minmax(0, 1fr) auto auto;
+  align-items: center;
+  column-gap: 10px;
+  width: 100%;
+  min-height: 34px;
+  padding: 0 8px;
+  border: 0;
+  border-radius: 2px;
+  background: none;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-align: left;
+  color: var(--inst-ink);
+  cursor: pointer;
+  transition: color 0.2s var(--ease-editorial), background 0.2s var(--ease-editorial);
+}
+
+.chart-legend-btn:hover,
+.chart-legend-btn[aria-pressed='true'],
+.chart-legend-row[data-on='1'] .chart-legend-btn {
+  color: var(--fg);
+  background: rgba(232, 230, 225, 0.04);
+}
+
+.chart-legend-k {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.chart-legend-v {
+  color: var(--fg);
+}
+
+.chart-legend-p {
+  min-width: 3.5ch;
+  text-align: right;
+  color: var(--inst-ink);
+}
+
+.chart-swatch {
+  width: 8px;
+  height: 8px;
+  border-radius: 1px;
+  background: var(--dim-2);
+  transition: background 0.2s var(--ease-editorial), transform 0.35s var(--ease-expo);
+}
+
+.chart-legend-btn[aria-pressed='true'] .chart-swatch,
+.chart-legend-row[data-on='1'] .chart-swatch {
+  background: var(--signal);
+  transform: scale(1.3);
+}
+
+.chart-swatch--tone,
+.chart-legend-btn[aria-pressed='true'] .chart-swatch--tone,
+.chart-legend-row[data-on='1'] .chart-swatch--tone {
+  border-radius: 50%;
+  background: var(--dot, var(--signal));
+}
+
+.chart-legend--inline {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 2px 14px;
+}
+
+.chart-legend--inline .chart-legend-btn {
+  width: auto;
+  grid-template-columns: 8px auto auto auto;
+}
+
+/* ---------- LocationDots ------------------------------------------------ */
+.chart-dots-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.chart-dots {
+  display: grid;
+  grid-template-columns: repeat(var(--dot-cols, 10), var(--dot-size, 10px));
+  gap: var(--dot-gap, 10px);
+}
+
+.chart-dot {
+  position: relative;
+  width: var(--dot-size, 10px);
+  height: var(--dot-size, 10px);
+  transition: opacity 0.3s var(--ease-editorial), transform 0.35s var(--ease-expo);
+}
+
+.chart-dot-i {
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: var(--dot, var(--signal));
+  /* 2px surface ring (dataviz) so touching dots never merge */
+  box-shadow: 0 0 0 2px var(--panel);
+}
+
+.chart-dot[data-off='1'] {
+  opacity: 0.22;
+}
+
+.chart-dot[data-on='1'] {
+  transform: scale(1.25);
+}
+
+/* ---------- responsive -------------------------------------------------- */
+@media (max-width: 1200px) {
+  .inst-row {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .inst--bars {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 1100px) {
+  .ledger-v {
+    padding-top: 72px;
+    padding-bottom: 64px;
+  }
+
+  .ledger-head {
+    grid-template-columns: 1fr;
+    grid-template-areas:
+      'kicker'
+      'h2'
+      'lead'
+      'readout';
+    margin-bottom: 40px;
+  }
+
+  .ledger-readout {
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 6px 20px;
+    margin-top: 24px;
+    text-align: left;
+  }
+
+  /* counters 2×2 (globals collapses .led-grid to one column at this width) */
+  .ledger-v .led-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .ledger-v .led {
+    min-height: 200px;
+    padding: 32px 24px;
+  }
+
+  .led-idx {
+    left: 24px;
+  }
+}
+
+@media (max-width: 768px) {
+  .inst-row {
+    grid-template-columns: 1fr;
+  }
+
+  .inst--bars {
+    grid-column: auto;
+  }
+
+  .inst {
+    padding: 24px 20px 20px;
+  }
+
+  .chart-ring {
+    width: 160px;
+  }
+
+  .chart-ring-n {
+    font-size: 38px;
+  }
+
+  .chart-ring-readout {
+    max-width: 96px;
+  }
+
+  .ledger-v .led .n {
+    font-size: 64px;
+  }
+}
+
+@media (max-width: 430px) {
+  .ledger-v .led-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .chart-ring-wrap {
+    grid-template-columns: 1fr;
+    justify-items: start;
+  }
+
+  .chart-legend {
+    width: 100%;
+  }
+
+  .chart-dots {
+    --dot-size: 9px;
+    --dot-gap: 9px;
+  }
+}
+
+/* ---------- coarse pointer ---------------------------------------------- */
+@media (pointer: coarse) {
+  .chart-legend-btn {
+    min-height: 44px;
+  }
+
+  .led-shine {
+    display: none;
+  }
+
+  .chart-arc-g {
+    cursor: default;
+  }
+}
+
+/* ---------- reduced motion ---------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .ledger-v .led,
+  .ledger-v .led::after,
+  .ledger-v .led .glow,
+  .led-shine,
+  .chart-bar-fill,
+  .chart-bar-val,
+  .chart-arc,
+  .chart-arc-g,
+  .chart-dot,
+  .chart-swatch,
+  .chart-legend-btn {
+    transition: none;
+  }
+
+  .chart-arc-g[data-on='1'],
+  .chart-dot[data-on='1'],
+  .chart-legend-row[data-on='1'] .chart-swatch,
+  .chart-legend-btn[aria-pressed='true'] .chart-swatch {
+    transform: none;
+  }
+
+  .led-shine {
+    display: none;
+  }
+}

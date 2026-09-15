@@ -1,0 +1,486 @@
+/* =========================================================================
+   NAV — WP3 (src/styles/nav.css)
+   Scroll-aware header.bar · progress line · layoutId indicator · hover-letters
+   links · full-screen animated mobile menu.
+   Reuses header.bar / .brand / .mid / .right / .alt / .live / .nav-burger from
+   globals.css unchanged; every new selector is namespaced .bar-* / .nav-* / .mm-*.
+   Motion: transform + opacity only (the scrolled background is a static state
+   swap, not a tween). Loaded by src/styles/premium.css after premium-base.css.
+   ========================================================================= */
+
+/* ---------- bar states --------------------------------------------------- */
+
+/* At rest (over the hero video) the bar is a light scrim with NO backdrop
+   blur — blur over a playing video is the one filter the perf rules forbid.
+   Once scrolled past 24px it darkens and picks up the blur ("blur when
+   scrolled"); both are state swaps, only transform/background tween. */
+header.bar {
+  background: rgba(10, 10, 10, 0.55);
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  transition:
+    transform 0.6s var(--ease-expo, cubic-bezier(0.16, 1, 0.3, 1)),
+    background-color 0.35s var(--ease-editorial, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+
+header.bar[data-hidden="1"] {
+  transform: translateY(-100%);
+}
+
+header.bar[data-scrolled="1"] {
+  background: rgba(10, 10, 10, 0.92);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+}
+
+/* Boot-in: the bar waits above the viewport until the preloader curtain opens
+   (or immediately on sub-pages), then drops in. Hidden only when scripting is
+   on; auto-unhides after 2.6 s as a guard if hydration never reaches the effect. */
+@media (scripting: enabled) {
+  header.bar[data-boot="1"] {
+    transform: translateY(-100%);
+    transition: none;
+    animation: nav-unhide 0s 2.6s forwards;
+  }
+}
+
+@keyframes nav-unhide {
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* While the menu is open the bar sits above the panel (burger stays reachable). */
+html[data-menu="open"] header.bar {
+  z-index: calc(var(--z-menu) + 1);
+  background: transparent;
+  -webkit-backdrop-filter: none;
+  backdrop-filter: none;
+  border-bottom-color: transparent;
+}
+
+/* ---------- brand -------------------------------------------------------- */
+
+header.bar .brand {
+  display: flex;
+  align-items: center;
+  height: 100%;
+  padding: 0 16px;
+  color: var(--fg);
+  white-space: nowrap;
+}
+
+header.bar .brand .brand-mx {
+  color: var(--dim-2);
+}
+
+/* ---------- desktop links ------------------------------------------------ */
+
+header.bar .mid a {
+  display: inline-flex;
+  align-items: center;
+  height: 100%;
+  white-space: nowrap;
+  transition: color 0.3s var(--ease-editorial, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+
+header.bar .mid a .n {
+  transition: color 0.3s var(--ease-editorial, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+
+header.bar .mid a:hover .n,
+header.bar .mid a:focus-visible .n,
+header.bar .mid a[data-active="1"] .n {
+  color: var(--signal);
+}
+
+/* the .hover-letters alt face already tints the label; keep the link colour steady */
+header.bar .mid a:hover {
+  color: var(--fg);
+}
+
+/* .link-ul underline moves to the bar's bottom edge → reads as a tab hover */
+header.bar .mid a.link-ul::after {
+  bottom: 0;
+  opacity: 0.45;
+}
+
+/* layoutId indicator */
+header.bar .nav-ind {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: var(--signal);
+  box-shadow: 0 0 10px rgba(var(--signal-rgb), 0.55);
+  pointer-events: none;
+}
+
+/* ---------- right cluster ------------------------------------------------ */
+
+header.bar .right .live .live-txt {
+  white-space: nowrap;
+}
+
+header.bar .nav-burger {
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  padding: 0 12px;
+  margin-left: 0;
+}
+
+/* ---------- scroll progress line ---------------------------------------- */
+
+header.bar > .bar-progress {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  padding: 0;
+  display: block;
+  background: var(--signal);
+  box-shadow: 0 0 8px rgba(var(--signal-rgb), 0.5);
+  transform-origin: left center;
+  transform: scaleX(0);
+  pointer-events: none;
+}
+
+/* ---------- mobile menu (≤1100px, matches the .nav-burger breakpoint) ---- */
+
+.mm-panel {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-menu);
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  padding: calc(44px + 24px) var(--gutter, 24px) 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.mm-head {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dim);
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--line);
+}
+
+.mm-head .mm-coords {
+  color: var(--dim-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.mm-list {
+  position: relative;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.mm-item {
+  border-bottom: 1px solid var(--line);
+}
+
+.mm-link {
+  display: grid;
+  grid-template-columns: 40px minmax(0, 1fr) auto;
+  align-items: baseline;
+  gap: 14px;
+  min-height: 44px;
+  padding: 18px 0 16px;
+  font-family: var(--serif);
+  font-style: normal;
+  font-weight: 400;
+  font-size: clamp(36px, 9.6vw, 52px);
+  line-height: 1;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+  text-decoration: none;
+}
+
+.mm-link .n {
+  font-family: var(--mono);
+  font-style: normal;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: var(--dim-2);
+  transition: color 0.3s var(--ease-editorial, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+
+.mm-link .mm-label {
+  display: block;
+  min-width: 0;
+}
+
+.mm-link .mm-arrow {
+  font-family: var(--mono);
+  font-style: normal;
+  font-size: 14px;
+  color: var(--dim-2);
+  transform: translateX(0);
+  transition:
+    transform 0.5s var(--ease-expo, cubic-bezier(0.16, 1, 0.3, 1)),
+    color 0.3s var(--ease-editorial, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+
+.mm-link[data-active="1"] .n,
+.mm-link[data-active="1"] .mm-arrow,
+.mm-link:focus-visible .n {
+  color: var(--signal);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .mm-link:hover .n,
+  .mm-link:hover .mm-arrow {
+    color: var(--signal);
+  }
+
+  .mm-link:hover .mm-arrow {
+    transform: translateX(6px);
+  }
+}
+
+.mm-cta-wrap {
+  position: relative;
+}
+
+.mm-cta {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  align-self: flex-start;
+  min-height: 44px;
+  margin-top: 28px;
+  padding: 12px 18px;
+  border: 1px solid rgba(var(--signal-rgb), 0.55);
+  font-family: var(--mono);
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--signal);
+  text-decoration: none;
+  transition:
+    border-color 0.3s var(--ease-editorial, cubic-bezier(0.2, 0.8, 0.2, 1)),
+    background-color 0.3s var(--ease-editorial, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+
+.mm-cta:hover,
+.mm-cta:focus-visible {
+  border-color: var(--signal);
+  background-color: rgba(var(--signal-rgb), 0.08);
+}
+
+.mm-meta {
+  position: relative;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 22px;
+  margin-top: auto;
+  padding: 32px 0 16px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.mm-meta .mm-live {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--green);
+}
+
+.mm-meta .mm-live::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--green);
+  box-shadow: 0 0 8px var(--green);
+}
+
+/* bottom marquee strip — full-bleed, transform-only loop; it only exists while
+   the panel is mounted, so it never runs off-screen */
+.mm-tape {
+  position: relative;
+  margin: 0 calc(var(--gutter, 24px) * -1);
+  padding: 12px 0;
+  border-top: 1px solid var(--line);
+  overflow: clip;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--dim-2);
+  white-space: nowrap;
+}
+
+.mm-tape-track {
+  display: flex;
+  width: max-content;
+  animation: mm-tape 32s linear infinite;
+  will-change: transform;
+}
+
+.mm-tape-copy {
+  padding-right: 2.2em;
+}
+
+.mm-tape-copy em {
+  font-style: normal;
+  color: var(--signal);
+}
+
+@keyframes mm-tape {
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+/* signal edge that trails the panel during the closing wipe */
+.mm-edge {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  background: var(--signal);
+  box-shadow: 0 0 14px rgba(var(--signal-rgb), 0.6);
+  pointer-events: none;
+}
+
+/* ---------- responsive --------------------------------------------------- */
+
+@media (max-width: 1100px) {
+  header.bar {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  header.bar .right {
+    min-width: 0;
+  }
+}
+
+@media (min-width: 1101px) {
+  .mm-panel {
+    display: none;
+  }
+}
+
+@media (max-width: 760px) {
+  header.bar .right {
+    gap: 12px;
+  }
+
+  header.bar .right .live .live-txt {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+  }
+}
+
+@media (max-width: 430px) {
+  header.bar .brand {
+    padding: 0 12px;
+    gap: 8px;
+  }
+
+  header.bar .brand .brand-mx {
+    display: none;
+  }
+
+  header.bar .right {
+    padding: 0 6px 0 10px;
+    gap: 10px;
+  }
+
+  .mm-panel {
+    padding-left: 18px;
+    padding-right: 18px;
+  }
+
+  .mm-tape {
+    margin: 0 -18px;
+  }
+
+  .mm-link {
+    grid-template-columns: 32px minmax(0, 1fr) auto;
+    gap: 12px;
+  }
+}
+
+/* short landscape phones: keep the list reachable */
+@media (max-height: 560px) {
+  .mm-link {
+    font-size: clamp(28px, 6vh, 40px);
+    padding: 12px 0 10px;
+  }
+
+  .mm-meta {
+    padding-top: 18px;
+  }
+}
+
+/* ---------- coarse pointer ---------------------------------------------- */
+
+@media (pointer: coarse) {
+  /* no hover states on touch: the arrow sits still, the numeral tints only when active */
+  .mm-link .mm-arrow {
+    transition: none;
+  }
+
+  /* the bar's tab-style underline is a hover affordance — keep it off on touch
+     (premium-base draws .link-ul at 50% for coarse pointers) */
+  header.bar .mid a.link-ul::after {
+    transform: scaleX(0);
+    opacity: 0;
+  }
+}
+
+/* ---------- reduced motion ---------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  header.bar {
+    transition: none;
+  }
+
+  header.bar[data-boot="1"] {
+    transform: none;
+    animation: none;
+  }
+
+  header.bar[data-hidden="1"] {
+    transform: none;
+  }
+
+  header.bar .nav-ind,
+  header.bar > .bar-progress {
+    box-shadow: none;
+  }
+
+  .mm-tape-track {
+    animation: none;
+    will-change: auto;
+  }
+
+  .mm-link .mm-arrow {
+    transition: none;
+  }
+}

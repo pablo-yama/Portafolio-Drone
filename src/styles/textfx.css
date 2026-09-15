@@ -1,0 +1,237 @@
+/* =========================================================================
+   TEXTFX — WP12
+   SplitReveal · Scramble · Odometer · KineticBand · .hover-letters
+   Namespaced .tfx-* / .hover-letters / .hl-*. Tokens from globals.css only.
+   Motion: transform + opacity (plus one color tint on Scramble). will-change is
+   applied only while a reveal is live ([data-tfx="live"]) and removed on done.
+   Loaded by src/styles/premium.css after premium-base.css (integration).
+   ========================================================================= */
+
+/* ---------- SplitReveal ------------------------------------------------- */
+
+.tfx-split {
+  /* SplitText line masks need room for descenders / italic overhang while still clipping the rise */
+  --tfx-mask-pad-y: 0.08em;
+  --tfx-mask-pad-x: 0.06em;
+}
+
+/* Hidden only until the client split runs (scripting on). Auto-unhides after 2.5 s
+   as a guard if hydration never reaches the effect. Old browsers ignore the query. */
+@media (scripting: enabled) {
+  .tfx-split[data-tfx="pending"] {
+    visibility: hidden;
+    animation: tfx-unhide 0s 2.5s forwards;
+  }
+}
+
+@keyframes tfx-unhide {
+  to {
+    visibility: visible;
+  }
+}
+
+.tfx-split .tfx-line-mask {
+  padding: var(--tfx-mask-pad-y) var(--tfx-mask-pad-x);
+  margin: calc(var(--tfx-mask-pad-y) * -1) calc(var(--tfx-mask-pad-x) * -1);
+}
+
+.tfx-split[data-tfx="live"] .tfx-line,
+.tfx-split[data-tfx="live"] .tfx-word,
+.tfx-split[data-tfx="live"] .tfx-char {
+  will-change: transform, opacity;
+  backface-visibility: hidden;
+}
+
+.tfx-split[data-tfx="done"] .tfx-line,
+.tfx-split[data-tfx="done"] .tfx-word,
+.tfx-split[data-tfx="done"] .tfx-char {
+  will-change: auto;
+}
+
+/* ---------- Scramble ---------------------------------------------------- */
+
+.tfx-scramble {
+  font-variant-numeric: tabular-nums;
+  transition: color 0.35s var(--ease-editorial, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+
+.tfx-scramble[data-flash="1"][data-scrambling="1"] {
+  color: var(--signal);
+  transition-duration: 0.12s;
+}
+
+/* ---------- Odometer ---------------------------------------------------- */
+
+.tfx-od {
+  display: inline-block;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.tfx-od-digits {
+  display: inline-flex;
+  vertical-align: top;
+}
+
+.tfx-od-col {
+  position: relative;
+  display: inline-block;
+  height: 1em;
+  overflow: clip;
+  vertical-align: top;
+}
+
+.tfx-od-stack {
+  display: block;
+  will-change: transform;
+}
+
+.tfx-od-row {
+  display: block;
+  height: 1em;
+  line-height: inherit;
+}
+
+@supports (height: 1lh) {
+  .tfx-od-col,
+  .tfx-od-row {
+    height: 1lh;
+  }
+}
+
+/* ---------- KineticBand ------------------------------------------------- */
+
+.tfx-band {
+  position: relative;
+  width: 100%;
+  overflow: clip;
+  padding: clamp(24px, 6vh, 72px) 0;
+  pointer-events: none;
+  user-select: none;
+  --tfx-travel: 30;
+}
+
+.tfx-band-track {
+  display: flex;
+  width: max-content;
+  margin-left: calc(var(--tfx-travel) * -1vw);
+  transform-origin: 50% 50%;
+  will-change: transform;
+}
+
+.tfx-band-copy {
+  display: inline-flex;
+  align-items: baseline;
+  white-space: nowrap;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(80px, 14vw, 220px);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--fg);
+}
+
+.tfx-band-seg {
+  font-style: normal;
+  opacity: 0.92;
+}
+
+.tfx-band-seg.is-outline {
+  font-style: normal;
+  font-weight: 400;
+  color: transparent;
+  -webkit-text-stroke: max(1px, 0.008em) var(--fg);
+  paint-order: stroke fill;
+  opacity: 0.8;
+}
+
+.tfx-band-dot {
+  color: var(--signal);
+  font-style: normal;
+  margin: 0 0.16em;
+  opacity: 0.9;
+}
+
+@media (max-width: 768px) {
+  .tfx-band {
+    padding: 18px 0;
+  }
+
+  .tfx-band-copy {
+    letter-spacing: -0.02em;
+  }
+}
+
+/* ---------- .hover-letters (cover-flip, per-letter stagger) ------------- */
+
+.hover-letters {
+  position: relative;
+  display: inline-block;
+  overflow: clip;
+  vertical-align: baseline;
+  white-space: nowrap;
+}
+
+.hl-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.hl-face {
+  display: inline-block;
+  white-space: nowrap;
+}
+
+.hl-face--alt {
+  position: absolute;
+  left: 0;
+  top: 100%;
+  font-style: normal;
+  color: var(--signal);
+}
+
+.hl-ch {
+  display: inline-block;
+  transform: translateY(0);
+  transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1);
+  transition-delay: calc(var(--i, 0) * 18ms);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .hover-letters:hover .hl-ch,
+  :is(a, button, [data-hl]):is(:hover, :focus-visible) .hover-letters .hl-ch {
+    transform: translateY(-100%);
+  }
+}
+
+/* ---------- Reduced motion ---------------------------------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  .tfx-split[data-tfx="pending"] {
+    visibility: visible;
+    animation: none;
+  }
+
+  .tfx-scramble {
+    transition: none;
+  }
+
+  .tfx-od-stack,
+  .tfx-band-track {
+    will-change: auto;
+  }
+
+  .tfx-band-track {
+    margin-left: -8vw;
+    transform: none !important;
+  }
+
+  .hl-ch {
+    transition: none !important;
+    transform: none !important;
+  }
+}

@@ -62,7 +62,7 @@ export function HeroSection() {
 
         <div className="kicker fade-up">
           FLIGHT LOG · 2016 — 2026
-          <span className="slash">//</span>
+          <span className="slash">{'//'}</span>
           <span id="sessClock">SESIÓN · 00:00:00</span>
         </div>
 

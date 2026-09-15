@@ -1,0 +1,392 @@
+/* =========================================================================
+   RATES — WP10 · § 04 Tarifas (RatesSection)
+   Loaded after globals.css via src/styles/premium.css. Extends the legacy
+   .pricing / .tabs / .tier / .tier-table rules; every new selector is
+   namespaced .rates-* / .tier-glow / .tier-slot / .tier-stack or scoped
+   under .rates-v. Tokens only. Transform/opacity only.
+
+   Layers per card:  .tier-slot (grid item · framer entrance · sticky <1024)
+                     › .tier-stack (framer sticky-stack scale/opacity)
+                     › .tier (GSAP 3D tilt · spotlight · beam)
+   NOTE: no `overflow: hidden` on any ancestor of .tier-slot — it would turn
+   that ancestor into the sticky scroll container. The section uses clip.
+   ========================================================================= */
+
+.rates-v {
+  position: relative;
+  overflow: clip;
+  background: transparent; /* chapter tint paints through <main> */
+}
+
+/* warm panel wash fading into the chapter background */
+.rates-v::before {
+  content: '';
+  position: absolute;
+  inset: 0 0 auto;
+  height: 60%;
+  background: linear-gradient(180deg, var(--panel-2), transparent);
+  opacity: 0.55;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.rates-v > *:not(.rates-wm) {
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- watermark (parallax, outline serif) ------------------------- */
+.rates-wm {
+  position: absolute;
+  z-index: 0;
+  right: var(--gutter);
+  top: 24px;
+  font-family: var(--serif);
+  font-style: normal;
+  font-weight: 400;
+  font-size: clamp(180px, 26vw, 420px);
+  line-height: 0.8;
+  letter-spacing: -0.06em;
+  color: transparent;
+  -webkit-text-stroke: 1px var(--fg);
+  opacity: 0.1;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* ---------- head + tabs ------------------------------------------------- */
+.rates-v .sect-top {
+  margin-bottom: 28px;
+}
+
+.rates-head {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+.rates-kicker {
+  color: var(--dim);
+}
+
+.rates-v h2 {
+  margin: 0;
+}
+
+.rates-tabs {
+  position: relative;
+  isolation: isolate;
+}
+
+.rates-v .tabs button {
+  position: relative;
+  min-height: 44px;
+  background: transparent;
+  isolation: isolate;
+  transition: color 0.25s var(--ease-editorial);
+}
+
+.rates-v .tabs button:hover {
+  color: var(--fg);
+}
+
+.rates-v .tabs button.on {
+  background: transparent;
+  color: var(--bg);
+}
+
+.rates-pill {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  background: var(--fg);
+}
+
+.rates-tab-lbl {
+  position: relative;
+  z-index: 1;
+  display: inline-block;
+}
+
+.rates-v .tabs button.on .hl-face--alt {
+  color: var(--bg);
+}
+
+/* scrubbed hairline between head and cards */
+.rates-rule {
+  display: block;
+  height: 1px;
+  margin-bottom: 28px;
+  background: var(--signal);
+  opacity: 0.55;
+  transform-origin: 0% 50%;
+}
+
+/* ---------- grid + card layers ----------------------------------------- */
+.rates-v .tier-grid {
+  position: relative;
+}
+
+.rates-v .tier-slot {
+  display: flex;
+  min-width: 0;
+}
+
+.rates-v .tier-slot:not(:last-child) {
+  border-right: 1px solid var(--line);
+}
+
+.rates-v .tier-stack {
+  display: flex;
+  flex: 1 1 auto;
+  min-width: 0;
+  width: 100%;
+  transform-origin: 50% 0%;
+}
+
+.rates-v .tier {
+  flex: 1 1 auto;
+  width: 100%;
+  border-right: none;
+  transition: background 0.3s var(--ease-editorial);
+  transform-style: preserve-3d;
+}
+
+.rates-v .tier:hover {
+  transform: none; /* lift lives in the GSAP tilt, not in the legacy hover rule */
+}
+
+.rates-v .tier[data-tilt='1'] {
+  will-change: transform;
+}
+
+/* keep the copy above the spotlight; depth layers for the tilt */
+.rates-v .tier > *:not(.tier-glow):not(.beam) {
+  position: relative;
+  z-index: 1;
+}
+
+.rates-v .tier .tier-lbl {
+  transform: translateZ(12px);
+}
+
+.rates-v .tier h3 {
+  transform: translateZ(26px);
+}
+
+.rates-v .tier .price {
+  transform: translateZ(18px);
+}
+
+.rates-v .tier .tier-act-wrap {
+  transform: translateZ(22px);
+}
+
+/* spotlight */
+.tier-glow {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.35s var(--ease-editorial);
+  background: radial-gradient(
+    circle 260px at var(--mx, 50%) var(--my, 50%),
+    rgba(var(--signal-rgb), 0.14),
+    transparent 62%
+  );
+}
+
+.rates-v .tier.fea .tier-glow {
+  background: radial-gradient(
+    circle 300px at var(--mx, 50%) var(--my, 50%),
+    rgba(var(--signal-rgb), 0.24),
+    transparent 64%
+  );
+}
+
+.rates-v .tier:hover .tier-glow {
+  opacity: 1;
+}
+
+/* featured card hosts the beam ring */
+.rates-v .tier.fea {
+  overflow: visible;
+  border-radius: 0;
+}
+
+/* CTA */
+.rates-v .tier .tier-act-wrap {
+  display: block;
+  width: 100%;
+}
+
+.rates-v .tier .act {
+  display: inline-flex;
+  width: 100%;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.25s var(--ease-editorial), color 0.25s var(--ease-editorial),
+    background 0.25s var(--ease-editorial);
+}
+
+.rates-v .tier .act .hover-letters {
+  line-height: 1.3;
+}
+
+.rates-v .tier.fea .act .hl-face--alt {
+  color: var(--bg);
+}
+
+/* feature rows: keep the arrow glyph aligned while rows slide in */
+.rates-v .tier ul li {
+  transform-origin: 0% 50%;
+}
+
+/* ---------- comparison table + foot ------------------------------------ */
+.rates-v .tier-table-wrap {
+  overscroll-behavior-x: contain;
+}
+
+.rates-foot {
+  margin-top: 40px;
+  font-size: 13px;
+  color: var(--dim);
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.rates-foot-link {
+  color: var(--signal);
+  padding-bottom: 2px;
+  border-bottom: 1px solid rgba(var(--signal-rgb), 0.35);
+}
+
+/* ---------- desktop ----------------------------------------------------- */
+@media (min-width: 1100px) {
+  .rates-v .tier-grid {
+    min-height: 640px; /* reserved height during the AnimatePresence swap → no CLS */
+  }
+}
+
+/* single-column grid (1024–1100px): separators go below, not beside */
+@media (max-width: 1100px) {
+  .rates-v .tier-slot:not(:last-child) {
+    border-right: none;
+    border-bottom: 1px solid var(--line);
+  }
+}
+
+/* ---------- sticky-stack (<1024px) ------------------------------------- */
+@media (max-width: 1023px) {
+  .rates-v .tier-grid {
+    border: none;
+    perspective: none;
+    min-height: 0;
+  }
+
+  .rates-v .tier-slot {
+    position: sticky;
+    top: 72px;
+    border-right: none;
+    border-bottom: none;
+  }
+
+  .rates-v .tier-slot + .tier-slot {
+    margin-top: 20px;
+  }
+
+  .rates-v .tier {
+    background: var(--panel);
+    border: 1px solid var(--line);
+    transform-style: flat;
+  }
+
+  .rates-v .tier.fea {
+    background: var(--panel-2);
+    border-color: rgba(var(--signal-rgb), 0.35);
+  }
+
+  .rates-v .tier .tier-lbl,
+  .rates-v .tier h3,
+  .rates-v .tier .price,
+  .rates-v .tier .tier-act-wrap {
+    transform: none;
+  }
+
+  .rates-wm {
+    font-size: clamp(140px, 34vw, 260px);
+    top: 8px;
+    opacity: 0.07;
+  }
+}
+
+@media (max-width: 768px) {
+  .rates-v .tier {
+    padding: 32px 24px;
+  }
+
+  .rates-v .tier h3 {
+    font-size: 40px;
+  }
+
+  .rates-v .tier .price .amt {
+    font-size: 46px;
+  }
+}
+
+@media (max-width: 480px) {
+  .rates-tabs {
+    width: 100%;
+  }
+
+  .rates-tabs button {
+    flex: 1 1 0;
+    padding: 12px 8px;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+  }
+
+  .rates-foot {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
+/* ---------- reduced motion ---------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .rates-rule,
+  .rates-wm,
+  .rates-v .tier-stack,
+  .rates-v .tier {
+    transform: none !important;
+  }
+
+  .rates-wm {
+    opacity: 0.08 !important;
+  }
+
+  .tier-glow {
+    transition: none;
+  }
+
+  .rates-v .tabs button,
+  .rates-v .tier,
+  .rates-v .tier .act {
+    transition: none;
+  }
+}
+
+/* ---------- coarse pointer ---------------------------------------------- */
+@media (pointer: coarse) {
+  .tier-glow {
+    display: none;
+  }
+
+  .rates-v .tier:hover {
+    background: inherit;
+  }
+}

@@ -1,22 +1,16 @@
 import type { Metadata } from 'next';
-import { Fraunces, JetBrains_Mono } from 'next/font/google';
+import { JetBrains_Mono } from 'next/font/google';
 import Script from 'next/script';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import { Analytics } from '@vercel/analytics/next';
 import './globals.css';
 import { buildGlobalStructuredData, SITE_URL } from '@/lib/jsonLd';
 import { WhatsAppButton } from '@/components/ui/WhatsAppButton';
+import { Providers } from '@/components/layout/Providers';
+import '@/styles/premium.css';
 
 const GA4_ID = process.env.NEXT_PUBLIC_GA4_ID;
 const GSC_VERIFICATION = process.env.NEXT_PUBLIC_GSC_VERIFICATION;
-
-const fraunces = Fraunces({
-  subsets: ['latin'],
-  weight: ['300', '400', '500', '600'],
-  style: ['normal', 'italic'],
-  variable: '--font-fraunces',
-  display: 'swap',
-});
 
 const jetBrainsMono = JetBrains_Mono({
   subsets: ['latin'],
@@ -103,7 +97,7 @@ export default function RootLayout({
   return (
     <html
       lang="es-MX"
-      className={`${fraunces.variable} ${jetBrainsMono.variable}`}
+      className={jetBrainsMono.variable}
     >
       <head>
         {structuredData.map((data, i) => (
@@ -115,7 +109,7 @@ export default function RootLayout({
         ))}
       </head>
       <body>
-        {children}
+        <Providers>{children}</Providers>
         <div className="vignette" aria-hidden="true" />
         <WhatsAppButton />
         <SpeedInsights />

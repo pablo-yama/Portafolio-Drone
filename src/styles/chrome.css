@@ -1,0 +1,627 @@
+/* =========================================================================
+   CHROME — WP2
+   Providers · LenisProvider · PointerCursor · BootPreloader · GrainLayer ·
+   template.tsx page wipe. Namespaced .cur-* / .boot-* / .grain / .page-*.
+   Tokens from globals.css + premium-base.css only. Loaded by
+   src/styles/premium.css right after premium-base.css (integration).
+
+   Motion here is transform + opacity only. Loops (grain jitter, reticle
+   blink, boot pulse) exist only while their layer is active / hovered /
+   mounted, and are disabled under prefers-reduced-motion.
+   ========================================================================= */
+
+/* ---------- Lenis (the rules lenis/dist/lenis.css would add) ------------ */
+html.lenis,
+html.lenis body {
+  height: auto;
+}
+
+.lenis:not(.lenis-autoToggle).lenis-stopped {
+  overflow: clip;
+}
+
+.lenis [data-lenis-prevent],
+.lenis [data-lenis-prevent-wheel],
+.lenis [data-lenis-prevent-touch] {
+  overscroll-behavior: contain;
+}
+
+.lenis.lenis-smooth iframe {
+  pointer-events: none;
+}
+
+/* Native anchor jumps (reduced motion / no Lenis) land under the 44px bar too. */
+html {
+  scroll-padding-top: 44px;
+}
+
+/* ---------- boot cover (painted before hydration by the gate script) ---- */
+html[data-boot="pending"] body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-preloader);
+  background: var(--bg);
+  pointer-events: none;
+}
+
+/* ---------- PointerCursor ----------------------------------------------- */
+html[data-cur="1"]:not([data-menu]):not([data-lightbox]) body,
+html[data-cur="1"]:not([data-menu]):not([data-lightbox]) body :where(
+  a,
+  button,
+  [role="button"],
+  [role="tab"],
+  label,
+  summary,
+  [data-cursor],
+  [data-cursor-text],
+  .magnetic
+) {
+  cursor: none;
+}
+
+.cur,
+.cur-dot {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: var(--z-cursor);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.25s var(--ease-editorial);
+}
+
+.cur[data-on="1"],
+.cur-dot[data-on="1"] {
+  opacity: 1;
+}
+
+html[data-menu] .cur,
+html[data-menu] .cur-dot,
+html[data-lightbox] .cur,
+html[data-lightbox] .cur-dot {
+  opacity: 0 !important;
+}
+
+.cur-ring {
+  position: absolute;
+  left: -16px;
+  top: -16px;
+  width: 32px;
+  height: 32px;
+  mix-blend-mode: difference;
+}
+
+.cur-ring-in {
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(255, 255, 255, 0.72);
+  border-radius: 50%;
+  transition: transform 0.22s var(--ease-editorial), border-color 0.25s var(--ease-editorial),
+    border-radius 0.25s var(--ease-editorial);
+}
+
+.cur[data-press="1"] .cur-ring-in {
+  transform: scale(0.82);
+}
+
+.cur[data-mode="hover"] .cur-ring-in {
+  border-color: rgba(255, 255, 255, 0.45);
+}
+
+.cur[data-mode="text"] .cur-ring-in {
+  border-color: rgba(255, 255, 255, 0.9);
+}
+
+/* reticle — crosshair over the video stages */
+.cur[data-mode="reticle"] .cur-ring-in {
+  border-radius: 2px;
+  border-color: rgba(255, 255, 255, 0.55);
+}
+
+.cur[data-mode="reticle"] .cur-ring-in::before,
+.cur[data-mode="reticle"] .cur-ring-in::after {
+  content: "";
+  position: absolute;
+  background: rgba(255, 255, 255, 0.55);
+}
+
+.cur[data-mode="reticle"] .cur-ring-in::before {
+  left: -8px;
+  right: -8px;
+  top: 50%;
+  height: 1px;
+}
+
+.cur[data-mode="reticle"] .cur-ring-in::after {
+  top: -8px;
+  bottom: -8px;
+  left: 50%;
+  width: 1px;
+}
+
+.cur-ring-c {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 3px;
+  height: 3px;
+  margin: -1.5px 0 0 -1.5px;
+  background: #fff;
+  opacity: 0;
+}
+
+.cur[data-mode="reticle"] .cur-ring-c {
+  animation: cur-blink 1.2s steps(2, end) infinite;
+}
+
+@keyframes cur-blink {
+  0%,
+  49% {
+    opacity: 1;
+  }
+
+  50%,
+  100% {
+    opacity: 0;
+  }
+}
+
+/* magnet — the ring folds into an outline hugging the [data-magnetic] target */
+.cur-mag {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 48px;
+  height: 48px;
+  border: 1px solid rgba(255, 255, 255, 0.78);
+  border-radius: 6px;
+  mix-blend-mode: difference;
+  opacity: 0;
+  transform: translate(-50%, -50%) scale(0.7);
+  transition: opacity 0.22s var(--ease-editorial), transform 0.4s var(--ease-expo);
+}
+
+.cur[data-mode="magnet"] .cur-mag {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+.cur[data-mode="magnet"][data-press="1"] .cur-mag {
+  transform: translate(-50%, -50%) scale(0.94);
+}
+
+.cur-label {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--mono);
+  font-size: 9px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  color: #fff;
+  mix-blend-mode: difference;
+  opacity: 0;
+  transition: opacity 0.2s var(--ease-editorial);
+}
+
+.cur[data-label="1"] .cur-label {
+  opacity: 1;
+}
+
+.cur-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #fff;
+  mix-blend-mode: difference;
+}
+
+/* ---------- GrainLayer -------------------------------------------------- */
+.grain {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-grain);
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0.055;
+}
+
+.grain-tex {
+  position: absolute;
+  inset: -24px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n' x='0' y='0'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 220px 220px;
+  background-repeat: repeat;
+  animation: grain-jitter 1.2s steps(6) infinite;
+  animation-play-state: paused;
+}
+
+.grain[data-active="1"] .grain-tex {
+  animation-play-state: running;
+  will-change: transform;
+}
+
+@keyframes grain-jitter {
+  0% {
+    transform: translate3d(0, 0, 0);
+  }
+
+  25% {
+    transform: translate3d(-14px, -9px, 0);
+  }
+
+  50% {
+    transform: translate3d(9px, -16px, 0);
+  }
+
+  75% {
+    transform: translate3d(-6px, 12px, 0);
+  }
+
+  100% {
+    transform: translate3d(0, 0, 0);
+  }
+}
+
+/* ---------- BootPreloader ----------------------------------------------- */
+.boot {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-preloader);
+  overflow: hidden;
+  color: var(--fg);
+  font-family: var(--mono);
+}
+
+.boot-panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: var(--bg);
+}
+
+.boot-panel--top {
+  top: 0;
+  transform-origin: 50% 0%;
+}
+
+.boot-panel--bottom {
+  bottom: 0;
+  transform-origin: 50% 100%;
+}
+
+.boot-seam {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  top: 50%;
+  height: 1px;
+  background: var(--signal);
+  opacity: 0;
+}
+
+.boot-ui {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas:
+    "kicker status"
+    "brand brand"
+    "lines counter";
+  column-gap: 24px;
+  padding: calc(var(--gutter) * 0.75) calc(var(--gutter) + 36px) var(--gutter) var(--gutter);
+}
+
+.boot-kicker {
+  grid-area: kicker;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--dim);
+}
+
+.boot-sig {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--signal);
+  animation: boot-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes boot-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+
+  50% {
+    opacity: 0.3;
+  }
+}
+
+.boot-status {
+  grid-area: status;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--dim);
+  text-align: right;
+}
+
+.boot-brand {
+  grid-area: brand;
+  align-self: center;
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 400;
+  font-size: clamp(44px, 9vw, 128px);
+  line-height: 0.95;
+  letter-spacing: -0.02em;
+  color: var(--fg);
+}
+
+.boot-brand em {
+  font-style: normal;
+  color: var(--fg);
+}
+
+.boot-lines {
+  grid-area: lines;
+  align-self: end;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--dim);
+}
+
+.boot-line {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.boot-tick {
+  flex: none;
+  width: 6px;
+  height: 6px;
+  background: var(--signal);
+}
+
+.boot-counter-wrap {
+  grid-area: counter;
+  align-self: end;
+  justify-self: end;
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-family: var(--serif);
+  font-style: normal;
+  font-weight: 400;
+  line-height: 0.9;
+}
+
+.boot-counter {
+  font-size: clamp(64px, 11vw, 148px);
+  letter-spacing: -0.02em;
+  font-variant-numeric: tabular-nums;
+}
+
+.boot-pct {
+  font-family: var(--mono);
+  font-style: normal;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--dim);
+}
+
+.boot-alt {
+  position: absolute;
+  right: 22px;
+  top: 22%;
+  bottom: 22%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  width: 24px;
+  font-size: 9px;
+  letter-spacing: 0.18em;
+  color: var(--dim);
+}
+
+.boot-alt-track {
+  position: relative;
+  flex: 1;
+  width: 1px;
+  background: var(--line);
+}
+
+.boot-alt-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--signal);
+  transform-origin: 50% 100%;
+}
+
+.boot-alt-mark {
+  position: absolute;
+  left: -3px;
+  bottom: 0;
+  width: 7px;
+  height: 7px;
+  border: 1px solid var(--fg);
+  background: var(--bg);
+}
+
+.boot-alt-v {
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  white-space: nowrap;
+}
+
+.boot-rule {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  bottom: calc(var(--gutter) * 0.5);
+  height: 1px;
+  background: var(--fg);
+  opacity: 0.5;
+}
+
+/* ---------- template.tsx page wipe -------------------------------------- */
+.page-wipe-layer {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--z-preloader) - 1);
+  pointer-events: none;
+}
+
+.page-wipe {
+  position: absolute;
+  inset: 0;
+  background: var(--bg);
+  transform-origin: 50% 0%;
+  will-change: transform;
+}
+
+.page-wipe::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--signal);
+  opacity: 0.9;
+}
+
+.page-wipe-stamp {
+  position: absolute;
+  left: var(--gutter);
+  bottom: var(--gutter);
+  font-family: var(--mono);
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1;
+  letter-spacing: 0.18em;
+  color: var(--dim);
+}
+
+.page-enter[data-enter="rise"] {
+  animation: page-rise 0.8s var(--ease-expo) 0.1s both;
+}
+
+.page-enter[data-enter="fade"] {
+  animation: page-fade 0.6s var(--ease-editorial) 0.1s both;
+}
+
+@keyframes page-rise {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes page-fade {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+/* ---------- responsive -------------------------------------------------- */
+@media (max-width: 768px) {
+  .boot-ui {
+    padding-right: calc(var(--gutter) + 30px);
+    column-gap: 16px;
+  }
+
+  .boot-alt {
+    right: 10px;
+    top: 26%;
+    bottom: 26%;
+  }
+
+  .boot-lines {
+    gap: 6px;
+    font-size: 10px;
+  }
+
+  .boot-brand {
+    line-height: 1;
+  }
+
+  .page-wipe-stamp {
+    bottom: calc(var(--gutter) + 8px);
+  }
+}
+
+/* ---------- reduced motion ---------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+
+  .cur,
+  .cur-dot,
+  .cur-ring-in,
+  .cur-mag,
+  .cur-label {
+    transition: none;
+  }
+
+  .cur-ring-c,
+  .grain-tex,
+  .boot-sig {
+    animation: none !important;
+  }
+
+  .grain-tex {
+    will-change: auto;
+  }
+
+  .page-enter[data-enter] {
+    animation: none;
+  }
+
+  .page-wipe {
+    will-change: auto;
+  }
+}
+
+/* ---------- coarse pointer ---------------------------------------------- */
+@media (pointer: coarse) {
+  .cur,
+  .cur-dot {
+    display: none;
+  }
+
+  .grain-tex {
+    animation: none;
+    will-change: auto;
+  }
+}

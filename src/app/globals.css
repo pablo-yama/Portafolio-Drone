@@ -4,7 +4,7 @@
 
 /* ============================================
    DESIGN TOKENS — ARCHIVE v2
-   Warm beige on near-black, burnt-orange signal
+   Base aliases — the cinematic system supplies the final palette
    ============================================ */
 :root {
   --bg: #0a0a0a;
@@ -20,7 +20,7 @@
   --scan: oklch(0.82 0.04 180);
   --green: oklch(0.82 0.18 140);
 
-  --serif: var(--font-fraunces), "Fraunces", "Times New Roman", serif;
+  --serif: var(--display, "Satoshi"), Arial, sans-serif;
   --mono: var(--font-mono), "JetBrains Mono", ui-monospace, monospace;
 
   /* Legacy aliases kept for components that still reference them */
@@ -47,8 +47,8 @@
   --color-foreground: var(--fg);
   --color-muted: var(--dim);
   --color-accent: var(--signal);
-  --font-sans: var(--font-mono);
-  --font-serif: var(--font-fraunces);
+  --font-sans: var(--sans);
+  --font-serif: var(--display);
   --font-mono: var(--font-mono);
 }
 
@@ -95,7 +95,7 @@ button {
 
 .serif-i {
   font-family: var(--serif);
-  font-style: italic;
+  font-style: normal;
 }
 
 /* Scanlines across the whole page */
@@ -357,8 +357,8 @@ main {
 
 .hero h1 {
   font-family: var(--serif);
-  font-weight: 300;
-  font-style: italic;
+  font-weight: 400;
+  font-style: normal;
   font-size: clamp(60px, 9.5vw, 150px);
   line-height: 0.92;
   letter-spacing: -0.035em;
@@ -536,7 +536,7 @@ main {
 .hero-foot .v {
   display: block;
   font-family: var(--serif);
-  font-style: italic;
+  font-style: normal;
   font-size: 26px;
   color: var(--fg);
   margin-top: 4px;
@@ -589,7 +589,7 @@ main {
   gap: 16px;
   position: relative;
   background:
-    radial-gradient(ellipse at 50% 0%, rgba(195, 105, 45, 0.08), transparent 60%),
+    radial-gradient(ellipse at 50% 0%, rgba(var(--signal-rgb), 0.08), transparent 60%),
     linear-gradient(180deg, #141110 0%, #0b0a09 100%);
 }
 
@@ -721,7 +721,7 @@ main {
 
 .telem-card .v {
   font-family: var(--serif);
-  font-style: italic;
+  font-style: normal;
   font-size: 24px;
   color: var(--fg);
   letter-spacing: -0.01em;
@@ -748,8 +748,8 @@ main {
 
 .section-head h2 {
   font-family: var(--serif);
-  font-style: italic;
-  font-weight: 300;
+  font-style: normal;
+  font-weight: 400;
   font-size: clamp(42px, 6vw, 82px);
   line-height: 0.95;
   letter-spacing: -0.025em;
@@ -815,7 +815,7 @@ main {
 .arch-row .row-hit:focus-visible {
   outline: 1px solid var(--signal);
   outline-offset: -1px;
-  background: rgba(195, 105, 45, 0.04);
+  background: rgba(var(--signal-rgb), 0.04);
 }
 
 .row-hit {
@@ -901,9 +901,9 @@ main {
 
 .arch-row .title {
   font-family: var(--serif);
-  font-style: italic;
+  font-style: normal;
   font-size: 26px;
-  font-weight: 300;
+  font-weight: 400;
   color: var(--fg);
   letter-spacing: -0.015em;
   line-height: 1.1;
@@ -1084,7 +1084,7 @@ main {
 .portrait .l-scan { z-index: 4; pointer-events: none; }
 
 .portrait .l-bg {
-  background: radial-gradient(ellipse at 30% 70%, rgba(195, 105, 45, 0.25), transparent 55%);
+  background: radial-gradient(ellipse at 30% 70%, rgba(var(--signal-rgb), 0.25), transparent 55%);
 }
 
 .portrait .l-mid {
@@ -1108,8 +1108,8 @@ main {
 
 .split-txt h3 {
   font-family: var(--serif);
-  font-style: italic;
-  font-weight: 300;
+  font-style: normal;
+  font-weight: 400;
   font-size: 56px;
   line-height: 1.02;
   letter-spacing: -0.03em;
@@ -1118,7 +1118,7 @@ main {
 }
 
 .split-txt h3 em {
-  font-style: italic;
+  font-style: normal;
   color: var(--signal);
 }
 
@@ -1174,8 +1174,8 @@ main {
 
 .ledger h2 {
   font-family: var(--serif);
-  font-style: italic;
-  font-weight: 300;
+  font-style: normal;
+  font-weight: 400;
   font-size: clamp(36px, 5vw, 64px);
   line-height: 1;
   letter-spacing: -0.025em;
@@ -1236,8 +1236,8 @@ main {
 
 .led .n {
   font-family: var(--serif);
-  font-style: italic;
-  font-weight: 300;
+  font-style: normal;
+  font-weight: 400;
   font-size: 76px;
   line-height: 0.9;
   letter-spacing: -0.04em;
@@ -1271,7 +1271,7 @@ main {
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.2s;
-  background: radial-gradient(circle 200px at var(--mx, 50%) var(--my, 50%), rgba(195, 105, 45, 0.15), transparent 60%);
+  background: radial-gradient(circle 200px at var(--mx, 50%) var(--my, 50%), rgba(var(--signal-rgb), 0.15), transparent 60%);
 }
 
 .led:hover .glow {
@@ -1288,8 +1288,8 @@ main {
 
 .timeline h2 {
   font-family: var(--serif);
-  font-style: italic;
-  font-weight: 300;
+  font-style: normal;
+  font-weight: 400;
   font-size: clamp(42px, 6vw, 80px);
   line-height: 0.95;
   letter-spacing: -0.03em;
@@ -1362,7 +1362,7 @@ main {
 }
 
 .tl-step.in::before {
-  box-shadow: 0 0 0 4px rgba(195, 105, 45, 0.15), 0 0 14px var(--signal);
+  box-shadow: 0 0 0 4px rgba(var(--signal-rgb), 0.15), 0 0 14px var(--signal);
   background: var(--signal);
 }
 
@@ -1389,8 +1389,8 @@ main {
 .tl-step h3,
 .tl-step h4 {
   font-family: var(--serif);
-  font-style: italic;
-  font-weight: 300;
+  font-style: normal;
+  font-weight: 400;
   font-size: 26px;
   line-height: 1.1;
   letter-spacing: -0.02em;
@@ -1424,8 +1424,8 @@ main {
 
 .pricing h2 {
   font-family: var(--serif);
-  font-style: italic;
-  font-weight: 300;
+  font-style: normal;
+  font-weight: 400;
   font-size: clamp(42px, 6vw, 80px);
   line-height: 0.95;
   letter-spacing: -0.03em;
@@ -1493,11 +1493,11 @@ main {
 }
 
 .tier.fea {
-  background: rgba(195, 105, 45, 0.04);
+  background: rgba(var(--signal-rgb), 0.04);
 }
 
 .tier.fea:hover {
-  background: rgba(195, 105, 45, 0.08);
+  background: rgba(var(--signal-rgb), 0.08);
   transform: translateY(-8px);
 }
 
@@ -1520,8 +1520,8 @@ main {
 
 .tier h3 {
   font-family: var(--serif);
-  font-style: italic;
-  font-weight: 300;
+  font-style: normal;
+  font-weight: 400;
   font-size: 48px;
   line-height: 1;
   letter-spacing: -0.02em;
@@ -1555,8 +1555,8 @@ main {
 
 .tier .price .amt {
   font-family: var(--serif);
-  font-style: italic;
-  font-weight: 300;
+  font-style: normal;
+  font-weight: 400;
   font-size: 56px;
   letter-spacing: -0.03em;
   color: var(--fg);
@@ -1630,7 +1630,7 @@ main {
   content: "";
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 80% 50%, rgba(195, 105, 45, 0.1), transparent 50%);
+  background: radial-gradient(ellipse at 80% 50%, rgba(var(--signal-rgb), 0.1), transparent 50%);
   pointer-events: none;
 }
 
@@ -1652,8 +1652,8 @@ main {
 
 .contact h2 {
   font-family: var(--serif);
-  font-style: italic;
-  font-weight: 300;
+  font-style: normal;
+  font-weight: 400;
   font-size: clamp(56px, 9vw, 140px);
   line-height: 0.9;
   letter-spacing: -0.035em;
@@ -1731,7 +1731,7 @@ main {
 
 .contact-card .line .v {
   font-family: var(--serif);
-  font-style: italic;
+  font-style: normal;
   font-size: 18px;
   color: var(--fg);
   text-align: right;
@@ -1757,8 +1757,8 @@ footer.footer {
 
 .foot-brand {
   font-family: var(--serif);
-  font-style: italic;
-  font-weight: 300;
+  font-style: normal;
+  font-weight: 400;
   font-size: 72px;
   line-height: 0.9;
   letter-spacing: -0.035em;
@@ -1916,8 +1916,8 @@ footer.footer a:hover {
 
 .cpage h1 {
   font-family: var(--serif);
-  font-weight: 300;
-  font-style: italic;
+  font-weight: 400;
+  font-style: normal;
   font-size: clamp(52px, 7.5vw, 120px);
   line-height: 0.92;
   letter-spacing: -0.035em;
@@ -1940,7 +1940,7 @@ footer.footer a:hover {
 }
 
 .cpage h1 em {
-  font-style: italic;
+  font-style: normal;
 }
 
 .cpage .clead {
@@ -1971,7 +1971,7 @@ footer.footer a:hover {
 .cstrip .v {
   display: block;
   font-family: var(--serif);
-  font-style: italic;
+  font-style: normal;
   font-size: 26px;
   color: var(--fg);
   letter-spacing: -0.01em;
@@ -2011,8 +2011,8 @@ footer.footer a:hover {
 .cproc .s h2,
 .cproc .s h5 {
   font-family: var(--serif);
-  font-style: italic;
-  font-weight: 300;
+  font-style: normal;
+  font-weight: 400;
   font-size: 22px;
   line-height: 1.1;
   margin-bottom: 8px;
@@ -2045,7 +2045,7 @@ footer.footer a:hover {
 
 .cinfo .v {
   font-family: var(--serif);
-  font-style: italic;
+  font-style: normal;
   font-size: 20px;
   color: var(--fg);
   display: inline-block;
@@ -2166,7 +2166,7 @@ footer.footer a:hover {
 .fld input::placeholder,
 .fld textarea::placeholder {
   color: var(--dim-2);
-  font-style: italic;
+  font-style: normal;
   font-family: var(--serif);
   font-size: 15px;
 }
@@ -2266,7 +2266,7 @@ footer.footer a:hover {
 
 .fpanel .pkg-banner .pkg-name {
   font-family: var(--serif);
-  font-style: italic;
+  font-style: normal;
   font-size: 17px;
   color: var(--fg);
   letter-spacing: -0.01em;
@@ -2465,8 +2465,8 @@ footer.footer a:hover {
 .sent h2,
 .sent h4 {
   font-family: var(--serif);
-  font-style: italic;
-  font-weight: 300;
+  font-style: normal;
+  font-weight: 400;
   font-size: 42px;
   line-height: 1;
   letter-spacing: -0.02em;
@@ -2475,7 +2475,7 @@ footer.footer a:hover {
 
 .sent h2 em,
 .sent h4 em {
-  font-style: italic;
+  font-style: normal;
 }
 
 .sent p {
@@ -2829,8 +2829,8 @@ footer.footer a:hover {
 
 .apage .apage-top h1 {
   font-family: var(--serif);
-  font-weight: 300;
-  font-style: italic;
+  font-weight: 400;
+  font-style: normal;
   font-size: clamp(52px, 7.5vw, 120px);
   line-height: 0.92;
   letter-spacing: -0.035em;
@@ -2891,7 +2891,7 @@ footer.footer a:hover {
 
 .apage .astats .s .v {
   font-family: var(--serif);
-  font-style: italic;
+  font-style: normal;
   font-size: 32px;
   line-height: 1;
   letter-spacing: -0.02em;
@@ -3169,8 +3169,8 @@ footer.footer a:hover {
 
 .apage .card .title {
   font-family: var(--serif);
-  font-style: italic;
-  font-weight: 300;
+  font-style: normal;
+  font-weight: 400;
   font-size: 24px;
   line-height: 1.1;
   letter-spacing: -0.015em;
@@ -3183,7 +3183,7 @@ footer.footer a:hover {
 }
 
 .apage .card .title em {
-  font-style: italic;
+  font-style: normal;
   font-weight: 400;
 }
 
@@ -3246,7 +3246,7 @@ footer.footer a:hover {
 .apage .l-row .row-hit:focus-visible {
   outline: 1px solid var(--signal);
   outline-offset: -1px;
-  background: rgba(195, 105, 45, 0.04);
+  background: rgba(var(--signal-rgb), 0.04);
 }
 
 .apage .l-row:hover .thumb .bg {
@@ -3280,9 +3280,9 @@ footer.footer a:hover {
 
 .apage .l-row .title {
   font-family: var(--serif);
-  font-style: italic;
+  font-style: normal;
   font-size: 22px;
-  font-weight: 300;
+  font-weight: 400;
   letter-spacing: -0.015em;
   line-height: 1.1;
   transition: color 0.2s;
@@ -3332,8 +3332,8 @@ footer.footer a:hover {
 
 .apage .mapsec h2 {
   font-family: var(--serif);
-  font-style: italic;
-  font-weight: 300;
+  font-style: normal;
+  font-weight: 400;
   font-size: clamp(36px, 5vw, 64px);
   line-height: 1;
   letter-spacing: -0.025em;
@@ -3607,8 +3607,8 @@ footer.footer a:hover {
 
 .apage .aend h3 {
   font-family: var(--serif);
-  font-style: italic;
-  font-weight: 300;
+  font-style: normal;
+  font-weight: 400;
   font-size: clamp(36px, 5vw, 64px);
   line-height: 1;
   letter-spacing: -0.025em;
@@ -3640,7 +3640,7 @@ footer.footer a:hover {
   text-align: center;
   color: var(--dim);
   font-family: var(--serif);
-  font-style: italic;
+  font-style: normal;
   font-size: 24px;
   display: none;
 }
@@ -3729,8 +3729,8 @@ footer.footer a:hover {
 .faq h1,
 .faq h2 {
   font-family: var(--serif);
-  font-style: italic;
-  font-weight: 300;
+  font-style: normal;
+  font-weight: 400;
   font-size: clamp(42px, 6vw, 80px);
   line-height: 0.95;
   letter-spacing: -0.03em;
@@ -3783,7 +3783,7 @@ footer.footer a:hover {
 }
 
 .faq-row.open {
-  background: rgba(195, 105, 45, 0.04);
+  background: rgba(var(--signal-rgb), 0.04);
 }
 
 .faq-row.open::before {
@@ -3832,8 +3832,8 @@ footer.footer a:hover {
 
 .faq-q .q {
   font-family: var(--serif);
-  font-style: italic;
-  font-weight: 300;
+  font-style: normal;
+  font-weight: 400;
   font-size: clamp(20px, 2.2vw, 28px);
   line-height: 1.25;
   letter-spacing: -0.015em;
@@ -3864,7 +3864,7 @@ footer.footer a:hover {
   transform: rotate(45deg);
   color: var(--signal);
   border-color: var(--signal);
-  box-shadow: 0 0 0 4px rgba(195, 105, 45, 0.08);
+  box-shadow: 0 0 0 4px rgba(var(--signal-rgb), 0.08);
 }
 
 .faq-a {
@@ -4031,7 +4031,7 @@ footer.footer a:hover {
 .mobile-menu a {
   font-family: var(--serif);
   font-size: 26px;
-  font-weight: 300;
+  font-weight: 400;
   color: var(--fg);
   padding: 16px 0;
   border-bottom: 1px solid var(--line);
@@ -4180,7 +4180,7 @@ footer.footer a:hover {
 
 .tier-table tbody th {
   font-family: var(--serif);
-  font-style: italic;
+  font-style: normal;
   font-weight: 400;
   font-size: 16px;
   color: var(--fg);
