@@ -1,0 +1,179 @@
+/* =========================================================================
+   UPLINK — WP10 · § 05 Uplink (UplinkSection + UplinkScene)
+   Loaded after globals.css via src/styles/premium.css. Extends the legacy
+   .contact / .contact-card rules; every new selector is namespaced
+   .uplink-* or scoped under .uplink-v. Tokens only. Transform/opacity only.
+   ========================================================================= */
+
+.uplink-v {
+  background: transparent; /* chapter tint (#080808) paints through <main> */
+  isolation: isolate;
+}
+
+/* layer order: dots 0 · glow 0 · scene 0 · wash (::before) 1 · copy 2 */
+.uplink-v .dotgrid {
+  z-index: 0;
+}
+
+.uplink-v::before {
+  z-index: 1;
+}
+
+.uplink-glow {
+  position: absolute;
+  z-index: 0;
+  left: 80%;
+  top: 50%;
+  width: 70vmax;
+  height: 70vmax;
+  margin: -35vmax 0 0 -35vmax;
+  border-radius: 50%;
+  pointer-events: none;
+  transform-origin: 50% 50%;
+  background: radial-gradient(
+    circle at center,
+    rgba(var(--signal-rgb), 0.5) 0%,
+    rgba(var(--signal-rgb), 0.16) 28%,
+    rgba(var(--signal-rgb), 0.04) 48%,
+    transparent 64%
+  );
+}
+
+.uplink-v .contact-3d {
+  opacity: 0.62;
+}
+
+.uplink-3d canvas {
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* section head (replaces the previous inline styles) */
+.uplink-head {
+  padding: 0 0 40px;
+  grid-template-columns: 180px 1fr;
+  border-bottom: none;
+  position: relative;
+  z-index: 2;
+}
+
+.uplink-copy {
+  position: relative;
+}
+
+.uplink-v h2 {
+  margin: 0;
+}
+
+.uplink-ctas {
+  margin-top: 40px;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.uplink-v .btn {
+  min-height: 44px;
+}
+
+/* the hover-letters alt face must be able to slide in below the label */
+.uplink-v .btn .hover-letters {
+  line-height: 1.2;
+}
+
+/* contact card: solid panel (no backdrop-filter over the live canvas) */
+.uplink-v .contact-card {
+  background: var(--panel);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+  transform-origin: 50% 0%;
+}
+
+.uplink-v .contact-card .line {
+  position: relative;
+  border-bottom: none;
+}
+
+.uplink-hair {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--line);
+  transform-origin: 0% 50%;
+  pointer-events: none;
+}
+
+.uplink-v .contact-card .line:last-child .uplink-hair {
+  display: none;
+}
+
+.uplink-v .contact-card .line .v .tfx-scramble {
+  display: inline-block;
+  min-width: 0;
+}
+
+.uplink-v .contact-card .line a.v {
+  transition: color 0.25s var(--ease-editorial);
+}
+
+.uplink-v .contact-card .line a.v:hover,
+.uplink-v .contact-card .line a.v:focus-visible {
+  color: var(--signal);
+}
+
+/* ---------- responsive ------------------------------------------------ */
+@media (max-width: 1100px) {
+  .uplink-head {
+    grid-template-columns: 1fr;
+  }
+
+  .uplink-glow {
+    left: 70%;
+    top: 38%;
+  }
+}
+
+@media (max-width: 768px) {
+  .uplink-glow {
+    width: 96vmax;
+    height: 96vmax;
+    margin: -48vmax 0 0 -48vmax;
+    left: 60%;
+    top: 30%;
+  }
+
+  .uplink-ctas {
+    margin-top: 32px;
+  }
+
+  .uplink-v .contact-card {
+    padding: 24px;
+  }
+}
+
+/* ---------- reduced motion -------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .uplink-glow {
+    transform: none !important;
+    opacity: 0.35 !important;
+  }
+
+  .uplink-hair {
+    transform: none !important;
+  }
+
+  .uplink-copy,
+  .uplink-v .contact-card {
+    transform: none !important;
+  }
+}
+
+/* ---------- coarse pointer -------------------------------------------- */
+@media (pointer: coarse) {
+  .uplink-v .contact-3d {
+    display: none;
+  }
+}

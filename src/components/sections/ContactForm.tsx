@@ -244,10 +244,10 @@ export function ContactForm() {
         )}
 
         <div className="fld">
-          <div className="head">
+          <label className="head" htmlFor="f-name">
             <span>01 · Nombre</span>
             <span className="req">REQ</span>
-          </div>
+          </label>
           <input
             id="f-name"
             type="text"
@@ -261,10 +261,10 @@ export function ContactForm() {
         </div>
 
         <div className="fld">
-          <div className="head">
+          <label className="head" htmlFor="f-email">
             <span>02 · Email</span>
             <span className="req">REQ</span>
-          </div>
+          </label>
           <input
             id="f-email"
             type="email"
@@ -278,10 +278,10 @@ export function ContactForm() {
         </div>
 
         <div className="fld">
-          <div className="head">
+          <label className="head" htmlFor="f-empresa">
             <span>03 · Empresa · Proyecto</span>
             <span>OPT</span>
-          </div>
+          </label>
           <input
             id="f-empresa"
             type="text"
@@ -314,10 +314,10 @@ export function ContactForm() {
         </div>
 
         <div className="fld">
-          <div className="head">
+          <label className="head" htmlFor="f-ubicacion">
             <span>05 · Ubicación</span>
             <span>OPT</span>
-          </div>
+          </label>
           <input
             id="f-ubicacion"
             type="text"
@@ -330,10 +330,10 @@ export function ContactForm() {
         </div>
 
         <div className="fld">
-          <div className="head">
+          <label className="head" htmlFor="f-fecha">
             <span>06 · Fecha tentativa</span>
             <span>OPT</span>
-          </div>
+          </label>
           <select
             id="f-fecha"
             value={form.fecha}
@@ -351,10 +351,10 @@ export function ContactForm() {
         </div>
 
         <div className="fld">
-          <div className="head">
+          <label className="head" htmlFor="f-presupuesto">
             <span>07 · Presupuesto</span>
             <span>OPT</span>
-          </div>
+          </label>
           <select
             id="f-presupuesto"
             value={form.presupuesto}
@@ -372,12 +372,12 @@ export function ContactForm() {
         </div>
 
         <div className="fld">
-          <div className="head">
+          <label className="head" htmlFor="f-msg">
             <span>08 · Briefing</span>
             <span className="count">
               <span>{charCount}</span>/600
             </span>
-          </div>
+          </label>
           <textarea
             id="f-msg"
             name="mensaje"
@@ -420,9 +420,9 @@ export function ContactForm() {
 
       <div className={`sent${submitted ? ' show' : ''}`}>
         <div className="rad" aria-hidden="true" />
-        <h4>
+        <h2>
           Uplink <em>recibido.</em>
-        </h4>
+        </h2>
         <p>
           Gracias por escribir. Reviso tu briefing y te respondo en menos
           de 24 horas con una propuesta inicial.

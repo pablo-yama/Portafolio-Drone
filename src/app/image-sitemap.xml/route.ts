@@ -32,7 +32,7 @@ export function GET() {
       <image:title>${escapeXml(title)}</image:title>
       <image:caption>${escapeXml(caption)}</image:caption>
       <image:geo_location>${escapeXml(e.loc === 'CDMX' ? 'Ciudad de México, México' : `${e.loc}, México`)}</image:geo_location>
-      <image:license>${escapeXml(`${BASE_URL}/about`)}</image:license>
+      <image:license>${escapeXml(`${BASE_URL}/contact`)}</image:license>
     </image:image>`;
         })
         .join('\n');

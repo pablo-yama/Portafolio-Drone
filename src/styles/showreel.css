@@ -1,0 +1,544 @@
+/* =========================================================================
+   SHOWREEL — WP6 · Ventana 02 · Bosques de las Lomas, hora dorada
+   Card → full-bleed on a sticky stage. Namespaced .reel-*. Tokens only.
+
+   · Mobile-first: the base rules are the static block (<1024px).
+   · ≥1024px: section 220svh, sticky 100svh stage; every motion value is
+     scrubbed from the section's raw scroll progress (transform/opacity).
+   · prefers-reduced-motion: static block at every width (declared last so
+     it wins over the desktop block), poster + ▶ Reproducir from HudVideo.
+   · will-change only while the grow range is being scrubbed
+     (.reel-card.is-scrubbing, toggled from a MotionValue event).
+   · The only permanent loop is the REC blink, gated by the video's
+     'playing' state (HudVideo pauses the clip when it leaves the viewport).
+   ========================================================================= */
+
+/* ---------- section + stage (static block by default) ------------------- */
+.reel-v {
+  position: relative;
+  padding: 64px var(--gutter);
+}
+
+.reel-stage {
+  position: relative;
+  display: block;
+}
+
+/* ---------- parallax caption layer (desktop only) ----------------------- */
+.reel-caption {
+  display: none;
+  position: absolute;
+  left: 0;
+  top: 50%;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+  opacity: 0.12;
+  transform-origin: 50% 50%;
+}
+
+.reel-caption-copy {
+  display: inline-flex;
+  align-items: baseline;
+  font-family: var(--serif);
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(120px, 17vw, 280px);
+  line-height: 1;
+  letter-spacing: -0.03em;
+  color: var(--fg);
+}
+
+.reel-caption-seg.is-outline {
+  font-style: normal;
+  font-weight: 400;
+  color: transparent;
+  -webkit-text-stroke: max(1px, 0.006em) var(--fg);
+  paint-order: stroke fill;
+}
+
+.reel-caption-dot {
+  font-style: normal;
+  color: var(--signal);
+  margin: 0 0.18em;
+}
+
+/* ---------- card ------------------------------------------------------- */
+.reel-card {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  aspect-ratio: 1.9 / 1;
+  margin-top: 36px;
+  transform-origin: 50% 50%;
+}
+
+.reel-plate {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  border: 1px solid var(--line);
+  border-radius: 4px;
+  background: var(--bg);
+}
+
+/* Internal letterbox bars: 6% of the card, collapse (scaleY) into the edges. */
+.reel-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 6%;
+  z-index: 2;
+  background: var(--bg);
+  pointer-events: none;
+}
+
+.reel-bar--top {
+  top: 0;
+  transform-origin: 50% 0%;
+}
+
+.reel-bar--bottom {
+  bottom: 0;
+  transform-origin: 50% 100%;
+}
+
+/* HUD corner brackets */
+.reel-corners {
+  position: absolute;
+  inset: -1px;
+  z-index: 3;
+  pointer-events: none;
+}
+
+.reel-corner {
+  position: absolute;
+  width: 16px;
+  height: 16px;
+  transform-origin: 50% 50%;
+}
+
+.reel-corner::before,
+.reel-corner::after {
+  content: '';
+  position: absolute;
+  background: var(--fg);
+  opacity: 0.85;
+}
+
+.reel-corner::before {
+  width: 100%;
+  height: 1px;
+}
+
+.reel-corner::after {
+  width: 1px;
+  height: 100%;
+}
+
+.reel-corner--tl {
+  top: 0;
+  left: 0;
+}
+
+.reel-corner--tl::before,
+.reel-corner--tl::after {
+  top: 0;
+  left: 0;
+}
+
+.reel-corner--tr {
+  top: 0;
+  right: 0;
+}
+
+.reel-corner--tr::before,
+.reel-corner--tr::after {
+  top: 0;
+  right: 0;
+}
+
+.reel-corner--bl {
+  bottom: 0;
+  left: 0;
+}
+
+.reel-corner--bl::before,
+.reel-corner--bl::after {
+  bottom: 0;
+  left: 0;
+}
+
+.reel-corner--br {
+  bottom: 0;
+  right: 0;
+}
+
+.reel-corner--br::before,
+.reel-corner--br::after {
+  bottom: 0;
+  right: 0;
+}
+
+/* Stamp: above the card on mobile, on the top letterbox bar on desktop. */
+.reel-stamp {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 12px);
+  z-index: 4;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--scan);
+}
+
+/* Pause control: top-right, revealed on hover (always visible on touch),
+   counter-scaled so it stays 44px while the card grows (--reel-k = card scale). */
+.reel-card .hv-ctl {
+  left: auto;
+  right: 14px;
+  top: 14px;
+  bottom: auto;
+  transform-origin: 100% 0%;
+  transform: scale(calc(1 / var(--reel-k, 1)));
+  opacity: 0;
+  transition:
+    opacity 0.3s var(--ease-editorial),
+    border-color 0.3s var(--ease-editorial),
+    background 0.3s var(--ease-editorial);
+}
+
+.reel-card:hover .hv-ctl,
+.reel-card .hv-ctl:focus-visible,
+.reel-card .hv-ctl[data-state='paused'],
+.reel-card .hv-ctl[data-state='standby'] {
+  opacity: 1;
+}
+
+/* ---------- timecode + progress rail ----------------------------------- */
+.reel-meta {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 14px;
+  min-height: 24px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--dim);
+  pointer-events: none;
+}
+
+.reel-tc,
+.reel-dur,
+.reel-rec {
+  flex: none;
+  white-space: nowrap;
+}
+
+.reel-tc-v {
+  color: var(--fg);
+}
+
+.reel-rail {
+  position: relative;
+  flex: 1 1 auto;
+  height: 1px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.reel-rail-fill {
+  position: absolute;
+  inset: 0;
+  background: var(--signal);
+  transform-origin: 0% 50%;
+  transform: scaleX(0);
+}
+
+.reel-rec {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.reel-rec::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--dim-2);
+}
+
+.reel-rec[data-on='1'] {
+  color: var(--fg);
+}
+
+.reel-rec[data-on='1']::before {
+  background: var(--signal);
+  animation: reel-blink 1.2s steps(2, jump-none) infinite;
+}
+
+@keyframes reel-blink {
+  50% {
+    opacity: 0.15;
+  }
+}
+
+/* ---------- scrim + title ---------------------------------------------- */
+.reel-scrim {
+  display: none;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 58%;
+  z-index: 4;
+  pointer-events: none;
+  background: linear-gradient(
+    0deg,
+    rgba(10, 10, 10, 0.92) 0%,
+    rgba(10, 10, 10, 0.72) 38%,
+    rgba(10, 10, 10, 0) 100%
+  );
+}
+
+.reel-title {
+  position: relative;
+  z-index: 6;
+  margin-top: 40px;
+  pointer-events: none;
+}
+
+.reel-h {
+  margin: 0;
+  font-family: var(--serif);
+  font-weight: 300;
+  font-style: italic;
+  font-size: clamp(48px, 7.5vw, 120px);
+  line-height: 0.95;
+  letter-spacing: -0.03em;
+  color: var(--fg);
+}
+
+.reel-h .u {
+  font-style: normal;
+  font-weight: 500;
+}
+
+/* Highlight plate: on the <em> when unsplit, per character once SplitText
+   has run, so the plate builds letter by letter with the scrub. */
+.reel-h .u:not(:has(.tfx-char)) {
+  display: inline-block;
+  padding: 0 0.1em;
+  background: var(--signal);
+  color: var(--bg);
+}
+
+.reel-h .u .tfx-char {
+  background: var(--signal);
+  color: var(--bg);
+}
+
+.reel-h .u .tfx-char:first-child {
+  padding-left: 0.1em;
+}
+
+.reel-h .u .tfx-char:last-child {
+  padding-right: 0.1em;
+}
+
+.reel-sub {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin: 18px 0 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.reel-sub::before {
+  content: '';
+  flex: none;
+  width: 40px;
+  height: 1px;
+  background: var(--signal);
+}
+
+/* ---------- ≤768: tighter type ----------------------------------------- */
+@media (max-width: 768px) {
+  .reel-v {
+    padding: 48px var(--gutter);
+  }
+
+  .reel-h {
+    font-size: clamp(40px, 11.5vw, 72px);
+  }
+
+  .reel-meta {
+    gap: 12px;
+  }
+
+  .reel-dur {
+    display: none;
+  }
+}
+
+/* ---------- ≥1024: sticky stage, card → full-bleed --------------------- */
+@media (min-width: 1024px) {
+  .reel-v {
+    height: 220vh;
+    height: 220svh;
+    padding: 0;
+  }
+
+  .reel-stage {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    height: 100svh;
+    overflow: hidden;
+    display: grid;
+    place-items: center;
+  }
+
+  .reel-caption {
+    display: block;
+    will-change: transform;
+  }
+
+  .reel-card {
+    width: 56vw;
+    margin: 0;
+  }
+
+  .reel-card.is-scrubbing,
+  .reel-card.is-scrubbing .hv-plate,
+  .reel-card.is-scrubbing .reel-bar {
+    will-change: transform;
+  }
+
+  .reel-stamp {
+    top: 7px;
+    left: 16px;
+    bottom: auto;
+    max-width: calc(100% - 32px);
+  }
+
+  .reel-meta {
+    position: absolute;
+    left: var(--gutter);
+    right: var(--gutter);
+    bottom: 28px;
+    margin: 0;
+  }
+
+  .reel-scrim {
+    display: block;
+  }
+
+  .reel-title {
+    position: absolute;
+    left: var(--gutter);
+    right: var(--gutter);
+    bottom: 104px;
+    margin: 0;
+  }
+}
+
+/* ---------- coarse pointer --------------------------------------------- */
+@media (pointer: coarse) {
+  .reel-card .hv-ctl {
+    opacity: 1;
+  }
+}
+
+/* ---------- reduced motion: static block at every width ---------------- */
+@media (prefers-reduced-motion: reduce) {
+  .reel-v {
+    height: auto;
+    padding: 64px var(--gutter);
+  }
+
+  .reel-stage {
+    position: static;
+    height: auto;
+    overflow: visible;
+    display: block;
+    opacity: 1 !important;
+  }
+
+  .reel-caption {
+    display: none;
+  }
+
+  .reel-card {
+    width: 100%;
+    margin: 36px 0 0;
+    transform: none !important;
+    will-change: auto;
+  }
+
+  .reel-card .hv-ctl {
+    transform: none;
+    opacity: 1;
+    transition: none;
+  }
+
+  .reel-bar,
+  .reel-corners,
+  .reel-corner,
+  .reel-stamp {
+    transform: none !important;
+    opacity: 1 !important;
+  }
+
+  .reel-stamp {
+    top: auto;
+    left: 0;
+    bottom: calc(100% + 12px);
+    max-width: 100%;
+  }
+
+  .reel-meta {
+    position: relative;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    margin-top: 14px;
+    opacity: 1 !important;
+  }
+
+  .reel-rail-fill {
+    transform: scaleX(1) !important;
+  }
+
+  .reel-rec[data-on='1']::before {
+    animation: none;
+  }
+
+  .reel-scrim {
+    display: none;
+  }
+
+  .reel-title {
+    position: static;
+    margin-top: 40px;
+  }
+
+  .reel-sub {
+    transform: none !important;
+  }
+}

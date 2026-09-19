@@ -1,0 +1,537 @@
+/* =========================================================================
+   PREMIUM BASE — WP1 tokens, apparatus and primitive styles
+   Loaded AFTER globals.css through src/styles/premium.css so every
+   equal-specificity rule here wins. Zero edits to globals.css.
+
+   MOTION BUDGET (AMENDMENTS §0)
+   · Every section carries ≥1 scroll-SCRUBBED element and staggered entrances.
+   · Loops are allowed when they are transform/opacity-only AND paused
+     off-screen via IntersectionObserver (tape, grain steps(), aurora drift,
+     reticle blink, .sig pulse, video).
+   · Animate transform/opacity only. Documented paint exceptions:
+       1. <main> background-color per chapter (ChapterTint, solid fill),
+       2. the portrait's one-off clip-path reveal (PilotSection),
+       3. the hero "lámina" border-radius hand-off (HeroVideoSection).
+   · will-change only while an element is actively animating.
+   · No content-visibility, no backdrop-filter over video, no new fonts.
+   ========================================================================= */
+
+/* ---------- tokens ------------------------------------------------------ */
+:root {
+  --z-grain: 98;
+  --z-lightbox: 9500;
+  --gutter: 56px;
+  --ease-editorial: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ease-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --hud-line: rgba(232, 230, 225, 0.22);
+  --scrim: rgba(10, 10, 10, 0.72);
+  --chapter-bg: var(--bg);
+}
+
+@media (max-width: 1100px) {
+  :root {
+    --gutter: 24px;
+  }
+}
+
+/* ---------- sticky fix (critical) --------------------------------------
+   globals.css sets overflow-x: hidden on BOTH html and body, which turns
+   body into a scroll container and silently breaks position: sticky for the
+   hero / showreel stages. `clip` keeps horizontal overflow clipped without
+   creating a scroll container. */
+html {
+  overflow-x: clip;
+}
+
+body {
+  overflow-x: visible;
+}
+
+@supports not (overflow: clip) {
+  html {
+    overflow-x: hidden;
+  }
+}
+
+/* ---------- chapter background (paint exception #1) --------------------- */
+main {
+  background-color: var(--chapter-bg, var(--bg));
+  transition: background-color 0.9s var(--ease-editorial);
+}
+
+/* ---------- focus ------------------------------------------------------- */
+a:focus-visible,
+button:focus-visible,
+[tabindex]:focus-visible {
+  outline: 1px solid var(--signal);
+  outline-offset: 3px;
+}
+
+/* ---------- typographic apparatus -------------------------------------- */
+.folio {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+.rule {
+  display: block;
+  width: 100%;
+  height: 1px;
+  background: var(--line);
+}
+
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
+/* underline reveal: draws left→right on hover, retreats right→left on leave */
+.link-ul {
+  position: relative;
+  display: inline-block;
+}
+
+.link-ul::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: var(--signal);
+  transform: scaleX(0);
+  transform-origin: right center;
+  transition: transform 0.35s var(--ease-editorial);
+}
+
+.link-ul:hover::after,
+.link-ul:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left center;
+}
+
+.hover-lift {
+  transition: transform 0.5s var(--ease-expo);
+}
+
+.hover-lift:hover {
+  transform: translateY(-2px);
+}
+
+/* ---------- MaskLines --------------------------------------------------- */
+.ml {
+  margin: 0;
+}
+
+.ml-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+.ml-inner {
+  display: block;
+  transform-origin: 0% 100%;
+}
+
+.ml[data-ml='out'] .ml-inner,
+.ml[data-ml='progress'] .ml-inner {
+  will-change: transform, opacity;
+}
+
+/* ---------- Magnetic ---------------------------------------------------- */
+.magnetic {
+  display: inline-block;
+}
+
+/* ---------- HudVideo ---------------------------------------------------- */
+.hv {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  background: var(--bg);
+}
+
+.hv-plate {
+  position: absolute;
+  inset: 0;
+  transform-origin: 50% 50%;
+}
+
+.hv[data-scrub='1'] .hv-plate {
+  will-change: transform;
+}
+
+.hv-poster {
+  object-fit: cover;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+.hv-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.8s var(--ease-editorial);
+}
+
+.hv[data-playing='1'] .hv-video {
+  opacity: 1;
+}
+
+.hv-video--manual {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.hv-ctl {
+  position: absolute;
+  left: var(--gutter);
+  bottom: 24px;
+  z-index: 3;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 44px;
+  height: 44px;
+  padding: 0 14px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  color: var(--fg);
+  background: rgba(10, 10, 10, 0.55);
+  border: 1px solid var(--hud-line);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: border-color 0.3s var(--ease-editorial), background 0.3s var(--ease-editorial);
+}
+
+.hv-ctl:hover {
+  border-color: var(--fg);
+  background: rgba(10, 10, 10, 0.78);
+}
+
+.hv-ctl-ic {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  flex: none;
+}
+
+.hv-ctl[data-state='playing'] .hv-ctl-ic::before,
+.hv-ctl[data-state='playing'] .hv-ctl-ic::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 3px;
+  background: currentColor;
+}
+
+.hv-ctl[data-state='playing'] .hv-ctl-ic::before {
+  left: 0;
+}
+
+.hv-ctl[data-state='playing'] .hv-ctl-ic::after {
+  right: 0;
+}
+
+.hv-ctl:not([data-state='playing']) .hv-ctl-ic::before {
+  content: '';
+  position: absolute;
+  left: 1px;
+  top: 0;
+  width: 0;
+  height: 0;
+  border-left: 9px solid currentColor;
+  border-top: 5px solid transparent;
+  border-bottom: 5px solid transparent;
+}
+
+.hv-ctl[data-state='standby'] .hv-ctl-ic::before {
+  border-left-color: var(--signal);
+}
+
+.hv-play {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 3;
+  transform: translate(-50%, -50%);
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 44px;
+  min-height: 44px;
+  padding: 0 20px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg);
+  background: rgba(10, 10, 10, 0.7);
+  border: 1px solid var(--fg);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: background 0.3s var(--ease-editorial), color 0.3s var(--ease-editorial);
+}
+
+.hv-play:hover,
+.hv-play:focus-visible {
+  background: var(--fg);
+  color: var(--bg);
+}
+
+.hv-play-ic {
+  font-size: 10px;
+  line-height: 1;
+}
+
+/* ---------- DotGrid ----------------------------------------------------- */
+.dotgrid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: radial-gradient(rgba(232, 230, 225, 0.18) 1px, transparent 1.5px);
+  background-size: var(--dot-size, 26px) var(--dot-size, 26px);
+  -webkit-mask-image: radial-gradient(
+    var(--dot-radius, 320px) circle at var(--mx, 50%) var(--my, 40%),
+    #000 0%,
+    transparent 100%
+  );
+  mask-image: radial-gradient(
+    var(--dot-radius, 320px) circle at var(--mx, 50%) var(--my, 40%),
+    #000 0%,
+    transparent 100%
+  );
+}
+
+/* ---------- AuroraGlow (IO-paused drift, no filters) -------------------- */
+.aurora {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.aurora-blob {
+  position: absolute;
+  width: 60vmax;
+  height: 60vmax;
+  border-radius: 50%;
+  opacity: var(--aurora-a, 0.1);
+  background: radial-gradient(
+    circle at center,
+    rgba(var(--signal-rgb), 0.9) 0%,
+    rgba(var(--signal-rgb), 0.35) 32%,
+    transparent 66%
+  );
+  animation: aurora-drift-a 18s ease-in-out infinite alternate;
+  animation-play-state: paused;
+}
+
+.aurora-blob--a {
+  top: -22vmax;
+  left: -16vmax;
+}
+
+.aurora-blob--b {
+  bottom: -26vmax;
+  right: -12vmax;
+  animation-name: aurora-drift-b;
+  animation-duration: 23s;
+  opacity: calc(var(--aurora-a, 0.1) * 0.8);
+}
+
+.aurora[data-active='1'] .aurora-blob {
+  animation-play-state: running;
+  will-change: transform;
+}
+
+@keyframes aurora-drift-a {
+  from {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+
+  to {
+    transform: translate3d(12vw, 9vh, 0) scale(1.15);
+  }
+}
+
+@keyframes aurora-drift-b {
+  from {
+    transform: translate3d(0, 0, 0) scale(1.1);
+  }
+
+  to {
+    transform: translate3d(-10vw, -11vh, 0) scale(0.94);
+  }
+}
+
+/* ---------- BeamBorder (masked 1px ring, rotate-only) ------------------- */
+.beam {
+  position: absolute;
+  inset: -1px;
+  z-index: 2;
+  padding: 1px;
+  border-radius: inherit;
+  overflow: hidden;
+  pointer-events: none;
+  -webkit-mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  mask: linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+}
+
+.beam-spin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 300%;
+  height: 300%;
+  margin: -150% 0 0 -150%;
+  background: conic-gradient(from 0deg, transparent 0 72%, var(--signal) 86%, transparent 100%);
+  animation: beam-rotate 8s linear infinite;
+  animation-play-state: paused;
+}
+
+.beam[data-active='1'] .beam-spin {
+  animation-play-state: running;
+  will-change: transform;
+}
+
+@keyframes beam-rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* ---------- SectionWipe ------------------------------------------------- */
+.wipe {
+  position: relative;
+  height: var(--wipe-h, 18vh);
+  overflow: hidden;
+  pointer-events: none;
+  display: grid;
+  place-items: center;
+}
+
+.wipe-panel {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50%;
+  background: var(--wipe-c, var(--panel-2));
+  will-change: transform;
+}
+
+.wipe-panel--top {
+  top: 0;
+  transform-origin: 50% 0%;
+}
+
+.wipe-panel--bottom {
+  bottom: 0;
+  transform-origin: 50% 100%;
+}
+
+.wipe-line {
+  position: absolute;
+  left: var(--gutter);
+  right: var(--gutter);
+  top: 50%;
+  height: 1px;
+  background: var(--signal);
+  transform-origin: 0% 50%;
+}
+
+.wipe-label {
+  position: relative;
+  z-index: 1;
+  padding: 0 12px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--dim);
+  background: var(--chapter-bg, var(--bg));
+}
+
+.wipe[data-static] .wipe-panel {
+  display: none;
+}
+
+.wipe[data-static] .wipe-line {
+  transform: none !important;
+}
+
+.wipe[data-static] .wipe-label {
+  opacity: 1 !important;
+}
+
+/* ---------- responsive -------------------------------------------------- */
+@media (max-width: 768px) {
+  .hv-ctl {
+    bottom: 16px;
+  }
+
+  .wipe {
+    height: calc(var(--wipe-h, 18vh) * 0.6);
+  }
+}
+
+/* ---------- reduced motion ---------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .beam-spin,
+  .tape-track,
+  .aurora-blob,
+  .grain {
+    animation: none !important;
+  }
+
+  .beam,
+  .aurora {
+    display: none;
+  }
+
+  .ml-inner {
+    transform: none !important;
+    will-change: auto;
+  }
+
+  .magnetic {
+    transform: none !important;
+  }
+
+  .link-ul::after,
+  .hover-lift,
+  .hv-video,
+  main {
+    transition: none;
+  }
+
+  .hover-lift:hover {
+    transform: none;
+  }
+}
+
+/* ---------- coarse pointer ---------------------------------------------- */
+@media (pointer: coarse) {
+  .beam,
+  .aurora {
+    display: none;
+  }
+
+  .link-ul::after {
+    transform: scaleX(1);
+    transform-origin: left center;
+    opacity: 0.5;
+  }
+}

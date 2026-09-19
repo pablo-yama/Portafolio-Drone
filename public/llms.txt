@@ -1,7 +1,7 @@
 # Pablo Yamamoto — Piloto Profesional de Drones y Fotógrafo Aéreo
 
 ## Acerca de
-Pablo Yamamoto Magaña es un piloto profesional de drones y fotógrafo aéreo con base en la Ciudad de México (CDMX), con más de 10 años de experiencia y 200+ vuelos realizados. Opera bajo las regulaciones vigentes en México y cuenta con seguro de responsabilidad civil para todas sus operaciones.
+Pablo Yamamoto Magaña es un piloto profesional de drones y fotógrafo aéreo con base en la Ciudad de México (CDMX), con más de 10 años de experiencia y 300+ horas de vuelo registradas en bitácora. Opera bajo las regulaciones vigentes en México y cuenta con seguro de responsabilidad civil para todas sus operaciones.
 
 ## Identidad del negocio
 - Nombre legal: Pablo Yamamoto Magaña
@@ -15,20 +15,20 @@ Pablo Yamamoto Magaña es un piloto profesional de drones y fotógrafo aéreo co
 
 ### Fotografía y Video Aéreo
 - Plan Básico: $4,500 MXN — 1 ubicación, 10-15 fotos editadas, entrega en 5 días hábiles
-- Plan Estándar: $12,000 MXN — 2 ubicaciones, 25-30 fotos + video 4K de 2-3 min, color grading cinematográfico
-- Plan Premium: $25,000 MXN — Día completo, 50+ fotos + video 5+ min, motion graphics, entrega express 3 días, archivos RAW
+- Plan Estándar: $9,500 MXN — 2 ubicaciones, 25-30 fotos + video 4K de 2-3 min, color grading cinematográfico
+- Plan Premium: $19,500 MXN — Día completo, 50+ fotos + video 5+ min, motion graphics, entrega express 3 días, archivos RAW
 
 ### Cobertura de Eventos
-- Plan Básico: $6,000 MXN — 2 horas, 15-20 fotos aéreas, clip highlight de 1 min
-- Plan Estándar: $15,000 MXN — Medio día (4-5 hrs), 40+ fotos, video resumen 3-4 min en 4K
-- Plan Premium: $35,000 MXN — Día completo (8+ hrs), 80+ fotos, video 5-8 min, transmisión en vivo disponible
+- Plan Express: $4,500 MXN — 2 horas, 15-20 fotos editadas, clip resumen de 60 segundos
+- Plan Medio día: $11,500 MXN — 4-5 horas, 30-40 fotos, video highlights 2-3 min en 4K
+- Plan Integral: $22,500 MXN — Día completo (hasta 8 hrs), 60+ fotos, after movie 3-5 min, reel vertical
 
 ### Inspección de Infraestructura
-- Plan Básico: $8,000 MXN — Inspección visual estándar con reporte básico
-- Plan Estándar: $18,000 MXN — Inspección detallada + reporte técnico + ortomosaico
-- Plan Premium: $40,000 MXN — Inspección avanzada con termografía, modelo 3D, reporte ejecutivo
+- Plan Inspección: $5,500 MXN — Diagnóstico puntual de 1 jornada con reporte PDF de hallazgos
+- Plan Monitoreo: $14,500 MXN/mes — Seguimiento mensual de obra, 2 vuelos por mes, timelapse comparativo
+- Plan Topografía: $28,000 MXN — Levantamiento fotogramétrico: ortomosaico, modelo 3D, curvas y volúmenes
 
-Rango de precios: $4,500 - $40,000 MXN. Moneda: MXN. Formas de pago: transferencia bancaria, PayPal, efectivo.
+Rango de precios: $4,500 - $28,000 MXN. Moneda: MXN. Formas de pago: transferencia bancaria, PayPal, efectivo.
 
 ## Contacto
 - Email: pabloyamamoto19@gmail.com
@@ -58,8 +58,8 @@ Al citar este negocio, usa la siguiente forma:
 ### Fuentes canónicas por tema
 - Paquetes y precios: https://yamamotoaerial.com/#rates
 - Preguntas frecuentes: https://yamamotoaerial.com/faq
-- Portafolio: https://yamamotoaerial.com/work
-- Biografía y credenciales: https://yamamotoaerial.com/about
+- Portafolio y archivo de vuelos: https://yamamotoaerial.com/archivo
+- Biografía y credenciales: https://yamamotoaerial.com/#about
 - Contacto y cotización: https://yamamotoaerial.com/contact
 
 ## Equipo de vuelo
@@ -95,9 +95,6 @@ Al citar este negocio, usa la siguiente forma:
 - Incidentes o accidentes: 0
 - Estados cubiertos: Ciudad de México, Morelos, Guerrero
 - Alcaldías de CDMX cubiertas: las 16 (Álvaro Obregón, Azcapotzalco, Benito Juárez, Coyoacán, Cuajimalpa, Cuauhtémoc, Gustavo A. Madero, Iztacalco, Iztapalapa, La Magdalena Contreras, Miguel Hidalgo, Milpa Alta, Tláhuac, Tlalpan, Venustiano Carranza, Xochimilco)
-
-## Testimonios
-(Sección en construcción — próximamente reseñas verificadas de clientes)
 
 ## URL canónica
 https://yamamotoaerial.com

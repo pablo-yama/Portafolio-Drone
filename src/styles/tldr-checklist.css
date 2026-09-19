@@ -1,0 +1,177 @@
+/* =========================================================================
+   TLDR CHECKLIST — WP7
+   The SEO summary under the hero restyled as a pre-flight checklist slate:
+   a 4-cell instrument row (1px gaps), TickMark boxes, folio numbers via
+   attr(data-num), .link-ul links. Namespaced .tldr-v3 / .tick-mark.
+   Overrides the legacy `.tldr` rules from globals.css (loaded after it).
+   Motion: transform + opacity (cells), pathLength (tick), scaleX (rule).
+   ========================================================================= */
+
+.tldr.tldr-v3 {
+  position: relative;
+  display: block;
+  padding: 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  isolation: isolate;
+}
+
+/* scrubbed signal rule that draws across the top edge as the slate arrives */
+.tldr-v3-rule {
+  position: absolute;
+  left: 0;
+  top: -1px;
+  width: 100%;
+  height: 1px;
+  background: var(--signal);
+  transform-origin: 0 50%;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.tldr.tldr-v3 .tldr-kicker {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 24px;
+  padding: 16px var(--gutter, 56px);
+  border-bottom: 1px solid var(--line);
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--dim);
+}
+
+/* decorative folio on the right of the kicker row (CSS text, not a DOM node) */
+.tldr.tldr-v3 .tldr-kicker::after {
+  content: 'Checklist · 01 — 04';
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--dim-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.tldr.tldr-v3 ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1px;
+  background: var(--line);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--dim);
+}
+
+.tldr.tldr-v3 li {
+  position: relative;
+  display: grid;
+  grid-template-columns: 14px minmax(0, 1fr);
+  column-gap: 14px;
+  align-items: start;
+  padding: 26px 20px 28px;
+  /* chapter tint shows through the 1px gaps; cells follow <main>'s fade */
+  background: var(--chapter-bg, var(--bg));
+  transition: background-color 0.9s var(--ease-editorial, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+
+/* folio number replaces the legacy ▸ glyph */
+.tldr.tldr-v3 li::before {
+  content: attr(data-num);
+  position: absolute;
+  left: auto;
+  right: 14px;
+  top: 10px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  color: var(--dim-2);
+  font-variant-numeric: tabular-nums;
+}
+
+.tldr-v3-txt {
+  min-width: 0;
+}
+
+.tldr.tldr-v3 li strong {
+  color: var(--fg);
+  font-weight: 500;
+}
+
+.tldr.tldr-v3 a {
+  color: var(--fg);
+  border-bottom: none;
+  transition: color 0.3s var(--ease-editorial, cubic-bezier(0.2, 0.8, 0.2, 1));
+}
+
+.tldr.tldr-v3 a:hover,
+.tldr.tldr-v3 a:focus-visible {
+  color: var(--signal);
+  border-bottom: none;
+}
+
+/* ---------- TickMark ---------------------------------------------------- */
+.tick-mark {
+  display: block;
+  flex: none;
+  margin-top: 4px;
+  overflow: visible;
+}
+
+.tick-mark .tick-box {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 1;
+}
+
+.tick-mark .tick-path {
+  fill: none;
+  stroke: var(--signal);
+  stroke-width: 1.5;
+  stroke-linecap: square;
+  stroke-linejoin: miter;
+}
+
+/* ---------- responsive -------------------------------------------------- */
+@media (max-width: 1100px) {
+  .tldr.tldr-v3 {
+    padding: 0;
+    gap: 0;
+  }
+
+  .tldr.tldr-v3 .tldr-kicker {
+    padding: 14px var(--gutter, 24px);
+  }
+
+  .tldr.tldr-v3 ul {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .tldr.tldr-v3 li {
+    padding: 22px 18px 24px;
+  }
+}
+
+@media (max-width: 640px) {
+  .tldr.tldr-v3 ul {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tldr.tldr-v3 .tldr-kicker::after {
+    display: none;
+  }
+}
+
+/* ---------- reduced motion ---------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .tldr-v3-rule {
+    transform: none !important;
+  }
+
+  .tldr.tldr-v3 li,
+  .tldr.tldr-v3 a {
+    transition: none;
+  }
+}

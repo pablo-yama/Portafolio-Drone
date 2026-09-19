@@ -59,7 +59,7 @@ export function ContactSection() {
         </div>
 
         <aside className="contact-card">
-          <h4>Canal directo</h4>
+          <h3>Canal directo</h3>
           <div className="line">
             <span className="k">Operador</span>
             <span className="v">Pablo Yamamoto</span>

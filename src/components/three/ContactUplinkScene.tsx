@@ -21,7 +21,7 @@ export function ContactUplinkScene() {
     const h = container.clientHeight || 1;
 
     const scene = new THREE.Scene();
-    scene.fog = new THREE.Fog(0x0a0a0a, 8, 24);
+    scene.fog = new THREE.Fog(0x0e1115, 8, 24);
 
     const cam = new THREE.PerspectiveCamera(42, w / h, 0.1, 100);
     cam.position.set(0, 0, 9);
@@ -32,15 +32,15 @@ export function ContactUplinkScene() {
     ren.setClearColor(0, 0);
     container.appendChild(ren.domElement);
 
-    // Parse the current --signal CSS variable; fall back to burnt orange
+    // Parse the current --signal CSS variable; fall back to sky blue
     const signalRaw = getComputedStyle(document.documentElement)
       .getPropertyValue('--signal')
       .trim();
     const sigColor = new THREE.Color();
     try {
-      sigColor.set(signalRaw || '#c3692d');
+      sigColor.set(signalRaw || '#9fc8df');
     } catch {
-      sigColor.set('#c3692d');
+      sigColor.set('#9fc8df');
     }
 
     // wire globe
@@ -58,7 +58,7 @@ export function ContactUplinkScene() {
     // inner solid
     const inner = new THREE.Mesh(
       new THREE.SphereGeometry(2.35, 48, 32),
-      new THREE.MeshBasicMaterial({ color: 0x0a0a0a, transparent: true, opacity: 0.7 }),
+      new THREE.MeshBasicMaterial({ color: 0x0e1115, transparent: true, opacity: 0.7 }),
     );
     scene.add(inner);
 
@@ -117,7 +117,7 @@ export function ContactUplinkScene() {
     const dustMesh = new THREE.Points(
       dust,
       new THREE.PointsMaterial({
-        color: 0xe8e6e1,
+        color: 0xf3f5f7,
         size: 0.02,
         transparent: true,
         opacity: 0.5,

@@ -1,0 +1,322 @@
+/* =========================================================================
+   PILOT + SPECS TAPE — WP7
+   § 02 Piloto (kept layout from globals.css .section-head/.split/.portrait/
+   .spec-table) plus: framer scroll + pointer parallax on the diorama layers,
+   a scrubbed scan line, the documented one-off clip-path photo reveal,
+   hairline draws on the spec rows, a decorative Ruler in the gutter — and the
+   double SpecsTape marquee (GSAP xPercent loops, velocity-modulated).
+   Namespaced .pilot-* / .ruler / .tape*. Tokens only. Transform + opacity
+   (exception: the once clip-path reveal on .pilot-photo-clip).
+   ========================================================================= */
+
+/* ---------- section root ------------------------------------------------ */
+.pilot {
+  position: relative;
+}
+
+.pilot .section-head h2 {
+  margin: 0;
+}
+
+.pilot .section-head .meta .tfx-scramble {
+  display: inline-block;
+}
+
+/* ---------- split / portrait ------------------------------------------- */
+.pilot-split {
+  position: relative;
+}
+
+/* framer writes transform every frame — the legacy 0.1s transition would lag it */
+.pilot .portrait .layer {
+  transition: none;
+}
+
+/* extra bleed so the parallax travel never exposes a layer edge */
+.pilot .portrait .l-bg {
+  inset: -60px;
+}
+
+.pilot .portrait .l-mid {
+  inset: -110px;
+}
+
+.pilot .portrait .l-grid {
+  inset: -150px;
+}
+
+.pilot .portrait .l-photo {
+  inset: -32px;
+  overflow: visible;
+}
+
+/* the legacy gradient overlay moves onto the clipped inner plate */
+.pilot .portrait .l-photo::after {
+  content: none;
+}
+
+.pilot-photo-clip {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  transform-origin: 50% 60%;
+  backface-visibility: hidden;
+}
+
+.pilot-photo-clip::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(180deg, rgba(10, 8, 6, 0) 55%, rgba(10, 8, 6, 0.55) 100%),
+    radial-gradient(ellipse at 50% 0%, rgba(0, 0, 0, 0) 60%, rgba(0, 0, 0, 0.35) 100%);
+  pointer-events: none;
+}
+
+.pilot .portrait[data-active='1'] .layer,
+.pilot .portrait[data-active='1'] .portrait-chip,
+.pilot .portrait[data-active='1'] .portrait-coords,
+.pilot .portrait[data-active='1'] .pilot-scan {
+  will-change: transform;
+}
+
+/* scrubbed scan line: the wrapper spans the portrait, the line rides its top edge */
+.pilot-scan {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+}
+
+.pilot-scan-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 1px;
+  background: var(--signal);
+  opacity: 0.75;
+}
+
+.pilot-scan-line::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 56px;
+  background: linear-gradient(180deg, rgba(var(--signal-rgb), 0) 0%, rgba(var(--signal-rgb), 0.14) 100%);
+}
+
+.pilot-scan-line::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 1px;
+  height: 18px;
+  background: linear-gradient(180deg, rgba(var(--signal-rgb), 0.18) 0%, rgba(var(--signal-rgb), 0) 100%);
+}
+
+.pilot .portrait-chip,
+.pilot .portrait-coords {
+  overflow: hidden;
+}
+
+.pilot-in {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* ---------- spec table hairlines --------------------------------------- */
+.pilot .spec-table .r {
+  position: relative;
+  border-bottom-color: transparent;
+}
+
+.pilot-hair {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 1px;
+  background: var(--line);
+  transform-origin: 0% 50%;
+  pointer-events: none;
+}
+
+.pilot .spec-table .v {
+  display: inline-block;
+}
+
+/* ---------- ruler (split gutter, desktop only) ------------------------- */
+.pilot-ruler {
+  position: absolute;
+  left: 50%;
+  top: 96px;
+  z-index: 2;
+  margin-left: 1px;
+  pointer-events: none;
+}
+
+.ruler {
+  display: block;
+  overflow: visible;
+}
+
+.ruler-spine,
+.ruler-ticks {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 1;
+  shape-rendering: crispEdges;
+}
+
+.ruler-ticks {
+  stroke: var(--dim-2);
+}
+
+/* ---------- SpecsTape --------------------------------------------------- */
+.tape {
+  position: relative;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  overflow: hidden;
+  user-select: none;
+}
+
+.tape-row {
+  height: 56px;
+  display: flex;
+  align-items: center;
+  overflow: hidden;
+}
+
+.tape-row + .tape-row {
+  border-top: 1px solid var(--line-2);
+}
+
+.tape-track {
+  display: flex;
+  width: max-content;
+  backface-visibility: hidden;
+}
+
+.tape[data-active='1'] .tape-track {
+  will-change: transform;
+}
+
+.tape-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  white-space: nowrap;
+}
+
+.tape-item {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--fg);
+  padding-left: 28px;
+  cursor: default;
+}
+
+.tape-item .tfx-scramble {
+  display: inline-block;
+  min-width: 1ch;
+}
+
+.tape-dot {
+  color: var(--signal);
+  margin-left: 28px;
+  font-size: 12px;
+}
+
+.tape-row--alt .tape-item {
+  color: var(--dim);
+  font-size: 10px;
+}
+
+.tape-row--alt .tape-dot {
+  color: var(--scan);
+  opacity: 0.8;
+}
+
+/* ---------- responsive -------------------------------------------------- */
+@media (max-width: 1100px) {
+  .pilot-ruler {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .tape-row {
+    height: 48px;
+  }
+
+  .tape-item {
+    padding-left: 20px;
+  }
+
+  .tape-dot {
+    margin-left: 20px;
+  }
+
+  .pilot .portrait .l-grid {
+    inset: -120px;
+  }
+}
+
+/* ---------- reduced motion ---------------------------------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .pilot .portrait .layer,
+  .pilot .portrait-chip,
+  .pilot .portrait-coords,
+  .pilot-ruler {
+    transform: none !important;
+    will-change: auto;
+  }
+
+  .pilot-scan {
+    transform: translateY(38%) !important;
+  }
+
+  .pilot-hair {
+    transform: none !important;
+  }
+
+  .pilot-photo-clip {
+    clip-path: none !important;
+    transform: none !important;
+  }
+
+  /* one static, scrollable row: no loop, no duplicate copies, no second tape */
+  .tape-row--alt {
+    display: none;
+  }
+
+  .tape-track {
+    width: 100%;
+    max-width: 100%;
+    overflow-x: auto;
+    transform: none !important;
+    will-change: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .tape-track > .tape-list[aria-hidden='true'] {
+    display: none;
+  }
+
+  .tape-list {
+    padding-right: 28px;
+  }
+}

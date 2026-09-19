@@ -110,7 +110,7 @@ export function MethodSection() {
           {STEPS.map((s) => (
             <div className="tl-step" key={s.t}>
               <span className="t">{s.t}</span>
-              <h4>{s.h}</h4>
+              <h3>{s.h}</h3>
               <p>{s.p}</p>
             </div>
           ))}
